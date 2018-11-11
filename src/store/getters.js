@@ -1,0 +1,37 @@
+export const userInfo = state => state.userInfo
+
+export const articleInfo = state => state.articleInfo
+
+export const singerCategory = state => state.singerCategory
+
+export const singerInfo = state => state.singerInfo
+
+export const musicList = state => state.musicList
+
+export const recommendList = state => state.recommendList
+
+export const playList = state => state.playList
+
+export const rankList = state => state.rankList
+
+export const playMode = state => state.playMode
+
+export const isPlaying = state => state.isPlaying
+
+export const fullScreen = state => state.fullScreen
+
+export const currentIndex = state => state.currentIndex
+
+export const sequenceList = state => state.sequenceList
+
+export const searchHistory = state => state.searchHistory
+
+export const playHistory = state => state.playHistory
+
+export const favourateList = state => state.favourate
+
+export const miniMusic = state => state.miniMusic
+
+export const currentSong = (state) => {
+  return state.playList[state.currentIndex] || {}
+}
