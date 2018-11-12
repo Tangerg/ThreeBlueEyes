@@ -14,7 +14,7 @@
         <li v-for="songList in recommendlistSix" :key="songList.id" class="item" @click="_chickList(songList)">
           <div class="icon">
             <div class="gradients"></div>
-            <img :src="songList.picUrl">
+            <img v-lazy="songList.picUrl">
           </div>
           <p class="play-count">
             <i class="iconfont icon-customer"></i>

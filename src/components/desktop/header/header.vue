@@ -51,7 +51,6 @@
 
 <script>
   import {mapGetters,mapActions} from 'vuex'
-  import {userInfo} from "../../../store/getters";
   export default {
     data() {
       return {
@@ -71,17 +70,8 @@
         this.deleteUser()
       },
       goTo (path) {
-        const loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          background: 'rgba(25, 25, 25, 0.7)'
-        });
-        let i = setTimeout(() => {
-          loading.close();
-          this.$router.push(path)
-          clearTimeout(i);
-        }, 500);
-      },
+        this.$router.push(path)
+      }
     }
   }
 </script>

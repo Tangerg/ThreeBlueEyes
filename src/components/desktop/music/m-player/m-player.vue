@@ -497,7 +497,7 @@
           display flex
           flex-direction column
           .player-top-right-head
-            height 20%
+            height 25%
             width 100%
             .song-title
               margin 25px
@@ -519,7 +519,7 @@
               .song-singer
                 flex 1
           .player-top-right-body
-            height 80%
+            height 75%
             width 90%
             .no-lyric
               height 400px
@@ -546,8 +546,6 @@
                   font-size $font-size-medium
                   &.highLight
                     color $color-text-blue-l
-
-
       .player-bottom
         position absolute
         left 0

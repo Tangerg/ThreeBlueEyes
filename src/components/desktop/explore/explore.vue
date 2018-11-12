@@ -1,7 +1,7 @@
 <template>
     <div class="tbe-explore">
       <div class="explore-container">
-        <div class="container-left">
+        <div class="container-left" :class="isFixed === true ? 'fixed' :''">
           <p class="all-topic" @click="selectCategory(0)">全部话题</p>
           <span
             class="topic-category"
@@ -78,20 +78,24 @@
           </div>
         </div>
       </div>
+      <back-top></back-top>
     </div>
 </template>
 
 <script>
   import {mapMutations} from 'vuex'
+  import BackTop from 'base/back-top/back-top'
   import {getCategory,getRecArticleByCategoryId,getHotArticleByCategoryId,getLateArticleByCategoryId} from "api/article";
   import {ERR_OK} from "common/js/config";
   import {createArticleInfo} from "common/class/articleInfo";
+
   export default {
     data() {
       return {
         menuArr:[],
         currentCategoryId:0,
         articleList:[],
+        isFixed:false
       }
     },
     created(){
@@ -108,11 +112,11 @@
       ...mapMutations({
         setArticleInfo:'SET_ARTICLE_INFO'
       }),
-      handleScroll () {
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        if(scrollTop > 45){
+      handleScroll: function () {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        if (scrollTop > 85) {
           this.isFixed = true;
-        }else{
+        } else {
           this.isFixed = false;
         }
       },
@@ -163,6 +167,9 @@
           }
         })
       },
+    },
+    components:{
+      BackTop
     }
   };
 </script>
@@ -178,9 +185,12 @@
       width 1200px
       height 100%
       .container-left
-        position absolute
+        display inline-block
         width 380px
         box-shadow 0 15px 50px 0 rgba(0,34,77,.08)
+        &.fixed
+          position fixed
+          top 0
         .all-topic
           padding-left 15px
           background-color #ffa944

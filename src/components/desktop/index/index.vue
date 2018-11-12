@@ -42,7 +42,10 @@
       </div>
     </div>
     <div class="index-control" @click="changeBgImg(bingFlag)">
-      <el-button class="source-switch iconfont" :class="iconMode" circle></el-button>
+      <el-button
+        class="source-switch iconfont"
+        :class="iconMode"
+        circle></el-button>
     </div>
   </div>
 </template>
@@ -87,16 +90,19 @@
       },
       //改变显示壁纸
       changeBgImg(flag){
-        const loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          background: 'rgba(25, 25, 25, 0.7)'
-        });
+
         let i = setTimeout(() => {
-          loading.close();
           this.bingFlag = !flag
+          let message = this.bingFlag ? '已切换到bing壁纸' : '已切换至首页推荐'
+          this.$message({
+            showClose: false,
+            message: message,
+            type: 'success',
+            duration:1000
+          });
           clearTimeout(i);
-        }, 1000);
+        }, 500);
+
       },
       //初始化首页
       initRecommend(){
@@ -111,9 +117,7 @@
       //初始化必应壁纸
       initBingPic(){
         getBingPic().then((res)=>{
-          if(res.code === ERR_OK){
-            this.bingPic = null;
-          }
+          this.bingPic = res
         })
       },
       //设置div背景图

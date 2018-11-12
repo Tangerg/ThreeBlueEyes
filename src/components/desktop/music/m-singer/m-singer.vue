@@ -56,7 +56,7 @@
         <ul  class="items">
           <li v-for="singer in singerDetail" :key="singer.id" class="item" @click="selectSinger(singer)">
             <div class="icon">
-              <img :src="singer.avatar">
+              <img v-lazy="singer.avatar">
             </div>
             <div class="singer">
               <span class="singer-name">{{singer.name}}</span>

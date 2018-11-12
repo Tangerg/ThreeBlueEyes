@@ -120,6 +120,14 @@
       this.userIdAssignment()
       this.getStar()
     },
+    watch: {
+      '$route' (to, from) {
+        this.initArticleContent()
+        this.initArticleComment()
+        this.userIdAssignment()
+        this.getStar()
+      }
+    },
     computed:{
       ...mapGetters([
         'articleInfo',
@@ -225,6 +233,7 @@
       userIdAssignment(){
         if (this.userInfo.id) {
           this.comment.userId = this.userInfo.id
+          console.log(this.comment.userId)
         }else{
           this.comment.userId = 0
         }
