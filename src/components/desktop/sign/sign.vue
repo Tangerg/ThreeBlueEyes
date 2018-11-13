@@ -3,7 +3,7 @@
       <div class="sign-container">
         <div class="sign-wrapper">
           <div class="sign-header">
-            <div class="org-logo" @click="goTo('/d/index')">Three Blue Eyes</div>
+            <div class="org-logo" @click="goToWithIndex('/d/index','1')">Three Blue Eyes</div>
             <div class="sign-header-right">
               <span class="sign-hasAcc"></span>
               已有帐号？
@@ -68,14 +68,21 @@
       }
     },
     methods:{
-     /* ...mapMutations({
-        setUserInfo:'SET_USER_INFO'
-      }),*/
+      ...mapMutations({
+        setActiveIndex:'SET_ACTIVE_INDEX'
+      }),
       ...mapActions([
         'saveUser'
       ]),
+      goToWithIndex(path,index){
+        this.goTo(path)
+        this.setActiveIndex(index)
+      },
       goTo (path) {
-        this.$router.replace(path)
+        let i = setTimeout(() => {
+          this.$router.replace(path)
+          clearTimeout(i);
+        }, 200);
       },
       userSign(user){
         //首先让按钮不能按

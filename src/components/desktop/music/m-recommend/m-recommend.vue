@@ -1,5 +1,6 @@
 <template>
   <div class="tbe-m-recommend">
+    <router-view></router-view>
     <div class="title">精彩推荐</div>
     <div class="rec-banner">
       <el-carousel :interval="4000" type="card" height="400px">
@@ -40,7 +41,6 @@
         </li>
       </ul>
     </div>
-    <router-view></router-view>
   </div>
 </template>
 

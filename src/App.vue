@@ -89,5 +89,4 @@ export default {
     min-height 100%
     display flex
     flex-direction row
-    position absolute
 </style>

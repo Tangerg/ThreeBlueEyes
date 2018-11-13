@@ -112,12 +112,19 @@
       ...mapMutations({
         setArticleInfo:'SET_ARTICLE_INFO'
       }),
-      handleScroll: function () {
+      handleScroll() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         if (scrollTop > 85) {
           this.isFixed = true;
         } else {
           this.isFixed = false;
+        }
+        console.log(document.documentElement.clientHeight+'-----------'+window.innerHeight); // 可视区域高度
+        console.log(window.pageYOffset +'-----------'+ document.documentElement.scrollTop +'-----------'+ document.body.scrollTop); // 滚动高度
+        console.log(document.body.offsetHeight); // 文
+        console.log(document.body.scrollTop + window.innerHeight)
+        if(document.documentElement.scrollTop + window.innerHeight >= document.body.offsetHeight){
+          console.log('到底了')
         }
       },
       initMenu(){
@@ -177,8 +184,9 @@
   @import "../../../common/stylus/variable"
   @import "../../../common/stylus/mixin"
   .tbe-explore
-    position absolute
+    position relative
     width 100%
+    height 100%
     background-color $color-background-gray
     .explore-container
       margin 20px auto

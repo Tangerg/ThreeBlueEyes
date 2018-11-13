@@ -2,16 +2,16 @@
   <div class="tbe-index">
     <div class="index-bing" v-show="bingFlag === true">
       <div class="index-bg">
-        <div class="bg-img"></div>
+        <div class="bg-img" :style="bgImg(this.BING+this.bingPic.url)"></div>
         <div class="bg-mask"></div>
       </div>
       <div class="index-desc">
         <div class="desc-container">
-          <h1 class="desc-title">标题标题标题标题标题标题</h1>
-          <p class="desc-data">2018-10-30</p>
-          <p class="desc-summary">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</p>
+          <h1 class="desc-title">{{this.bingPic.title}}</h1>
+          <p class="desc-data"></p>
+          <p class="desc-summary">{{this.bingPic.disc}}</p>
           <div class="desc-btn">
-            <el-button plain class="button">点击查看</el-button>
+            <el-button plain class="button" @click="clickBing()">点击查看</el-button>
           </div>
         </div>
       </div>
@@ -61,7 +61,8 @@
         bingFlag:false,
         recommendList:[],
         bingPic:{},
-        browserH:''
+        browserH:'',
+        BING:'http://www.bing.com'
       }
     },
     created(){
@@ -87,6 +88,12 @@
         this.$router.push({
           path: `/d/p/${article.id}`
         })
+      },
+      clickBing(){
+        window.open(this.BING+this.bingPic.url)
+        window.opener=null;
+        window.open('','_self');
+        window.close();
       },
       //改变显示壁纸
       changeBgImg(flag){
@@ -126,7 +133,7 @@
       },
       //获取浏览器高度
       BrowserHeight: function () {
-        let h = document.documentElement.clientHeight || document.body.clientHeight;
+        let h = document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight;
         this.browserH = h + 'px'
       }
     },
@@ -147,6 +154,8 @@
     max-height 100%
     z-index 99
     .index-bing
+      width 100%
+      height 100%
       .index-bg
         width 100%
         height 100%
@@ -156,7 +165,7 @@
           left 0
           width 100%
           height 100%
-          background-image url(http://www.bing.com/az/hprichbg/rb/TheaterLostSouls_ZH-CN9247537981_1920x1080.jpg)
+          /*background-image url(http://www.bing.com/az/hprichbg/rb/TheaterLostSouls_ZH-CN9247537981_1920x1080.jpg)*/
           background-size cover
           background-position center center
         .bg-mask
@@ -165,8 +174,9 @@
           left 0
           width 100%
           height 100%
-          background -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0, 0, 0, 0) 10%, rgb(57, 67, 77) 90%)
-          opacity 0.7
+          /*background -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0, 0, 0, 0) 10%, rgb(57, 67, 77) 90%)*/
+          background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0, 0, 0, 0) 10%, rgb(7, 17, 27) 90%);
+          opacity 0.9
       .index-desc
         position absolute
         top 35%
@@ -219,8 +229,8 @@
             left 0
             width 100%
             height 100%
-            background -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0, 0, 0, 0) 10%, rgb(57, 67, 77) 90%)
-            opacity 0.7
+            background -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0, 0, 0, 0) 10%, rgb(27, 37, 47) 90%)
+            opacity 0.9
         .index-desc
           position absolute
           top 35%

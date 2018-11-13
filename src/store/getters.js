@@ -1,3 +1,5 @@
+export const activeIndex = state => state.activeIndex
+
 export const userInfo = state => state.userInfo
 
 export const articleInfo = state => state.articleInfo

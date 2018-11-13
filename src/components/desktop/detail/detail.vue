@@ -233,7 +233,6 @@
       userIdAssignment(){
         if (this.userInfo.id) {
           this.comment.userId = this.userInfo.id
-          console.log(this.comment.userId)
         }else{
           this.comment.userId = 0
         }

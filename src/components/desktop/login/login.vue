@@ -3,7 +3,7 @@
       <div class="login-container">
         <div class="login-container-content">
           <div class="login-header">
-            <div class="login-logo" @click="goTo('/d/index')">TBE</div>
+            <div class="login-logo" @click="goToWithIndex('/d/index','1')">TBE</div>
             <div class="login-header-slogen">三个蓝眼，分享你的生活
             </div>
           </div>
@@ -55,14 +55,21 @@
       }
     },
     methods:{
+      ...mapMutations({
+        setActiveIndex:'SET_ACTIVE_INDEX'
+      }),
       ...mapActions([
         'saveUser'
       ]),
-      /*...mapMutations({
-        setUserInfo:'SET_USER_INFO'
-      }),*/
+      goToWithIndex(path,index){
+        this.goTo(path)
+        this.setActiveIndex(index)
+      },
       goTo (path) {
-        this.$router.replace(path)
+        let i = setTimeout(() => {
+          this.$router.replace(path)
+          clearTimeout(i);
+        }, 200);
       },
       userLogin(user){
         //首先让按钮不能按

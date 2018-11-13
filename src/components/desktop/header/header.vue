@@ -8,26 +8,26 @@
       </el-col>
       <el-col :span="15">
         <el-menu
-          :default-active="activeIndex"
+          :default-active="this.activeIndex"
           class="nav-menu"
           mode="horizontal"
           text-color="#000000"
           :class="{white: '/d/index'===$route.path}"
           background-color="transparent"
           >
-          <el-menu-item class="nav-menu-item" index="1" @click="goTo('/d/index')">
+          <el-menu-item class="nav-menu-item" index="1" @click="goToWithIndex('/d/index','1')">
               首页
           </el-menu-item>
-          <el-menu-item class="nav-menu-item" index="2" @click="goTo('/d/explore')">
+          <el-menu-item class="nav-menu-item" index="2" @click="goToWithIndex('/d/explore','2')">
             发现
           </el-menu-item>
-          <el-menu-item class="nav-menu-item" index="3" @click="goTo('/d/music')">
+          <el-menu-item class="nav-menu-item" index="3" @click="goToWithIndex('/d/music','3')">
             音乐
           </el-menu-item>
-          <el-menu-item class="nav-menu-item" index="4" @click="goTo('/d/personal')">
+          <el-menu-item class="nav-menu-item" index="4" @click="personal()">
             我的
           </el-menu-item>
-          <el-menu-item class="nav-menu-item" index="5" @click="goTo('/d/about')">
+          <el-menu-item class="nav-menu-item" index="5" @click="goToWithIndex('/d/about','5')">
             关于
           </el-menu-item>
 
@@ -36,7 +36,7 @@
       </el-col>
       <el-col :span="4" class="nav-login">
         <div class="user-info" v-if="this.userInfo.userName">
-          <div class="user-name" @click="loginOut()">{{this.userInfo.userName}}</div>
+          <div class="user-name">{{this.userInfo.userName}}</div>
         </div>
         <div class="login-sign" v-if="!this.userInfo.userName">
           <span class="login" @click="goTo('/d/login')">登陆</span>
@@ -50,29 +50,41 @@
 </template>
 
 <script>
-  import {mapGetters,mapActions} from 'vuex'
+  import {mapGetters,mapMutations} from 'vuex'
   export default {
-    data() {
-      return {
-        activeIndex: '1'
-      };
-    },
     computed:{
       ...mapGetters([
+        'activeIndex',
         'userInfo',
       ]),
     },
     methods: {
-      ...mapActions([
-        'deleteUser'
-      ]),
-      loginOut(){
-        this.deleteUser()
+      ...mapMutations({
+        setActiveIndex:'SET_ACTIVE_INDEX'
+      }),
+      personal(){
+        if(!this.userInfo.userName){
+          this.$confirm('您暂时还未登陆！', '提示', {
+            confirmButtonText: '去登陆',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.goTo('/d/login')
+          }).catch(() => {
+          });
+        }else{
+          this.setActiveIndex('4')
+          this.goTo('/d/personal')
+        }
+      },
+      goToWithIndex(path,index){
+        this.goTo(path)
+        this.setActiveIndex(index)
       },
       goTo (path) {
         this.$router.push(path)
-      }
-    }
+      },
+    },
   }
 </script>
 

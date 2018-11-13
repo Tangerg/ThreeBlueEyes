@@ -1,6 +1,9 @@
 import * as types from './mutation-types'
 
 const mutations = {
+  [types.SET_ACTIVE_INDEX](state,index){
+    state.activeIndex = index
+  },
   [types.SET_USER_INFO](state,userInfo){
     state.userInfo = userInfo
   },

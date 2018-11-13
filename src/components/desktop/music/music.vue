@@ -12,19 +12,8 @@
 </template>
 
 <script>
-  import {mapGetters,mapMutations} from 'vuex'
   import MHeader from './m-header/m-header'
   export default {
-    computed:{
-      ...mapGetters([
-        'miniMusic',
-      ]),
-    },
-    methods:{
-      ...mapMutations({
-        setMiniMusic: 'SET_MINI_MUSIC',
-      }),
-    },
     components:{
       MHeader,
     }

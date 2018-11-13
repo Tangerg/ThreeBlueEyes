@@ -147,7 +147,6 @@
         currentTime:0,
         currentProgress:0,
         duration: 0,
-        currentShow:'cd',
         showListFlag:false
       }
     },

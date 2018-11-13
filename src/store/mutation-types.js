@@ -1,3 +1,5 @@
+export const SET_ACTIVE_INDEX = 'SET_ACTIVE_INDEX'
+
 export const SET_USER_INFO = 'SET_USER_INFO'
 
 export const SET_ARTICLE_INFO = 'SET_ARTICLE_INFO'

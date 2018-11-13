@@ -27,14 +27,21 @@
       ...mapMutations({
         setMiniMusic: 'SET_MINI_MUSIC',
         setPlayList: 'SET_PLAY_LIST',
+        setActiveIndex:'SET_ACTIVE_INDEX'
       }),
       miniPlay(){
-        this.setMiniMusic(true)
-        this.goTo('/d/index')
+        this.backToIndex()
       },
       closePlay(){
         this.setPlayList([])
-        this.goTo('/d/index')
+        this.backToIndex()
+      },
+      backToIndex(){
+        this.setActiveIndex('1')
+        let i = setTimeout(() => {
+          this.goTo('/d/index')
+          clearTimeout(i);
+        }, 200);
       },
       goTo (path) {
         this.$router.push(path)
