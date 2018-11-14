@@ -14,13 +14,13 @@
         <div class="container-right">
           <div class="topic-nav">
             <ul class="nav-tabs">
-              <li class="tab-item" @click="getRArticleByCategory(currentCategoryId)">
+              <li class="tab-item" @click="selectTab(1)">
                 推荐
               </li>
-              <li class="tab-item" @click="getHArticleByCategory(currentCategoryId)">
+              <li class="tab-item" @click="selectTab(2)">
                 热门
               </li>
-              <li class="tab-item" @click="getLArticleByCategory(currentCategoryId)">
+              <li class="tab-item" @click="selectTab(3)">
                 最近
               </li>
             </ul>
@@ -95,37 +95,76 @@
         menuArr:[],
         currentCategoryId:0,
         articleList:[],
-        isFixed:false
+        isFixed:false,
+        tabFlag:1,
+        isBottom:false,
+        pageNum:1,
+        pageSize:10
       }
     },
-    created(){
+    activated(){
       this.initMenu()
-      this.getRArticleByCategory(this.currentCategoryId)
+      this.getArticle()
+      window.addEventListener('scroll',this.handleScroll)
     },
-    mounted(){
-      window.addEventListener('scroll', this.handleScroll)
+    beforeRouteLeave (to, from, next) {
+      window.removeEventListener('scroll',this.handleScroll)
+      next()
     },
-    destroyed () {
-      window.removeEventListener('scroll', this.handleScroll)
+    watch:{
+      currentCategoryId(newVal,oldVal){
+        //第一次进来
+        if(!oldVal){
+          this.pageNum = 1
+        }
+        //如果新得分类id=旧的
+        if(newVal === oldVal){
+          return
+        }else{
+          this.pageNum = 1
+        }
+      },
+      isBottom(newVal,oldVal){
+        //若果isBottom为true且之前为false表明到底部了
+        if(oldVal === false && newVal === true){
+          this.getMoreArticle()
+        }else{
+          return
+        }
+      }
     },
     methods:{
       ...mapMutations({
         setArticleInfo:'SET_ARTICLE_INFO'
       }),
       handleScroll() {
+        //监听左边的高度
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        if (scrollTop > 85) {
+        if (scrollTop > 20) {
           this.isFixed = true;
         } else {
           this.isFixed = false;
         }
-        console.log(document.documentElement.clientHeight+'-----------'+window.innerHeight); // 可视区域高度
+        /*console.log(document.documentElement.clientHeight+'-----------'+window.innerHeight); // 可视区域高度
         console.log(window.pageYOffset +'-----------'+ document.documentElement.scrollTop +'-----------'+ document.body.scrollTop); // 滚动高度
-        console.log(document.body.offsetHeight); // 文
-        console.log(document.body.scrollTop + window.innerHeight)
-        if(document.documentElement.scrollTop + window.innerHeight >= document.body.offsetHeight){
-          console.log('到底了')
+        console.log(document.body.offsetHeight); // 文档高度
+        console.log(document.body.scrollTop + window.innerHeight)*/
+        //监听右边是否距离底部50px了
+        let bottomOfWindow = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight <= 10
+        if(bottomOfWindow){
+          this.isBottom = true
+        }else{
+          this.isBottom = false
         }
+      },
+      selectTab(tab){
+        this.articleList = []
+        this.tabFlag = tab
+        this.getArticle()
+      },
+      getMoreArticle(){
+        this.pageNum = this.pageNum + 1
+        this.getArticle()
       },
       initMenu(){
         getCategory().then((res)=>{
@@ -135,8 +174,10 @@
         })
       },
       selectCategory(id){
+        this.gotoTop()
+        this.articleList = []
         this.currentCategoryId = id
-        this.getRArticleByCategory(id)
+        this.getArticle()
       },
       selectArticle(article) {
         this.setArticleInfo(article)
@@ -144,36 +185,57 @@
           path: `/d/p/${article.id}`
         })
       },
+      gotoTop(distance){
+        distance = distance>0 ? distance : 0;
+        document.documentElement.scrollTop = document.body.scrollTop = window.pageYOffset = distance;
+      },
+      //获取文章
+      getArticle(){
+        switch (this.tabFlag) {
+          case 1:
+            this.getRArticleByCategory(this.currentCategoryId,this.pageNum,this.pageSize);
+            break;
+          case 2:
+            this.getHArticleByCategory(this.currentCategoryId,this.pageNum,this.pageSize);
+            break;
+          case 3:
+            this.getLArticleByCategory(this.currentCategoryId,this.pageNum,this.pageSize);
+            break;
+          default:
+            this.getRArticleByCategory(this.currentCategoryId,this.pageNum,this.pageSize);
+        }
+      },
       //由分类获取推荐文章
-      getRArticleByCategory(id){
-        getRecArticleByCategoryId(id,1,10).then((res)=>{
+      getRArticleByCategory(id,pageNum,pageSize){
+        getRecArticleByCategoryId(id,pageNum,pageSize).then((res)=>{
           if(res.code=ERR_OK){
-            this.articleList = res.data.articleInfoList.map((articleInfo)=>{
-              return createArticleInfo(articleInfo)
-            })
+            this.addArticleArr(res)
           }
         })
       },
       //由分类获取热门文章
-      getHArticleByCategory(id){
-        getHotArticleByCategoryId(id,1,4).then((res)=>{
+      getHArticleByCategory(id,pageNum,pageSize){
+        getHotArticleByCategoryId(id,pageNum,pageSize).then((res)=>{
           if(res.code=ERR_OK){
-            this.articleList = res.data.articleInfoList.map((articleInfo)=>{
-              return createArticleInfo(articleInfo)
-            })
+            this.addArticleArr(res)
           }
         })
       },
       //由分类获取最近文章
-      getLArticleByCategory(id){
-        getLateArticleByCategoryId(id,1,4).then((res)=>{
+      getLArticleByCategory(id,pageNum,pageSize){
+        getLateArticleByCategoryId(id,pageNum,pageSize).then((res)=>{
           if(res.code=ERR_OK){
-            this.articleList = res.data.articleInfoList.map((articleInfo)=>{
-              return createArticleInfo(articleInfo)
-            })
+            this.addArticleArr(res)
           }
         })
       },
+      addArticleArr(res){
+        let ret = []
+        ret = res.data.articleInfoList.map((articleInfo)=>{
+          return createArticleInfo(articleInfo)
+        })
+        this.articleList = this.articleList.concat(ret)
+      }
     },
     components:{
       BackTop
@@ -188,6 +250,7 @@
     width 100%
     height 100%
     background-color $color-background-gray
+    display flex
     .explore-container
       margin 20px auto
       width 1200px
@@ -198,7 +261,7 @@
         box-shadow 0 15px 50px 0 rgba(0,34,77,.08)
         &.fixed
           position fixed
-          top 0
+          top 60px
         .all-topic
           padding-left 15px
           background-color #ffa944
@@ -216,6 +279,7 @@
           &:hover
             color red
       .container-right
+        display inline-block
         float right
         width 800px
         box-shadow 0 15px 50px 0 rgba(0,34,77,.08)
@@ -223,6 +287,7 @@
           box-shadow none
           border-bottom 1px solid $color-line-white
           width 100%
+          z-index 101
           .nav-tabs
             border-bottom none
             .tab-item

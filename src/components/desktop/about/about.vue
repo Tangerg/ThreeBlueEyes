@@ -172,7 +172,7 @@
   @import "../../../common/stylus/variable"
   @import "../../../common/stylus/mixin"
   .tbe-about
-    position absolute
+    position relative
     width 100%
     min-height 100%
     background-color $color-background-gray

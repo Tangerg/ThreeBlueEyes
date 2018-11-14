@@ -83,7 +83,6 @@ export default {
     padding 0
     box-sizing border-box
     background $color-background-global
-    user-select none
   #app
     width 100%
     min-height 100%
