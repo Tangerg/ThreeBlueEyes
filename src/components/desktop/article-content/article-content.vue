@@ -5,10 +5,10 @@
 
 <script>
   export default {
-    props:{
-      article:{
-        type:String,
-        default:''
+    props: {
+      article: {
+        type: String,
+        default: ''
       }
     },
     name: "article-content"

@@ -21,29 +21,30 @@
 
 <script>
   import {mapMutations} from 'vuex'
+
   export default {
 
-    methods:{
+    methods: {
       ...mapMutations({
         setMiniMusic: 'SET_MINI_MUSIC',
         setPlayList: 'SET_PLAY_LIST',
-        setActiveIndex:'SET_ACTIVE_INDEX'
+        setActiveIndex: 'SET_ACTIVE_INDEX'
       }),
-      miniPlay(){
+      miniPlay() {
         this.backToIndex()
       },
-      closePlay(){
+      closePlay() {
         this.setPlayList([])
         this.backToIndex()
       },
-      backToIndex(){
+      backToIndex() {
         this.setActiveIndex('1')
         let i = setTimeout(() => {
           this.goTo('/d/index')
           clearTimeout(i);
         }, 200);
       },
-      goTo (path) {
+      goTo(path) {
         this.$router.push(path)
       },
     }

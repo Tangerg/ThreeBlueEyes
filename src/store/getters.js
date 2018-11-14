@@ -32,7 +32,7 @@ export const playHistory = state => state.playHistory
 
 export const favourateList = state => state.favourate
 
-export const miniMusic = state => state.miniMusic
+export const onlyMusic = state => state.onlyMusic
 
 export const currentSong = (state) => {
   return state.playList[state.currentIndex] || {}

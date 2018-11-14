@@ -29,8 +29,8 @@
     </div>
     <div class="title">推荐歌曲</div>
     <div class="rec-music">
-      <ul  class="items">
-        <li v-for="song in recommendsong" :key="song.id" class="item" >
+      <ul class="items">
+        <li v-for="song in recommendsong" :key="song.id" class="item">
           <div class="icon">
             <img :src="song.song.album.picUrl" alt="">
           </div>
@@ -46,58 +46,58 @@
 
 <script>
   import {mapMutations} from 'vuex'
-  import {getBanner,getRecommendList,getRecommendSong} from "api/recommend";
+  import {getBanner, getRecommendList, getRecommendSong} from "api/recommend";
   import {createMusicList} from 'common/class/musicList'
   import {ERR_OK} from "common/js/config";
 
   export default {
-    data(){
-      return{
-        banners:[],
+    data() {
+      return {
+        banners: [],
         recommendlist: [],
         recommendlistSix: [],
         recommendsong: []
       }
     },
-    created (){
+    created() {
       this._initBanner()
       this._initRecommendList()
       this._initRecommendSong()
     },
-    methods:{
+    methods: {
       ...mapMutations({
         setMusicList: 'SET_MUSIC_LIST',
-        setRecommendList:'SET_RECOMMEND_LIST'
+        setRecommendList: 'SET_RECOMMEND_LIST'
       }),
       //初始化轮播图
-      _initBanner(){
+      _initBanner() {
         getBanner().then((res) => {
-          if(res.code === ERR_OK){
+          if (res.code === ERR_OK) {
             this.banners = res.banners
           }
         })
       },
       //初始化推荐歌单
-      _initRecommendList(){
+      _initRecommendList() {
         getRecommendList().then((res) => {
-          if(res.code === ERR_OK){
-            this.recommendlist = res.result.map((musiclist)=>{
+          if (res.code === ERR_OK) {
+            this.recommendlist = res.result.map((musiclist) => {
               return createMusicList(musiclist)
             })
-            this.recommendlistSix = this.recommendlist.slice(0,20)
+            this.recommendlistSix = this.recommendlist.slice(0, 20)
           }
         })
       },
       //初始化推荐歌曲
-      _initRecommendSong(){
+      _initRecommendSong() {
         getRecommendSong().then((res) => {
-          if(res.code === ERR_OK){
-            this.recommendsong = res.result.slice(0,10)
+          if (res.code === ERR_OK) {
+            this.recommendsong = res.result.slice(0, 10)
           }
         })
       },
       //点击歌单跳转
-      _chickList(songList){
+      _chickList(songList) {
         this.setMusicList(songList)
         this.$router.push({
           path: `/d/music/recommend/${songList.id}`
@@ -147,7 +147,7 @@
               top 0
               width 100%
               height 35px
-              background linear-gradient(rgba(109, 109, 109, 0.4),rgba(255, 255, 255, 0))
+              background linear-gradient(rgba(109, 109, 109, 0.4), rgba(255, 255, 255, 0))
             img
               width 100%
               height 100%

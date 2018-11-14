@@ -52,36 +52,37 @@
 
 <script>
   import {mapMutations} from 'vuex'
-  import {getRecommend,getBingPic} from '@/api/background'
+  import {getRecommend, getBingPic} from '@/api/background'
   import {ERR_OK} from "common/js/config";
   import {createArticleInfo} from "common/class/articleInfo";
+
   export default {
-    data(){
-      return{
-        bingFlag:false,
-        recommendList:[],
-        bingPic:{},
-        browserH:'',
-        BING:'http://www.bing.com'
+    data() {
+      return {
+        bingFlag: false,
+        recommendList: [],
+        bingPic: {},
+        browserH: '',
+        BING: 'http://www.bing.com'
       }
     },
-    created(){
+    created() {
       this.initRecommend();
       this.initBingPic();
       this.BrowserHeight();
     },
-    computed:{
-      iconMode(){
+    computed: {
+      iconMode() {
         if (this.bingFlag === false) {
           return 'icon-bing'
-        }else {
+        } else {
           return 'icon-paperplane-fill'
         }
       }
     },
-    methods:{
+    methods: {
       ...mapMutations({
-        setArticleInfo:'SET_ARTICLE_INFO'
+        setArticleInfo: 'SET_ARTICLE_INFO'
       }),
       selectRecommend(article) {
         this.setArticleInfo(article)
@@ -89,14 +90,14 @@
           path: `/d/p/${article.id}`
         })
       },
-      clickBing(){
-        window.open(this.BING+this.bingPic.url)
-        window.opener=null;
-        window.open('','_self');
+      clickBing() {
+        window.open(this.BING + this.bingPic.url)
+        window.opener = null;
+        window.open('', '_self');
         window.close();
       },
       //改变显示壁纸
-      changeBgImg(flag){
+      changeBgImg(flag) {
 
         let i = setTimeout(() => {
           this.bingFlag = !flag
@@ -105,25 +106,25 @@
             showClose: false,
             message: message,
             type: 'success',
-            duration:1000
+            duration: 1000
           });
           clearTimeout(i);
         }, 500);
 
       },
       //初始化首页
-      initRecommend(){
-        getRecommend().then((res)=>{
-          if(res.code === ERR_OK){
-            this.recommendList = res.data.articleInfoList.map((articleInfo)=>{
+      initRecommend() {
+        getRecommend().then((res) => {
+          if (res.code === ERR_OK) {
+            this.recommendList = res.data.articleInfoList.map((articleInfo) => {
               return createArticleInfo(articleInfo)
             })
           }
         })
       },
       //初始化必应壁纸
-      initBingPic(){
-        getBingPic().then((res)=>{
+      initBingPic() {
+        getBingPic().then((res) => {
           this.bingPic = res
         })
       },
@@ -137,8 +138,7 @@
         this.browserH = h + 'px'
       }
     },
-    components:{
-    }
+    components: {}
   }
 </script>
 
@@ -265,15 +265,15 @@
     .index-control
       z-index 100
       position fixed
-      bottom  40px
-      right  50px
+      bottom 40px
+      right 50px
       cursor pointer
       .source-switch
-        background rgba(21,35,51,.3)
+        background rgba(21, 35, 51, .3)
         color rgba(255, 255, 255, 1)
         border 0
         &:hover
-          background rgba(21,35,51,0.8)
+          background rgba(21, 35, 51, 0.8)
         .icon-bing
           color rgba(255, 255, 255, 0.8)
         .icon-paperplane-fill

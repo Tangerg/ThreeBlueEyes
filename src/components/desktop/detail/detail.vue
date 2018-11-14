@@ -1,15 +1,15 @@
 <template>
-    <div class="tbe-article-detail">
-      <el-button
-        class="tbe-back"
-        type="primary"
-        icon="el-icon-back"
-        circle
-        @click="goBack()">
-      </el-button>
-      <div class="detail-container">
-        <div class="container-header">
-          <div class="article-info">
+  <div class="tbe-article-detail">
+    <el-button
+      class="tbe-back"
+      type="primary"
+      icon="el-icon-back"
+      circle
+      @click="goBack()">
+    </el-button>
+    <div class="detail-container">
+      <div class="container-header">
+        <div class="article-info">
           <div class="article-info-title">
             {{articleInfo.title}}
           </div>
@@ -31,104 +31,105 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="container-body">
+        <div class="detail-article-content">
+          <article-content :article="articleContent"></article-content>
         </div>
-        <div class="container-body">
-          <div class="detail-article-content">
-            <article-content :article="articleContent"></article-content>
-          </div>
-          <div class="detail-star">
-            <el-button round class="star-btn" :class="iconMode" @click="giveStar()">
-              赞同 · {{articleInfo.starNum}}
-            </el-button>
-          </div>
-          <div class="detail-comment">
-            <div class="comment-title">评论</div>
-            <div class="comment-submit">
-              <div class="text-area">
-                <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 5, maxRows: 8}"
-                  v-model="comment.content"
-                  placeholder="写下你的评论"
-                >
-                </el-input>
-              </div>
-              <div class="submit-btn">
-                <el-button type="primary" @click="submitArticleComment(comment)">提交</el-button>
-                <el-button @click="cancelSubmit()">取消</el-button>
-              </div>
+        <div class="detail-star">
+          <el-button round class="star-btn" :class="iconMode" @click="giveStar()">
+            赞同 · {{articleInfo.starNum}}
+          </el-button>
+        </div>
+        <div class="detail-comment">
+          <div class="comment-title">评论</div>
+          <div class="comment-submit">
+            <div class="text-area">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 5, maxRows: 8}"
+                v-model="comment.content"
+                placeholder="写下你的评论"
+              >
+              </el-input>
             </div>
-            <div class="comment-exist" v-if="commentList.length>0">
-              <div class="total-comment">{{commentList.length}}条评论</div>
-              <div class="comment-box" v-for="(item,index) in commentList" :key="index">
-                <div class="comment-info">
-                  <div class="avatar">
-                    <img src="./logo.png" alt="">
-                  </div>
-                  <div class="other">
-                    <div class="name">{{item.userName}}</div>
-                    <div class="time">{{index +1 }}楼·{{item.createBy}}</div>
-                  </div>
+            <div class="submit-btn">
+              <el-button type="primary" @click="submitArticleComment(comment)">提交</el-button>
+              <el-button @click="cancelSubmit()">取消</el-button>
+            </div>
+          </div>
+          <div class="comment-exist" v-if="commentList.length>0">
+            <div class="total-comment">{{commentList.length}}条评论</div>
+            <div class="comment-box" v-for="(item,index) in commentList" :key="index">
+              <div class="comment-info">
+                <div class="avatar">
+                  <img src="./logo.png" alt="">
                 </div>
-                <div class="comment-content">
-                  {{item.content}}
+                <div class="other">
+                  <div class="name">{{item.userName}}</div>
+                  <div class="time">{{index +1 }}楼·{{item.createBy}}</div>
                 </div>
-                <div class="comment-operation">
-                  <div class="agree">
-                    <i class="iconfont icon-thumbup"></i>
-                    赞
-                  </div>
-                  <div class="reply">
-                    <i class="iconfont icon-message"></i>
-                    回复
-                  </div>
+              </div>
+              <div class="comment-content">
+                {{item.content}}
+              </div>
+              <div class="comment-operation">
+                <div class="agree">
+                  <i class="iconfont icon-thumbup"></i>
+                  赞
+                </div>
+                <div class="reply">
+                  <i class="iconfont icon-message"></i>
+                  回复
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <back-top></back-top>
     </div>
+    <back-top></back-top>
+  </div>
 </template>
 
 <script>
-  import {mapMutations,mapGetters} from 'vuex'
+  import {mapMutations, mapGetters} from 'vuex'
   import {getArticleById} from 'api/article'
-  import {submitComment,getComment} from "api/comment";
-  import {starById,starForId} from "api/star";
+  import {submitComment, getComment} from "api/comment";
+  import {starById, starForId} from "api/star";
   import {ERR_OK} from "common/js/config";
   import {strTrim} from "common/js/util";
   import ArticleContent from 'desktop/article-content/article-content'
   import BackTop from 'base/back-top/back-top'
+
   export default {
-    data(){
-      return{
-        articleContent:'',
-        comment:{
+    data() {
+      return {
+        articleContent: '',
+        comment: {
           content: "",
           userId: 0
         },
         commentList: [],
         //0:从未点赞，1：点赞，2：点赞过但取消了
-        starInfo:0
+        starInfo: 0
       }
     },
-    created(){
+    created() {
       this.initArticleContent()
       this.initArticleComment()
       this.userIdAssignment()
       this.getStar()
     },
     watch: {
-      '$route' (to, from) {
+      '$route'(to, from) {
         this.initArticleContent()
         this.initArticleComment()
         this.userIdAssignment()
         this.getStar()
       }
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'articleInfo',
         'userInfo',
@@ -141,27 +142,27 @@
         }
       }
     },
-    methods:{
+    methods: {
       ...mapMutations({
-        setArticleInfo:'SET_ARTICLE_INFO'
+        setArticleInfo: 'SET_ARTICLE_INFO'
       }),
 
-      goBack(){
+      goBack() {
         this.$router.back()
       },
 
       //获取点赞详情
-      getStar(){
-        starById(this.articleInfo.id,this.comment.userId).then((res)=>{
-          if(res.code === ERR_OK){
+      getStar() {
+        starById(this.articleInfo.id, this.comment.userId).then((res) => {
+          if (res.code === ERR_OK) {
             this.starInfo = res.data.starInfo
           }
         })
       },
       //点赞
-      giveStar(){
+      giveStar() {
         //先判断是否登陆
-        if(this.comment.userId === 0){
+        if (this.comment.userId === 0) {
           this.$confirm('登陆后才能点赞，是否登陆', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -172,36 +173,36 @@
           })
           return
         }
-        starForId(this.articleInfo.id,this.comment.userId,this.starInfo).then((res)=>{
-          if (res.code === ERR_OK){
+        starForId(this.articleInfo.id, this.comment.userId, this.starInfo).then((res) => {
+          if (res.code === ERR_OK) {
             this.starInfo = res.data.starInfo
             this.changeStarNum(this.starInfo)
           }
         })
       },
-      changeStarNum(starInfo){
+      changeStarNum(starInfo) {
         switch (starInfo) {
           case 1:
             this.articleInfo.starNum = this.articleInfo.starNum + 1
-                break
+            break
           case 2:
             this.articleInfo.starNum = this.articleInfo.starNum - 1
-                break
+            break
           default:
             break
         }
         this.setArticleInfo(this.articleInfo)
       },
       //取消评论
-      cancelSubmit(){
+      cancelSubmit() {
         this.comment.content = ''
       },
       //提交评论
-      submitArticleComment(comment){
+      submitArticleComment(comment) {
         comment.content = strTrim(comment.content)
         //先判断是否登陆
         //如果没登陆
-        if(comment.userId === 0){
+        if (comment.userId === 0) {
           this.$confirm('登陆后才能发表评论，是否登陆', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -213,7 +214,7 @@
           return
         }
         //登陆了，但是评论内容为空
-        if(comment.content === ''){
+        if (comment.content === '') {
           this.$message({
             message: '评论内容不能为空',
             type: 'error'
@@ -222,44 +223,44 @@
           return
         }
         //符合要求
-        submitComment(this.articleInfo.id,comment).then((res)=>{
-          if(res.code === ERR_OK){
+        submitComment(this.articleInfo.id, comment).then((res) => {
+          if (res.code === ERR_OK) {
             this.commentList = this.commentList.concat(res.data.articleComment)
             this.comment.content = ''
           }
         })
       },
       //判断是否登陆
-      userIdAssignment(){
+      userIdAssignment() {
         if (this.userInfo.id) {
           this.comment.userId = this.userInfo.id
-        }else{
+        } else {
           this.comment.userId = 0
         }
       },
 
       //初始化评论
-      initArticleComment(){
-        getComment(this.articleInfo.id).then((res)=>{
-          if(res.code === ERR_OK){
-            if(res.data.articleCommentList === '' ){
+      initArticleComment() {
+        getComment(this.articleInfo.id).then((res) => {
+          if (res.code === ERR_OK) {
+            if (res.data.articleCommentList === '') {
               this.commentList = []
-            }else{
+            } else {
               this.commentList = res.data.articleCommentList
             }
           }
         })
       },
       //初始化文章正文
-      initArticleContent(){
-        getArticleById(this.articleInfo.id).then((res)=>{
-          if(res.code === ERR_OK){
+      initArticleContent() {
+        getArticleById(this.articleInfo.id).then((res) => {
+          if (res.code === ERR_OK) {
             this.articleContent = res.data.articleContent.articleContent
           }
         })
       }
     },
-    components:{
+    components: {
       ArticleContent,
       BackTop
     }
@@ -285,11 +286,11 @@
       width 50px
       font-size 15px
       z-index 201
-      background rgba(21,35,51,.2)
+      background rgba(21, 35, 51, .2)
       color rgba(255, 255, 255, 1)
       border 0
       &:hover
-        background rgba(21,35,51,0.4)
+        background rgba(21, 35, 51, 0.4)
     .detail-container
       position absolute
       top 0
@@ -384,7 +385,7 @@
               padding 5px
               display flex
               flex-direction column
-              border-top  0.5px solid $color-line-gray
+              border-top 0.5px solid $color-line-gray
               .comment-info
                 flex 1
                 display flex

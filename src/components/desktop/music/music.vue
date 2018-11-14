@@ -1,6 +1,6 @@
 <template>
   <div class="tbe-music">
-    <div class="tbe-m-header" >
+    <div class="tbe-m-header">
       <m-header></m-header>
     </div>
     <div class="tbe-m-body">
@@ -13,8 +13,9 @@
 
 <script>
   import MHeader from './m-header/m-header'
+
   export default {
-    components:{
+    components: {
       MHeader,
     }
   }

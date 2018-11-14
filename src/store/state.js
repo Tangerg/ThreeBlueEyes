@@ -14,7 +14,7 @@ const state = {
   sequenceList:[],
   isPlaying: true,
   fullScreen:false,
-  miniMusic:false,
+  onlyMusic:false,
   currentIndex:-1,
   playMode:Mode.sequence,
   searchHistory:loadSearch(),

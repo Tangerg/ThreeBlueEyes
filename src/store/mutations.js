@@ -52,8 +52,8 @@ const mutations = {
   [types.SET_FAVOURATE_LIST] (state, song) {
     state.favourate = song
   },
-  [types.SET_MINI_MUSIC] (state, flag) {
-    state.miniMusic = flag
+  [types.SET_ONLY_MUSIC] (state, flag) {
+    state.onlyMusic = flag
   },
 }
 

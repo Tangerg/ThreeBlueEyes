@@ -58,7 +58,7 @@
               rows="11"
               v-model="feedBack.content"
               placeholder="请输入您的留言内容"
-              >
+            >
             </el-input>
           </div>
           <div class="submit-btn">
@@ -76,44 +76,44 @@
   import {strTrim} from "common/js/util";
 
   export default {
-    data(){
-      return{
-        introduce:'三个蓝眼团队成员不光在技术上处于行业前端，我们更注重将客户的产品表达的清楚与准确，我们大多是理科出身，在机械、游戏、电子、物理等各学科我们都有研究，能轻松理解客户的构思，所以我们能更好的将客户的意图表现出来。我们拥有自己的专业三维动画、建筑动画、虚拟现实和影视拍摄制作团队。我们不断创新与提高三维动画、建筑动画、虚拟现实的制作水准，运用尖端的三维动画技术、虚拟现实技术，不断满足客户对数字体验服务的需求。',
-        member:[
+    data() {
+      return {
+        introduce: '三个蓝眼团队成员不光在技术上处于行业前端，我们更注重将客户的产品表达的清楚与准确，我们大多是理科出身，在机械、游戏、电子、物理等各学科我们都有研究，能轻松理解客户的构思，所以我们能更好的将客户的意图表现出来。我们拥有自己的专业三维动画、建筑动画、虚拟现实和影视拍摄制作团队。我们不断创新与提高三维动画、建筑动画、虚拟现实的制作水准，运用尖端的三维动画技术、虚拟现实技术，不断满足客户对数字体验服务的需求。',
+        member: [
           {
-            'avatar':'http://img.zcool.cn/zcool-diy/ib96bd9e17ba0100b2d4d72aff0adf2072.jpg',
-            'name':'Tangerg',
-            'position':'三个蓝眼 站长',
-            'creed':'当人们的空间被各种物质挤压的时候，也就失去了本质，我们要去掉一切虚假的、表面的、无用的东西，而剩下真实的、本质的、必不可少的东西，因而得到更多的空间、更多的舒适、更多的效率、更多的美……'
+            'avatar': 'http://img.zcool.cn/zcool-diy/ib96bd9e17ba0100b2d4d72aff0adf2072.jpg',
+            'name': 'Tangerg',
+            'position': '三个蓝眼 站长',
+            'creed': '当人们的空间被各种物质挤压的时候，也就失去了本质，我们要去掉一切虚假的、表面的、无用的东西，而剩下真实的、本质的、必不可少的东西，因而得到更多的空间、更多的舒适、更多的效率、更多的美……'
           },
           {
-            'avatar':'http://img.zcool.cn/zcool-diy/ibf35ac522fe227768e095ce990d7ffae6.jpg',
-            'name':'Hao·Zhang',
-            'position':'三个蓝眼 副站长',
-            'creed':'眼高手低主要是由于见识太少，声名显赫主要是由于厚积薄发,切忌浮躁'
+            'avatar': 'http://img.zcool.cn/zcool-diy/ibf35ac522fe227768e095ce990d7ffae6.jpg',
+            'name': 'Hao·Zhang',
+            'position': '三个蓝眼 副站长',
+            'creed': '眼高手低主要是由于见识太少，声名显赫主要是由于厚积薄发,切忌浮躁'
           },
           {
-            'avatar':'http://img.zcool.cn/zcool-diy/ib9898d396db9cd4587c0f2c53ba2ee20c.jpg',
-            'name':'Yun·Chuan',
-            'position':'三个蓝眼 副站长',
-            'creed':'不要趟在以前的成绩上沾沾自喜，要不断学习和进步，要谦虚，因为硬盘是会坏的，网络是会断的'
+            'avatar': 'http://img.zcool.cn/zcool-diy/ib9898d396db9cd4587c0f2c53ba2ee20c.jpg',
+            'name': 'Yun·Chuan',
+            'position': '三个蓝眼 副站长',
+            'creed': '不要趟在以前的成绩上沾沾自喜，要不断学习和进步，要谦虚，因为硬盘是会坏的，网络是会断的'
           }
         ],
-        feedBack:{
-          name:'',
-          email:'',
-          content:''
+        feedBack: {
+          name: '',
+          email: '',
+          content: ''
         }
       }
     },
-    methods:{
-      submitFeedBack(feedback){
+    methods: {
+      submitFeedBack(feedback) {
         //首先去掉输入内容首尾的空格
         feedback.name = strTrim(feedback.name)
         feedback.email = strTrim(feedback.email)
         feedback.content = strTrim(feedback.content)
         //检查输入内容是否为空
-        if(feedback.name === ''){
+        if (feedback.name === '') {
           this.$message({
             message: '姓名不能为空',
             type: 'error'
@@ -121,7 +121,7 @@
           this.feedBack.name = ''
           return
         }
-        if(feedback.email === ''){
+        if (feedback.email === '') {
           this.$message({
             message: '邮箱不能为空',
             type: 'error'
@@ -129,7 +129,7 @@
           this.feedBack.email = ''
           return
         }
-        if(feedback.content === ''){
+        if (feedback.content === '') {
           this.$message({
             message: '留言不能为空',
             type: 'error'
@@ -138,7 +138,7 @@
         }
         //检查邮箱格式是否正确
         let emailReg = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/
-        if(!emailReg.test(feedback.email)){
+        if (!emailReg.test(feedback.email)) {
           this.$message({
             message: '邮箱格式不正确,请重新输入',
             type: 'error'
@@ -147,21 +147,21 @@
           return
         }
         //若上述条件都不能满足则可以提交留言到后台
-       feedBack(feedback).then( (res) => {
-           if(res.code === ERR_OK){
-             this.$message({
-               message: '提交成功',
-               type: 'success'
-             })
-             this.feedBack.name = ''
-             this.feedBack.email = ''
-             this.feedBack.content = ''
-           }else {
-             this.$message({
-               message: '发生未知错误，请稍后重试',
-               type: 'error'
-             })
-         }
+        feedBack(feedback).then((res) => {
+          if (res.code === ERR_OK) {
+            this.$message({
+              message: '提交成功',
+              type: 'success'
+            })
+            this.feedBack.name = ''
+            this.feedBack.email = ''
+            this.feedBack.content = ''
+          } else {
+            this.$message({
+              message: '发生未知错误，请稍后重试',
+              type: 'error'
+            })
+          }
         })
       },
     }
@@ -182,14 +182,14 @@
       display flex
       flex-direction column
       align-items center
-      box-shadow 0 15px 50px 0 rgba(0,34,77,.08)
+      box-shadow 0 15px 50px 0 rgba(0, 34, 77, .08)
       background-color $color-background-global
       .base-container
         flex 1
         width 800px
         padding-bottom 70px
         text-align center
-        border-bottom  0.5px solid $color-line-gray
+        border-bottom 0.5px solid $color-line-gray
         .title
           margin 70px auto
           font-size $font-size-27px

@@ -2,7 +2,7 @@
   <div class="tbe-m-singer-detail">
     <div class="list-info">
       <div class="list-img">
-        <img :src=this.singerInfo.avatar >
+        <img :src=this.singerInfo.avatar>
       </div>
       <div class="list-other">
         <div class="list-title">{{singerName}}</div>
@@ -46,60 +46,61 @@
 </template>
 
 <script>
-  import {mapActions,mapGetters} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
   import {ERR_OK} from "common/js/config"
   import {getSongBySinger} from 'api/song'
   import {creatSongList} from "common/class/song";
+
   export default {
     data() {
       return {
-        songList:[],
+        songList: [],
       }
     },
     created() {
       this._initSingerDetail()
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'singerInfo'
       ]),
-      singerName(){
+      singerName() {
         if (!this.singerInfo.name) {
           return
         }
         return this.singerInfo.name
       }
     },
-    methods:{
+    methods: {
       ...mapActions([
         'selectPlay'
       ]),
-      scroll (pos) {
+      scroll(pos) {
         this.scrollY = pos.y
       },
-      _initSingerDetail(){
-        if (!this.singerInfo.id){
+      _initSingerDetail() {
+        if (!this.singerInfo.id) {
           this.$router.push('/home/singer')
           return
         }
         getSongBySinger(this.singerInfo.id).then((res) => {
-          if(res.code === ERR_OK){
-            this.songList = res.hotSongs.map((music)=>{
+          if (res.code === ERR_OK) {
+            this.songList = res.hotSongs.map((music) => {
               return creatSongList(music)
             })
           }
         })
       },
-      _back(){
+      _back() {
         this.$router.back()
       },
-      selectItem(item,index){
+      selectItem(item, index) {
         this.selectPlay({
           list: this.songList,
           index: index
         })
       },
-      playAll(){
+      playAll() {
         this.selectPlay({
           list: this.songList,
         })

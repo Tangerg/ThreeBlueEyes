@@ -1,91 +1,92 @@
 <template>
-    <div class="tbe-login">
-      <div class="login-container">
-        <div class="login-container-content">
-          <div class="login-header">
-            <div class="login-logo" @click="goToWithIndex('/d/index','1')">TBE</div>
-            <div class="login-header-slogen">三个蓝眼，分享你的生活
-            </div>
+  <div class="tbe-login">
+    <div class="login-container">
+      <div class="login-container-content">
+        <div class="login-header">
+          <div class="login-logo" @click="goToWithIndex('/d/index','1')">TBE</div>
+          <div class="login-header-slogen">三个蓝眼，分享你的生活
           </div>
-          <div class="login-container-inner">
-            <div class="login-content">
-              <div class="login-box">
-                <div class="group-inputs">
-                  <div class="input-wrapper">
-                    <input type="text" placeholder="用户名" v-model="user.userName">
-                  </div>
-                  <div class="input-wrapper">
-                    <input type="password" placeholder="密码" v-model="user.passWorld">
-                  </div>
+        </div>
+        <div class="login-container-inner">
+          <div class="login-content">
+            <div class="login-box">
+              <div class="group-inputs">
+                <div class="input-wrapper">
+                  <input type="text" placeholder="用户名" v-model="user.userName">
                 </div>
-                <div class="button-wrapper">
-                  <el-button
-                    class="login-button"
-                    type="primary"
-                    @click="userLogin(user)"
-                    :disabled="disabled">
-                    登陆
-                  </el-button>
+                <div class="input-wrapper">
+                  <input type="password" placeholder="密码" v-model="user.passWorld">
                 </div>
-                <p class="agreement-tip">
-                  没有帐号？
-                  <span class="login-toSign" @click="goTo('/d/sign')">注册</span>
-                </p>
               </div>
+              <div class="button-wrapper">
+                <el-button
+                  class="login-button"
+                  type="primary"
+                  @click="userLogin(user)"
+                  :disabled="disabled">
+                  登陆
+                </el-button>
+              </div>
+              <p class="agreement-tip">
+                没有帐号？
+                <span class="login-toSign" @click="goTo('/d/sign')">注册</span>
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
-  import {mapMutations,mapActions} from 'vuex'
+  import {mapMutations, mapActions} from 'vuex'
   import {login} from "api/user";
   import {ERR_OK} from "common/js/config";
   import {strTrim} from "common/js/util";
+
   export default {
-    data(){
+    data() {
       return {
-        disabled:false,
-        user:{
-          userName:'123',
-          passWorld:'321'
+        disabled: false,
+        user: {
+          userName: '123',
+          passWorld: '321'
         }
       }
     },
-    methods:{
+    methods: {
       ...mapMutations({
-        setActiveIndex:'SET_ACTIVE_INDEX'
+        setActiveIndex: 'SET_ACTIVE_INDEX'
       }),
       ...mapActions([
         'saveUser'
       ]),
-      goToWithIndex(path,index){
+      goToWithIndex(path, index) {
         this.goTo(path)
         this.setActiveIndex(index)
       },
-      goTo (path) {
+      goTo(path) {
         let i = setTimeout(() => {
           this.$router.replace(path)
           clearTimeout(i);
         }, 200);
       },
-      userLogin(user){
+      userLogin(user) {
         //首先让按钮不能按
         this.disabled = true
         user.userName = strTrim(user.userName)
         user.passWorld = strTrim(user.passWorld)
-        if(user.userName === ''){
+        if (user.userName === '') {
           this.$message({
             message: '姓名不能为空',
             type: 'error'
           })
-          this.user.userName =''
+          this.user.userName = ''
           this.disabled = false
           return
         }
-        if(user.passWorld === ''){
+        if (user.passWorld === '') {
           this.$message({
             message: '密码不能为空',
             type: 'error'
@@ -94,13 +95,13 @@
           this.disabled = false
           return
         }
-        login(user).then((res)=>{
-          if(res.code === ERR_OK){
+        login(user).then((res) => {
+          if (res.code === ERR_OK) {
             this.saveUser(res.data.userInfo)
             //返回登陆之前的页面
             this.$router.back()
             this.disabled = false
-          }else{
+          } else {
             this.$message({
               message: res.data.errMsg,
               type: 'error'
@@ -145,7 +146,7 @@
         border-radius 2px
         box-sizing border-box
         background $color-background-global
-        box-shadow 0 15px 50px 0 rgba(0,34,77,.08)
+        box-shadow 0 15px 50px 0 rgba(0, 34, 77, .08)
         .login-header
           padding-bottom 15px
           text-align center

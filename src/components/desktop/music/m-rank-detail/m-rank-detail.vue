@@ -2,7 +2,7 @@
   <div class="tbe-m-rank-detail">
     <div class="list-info">
       <div class="list-img">
-        <img :src=this.rankList.coverImgUrl >
+        <img :src=this.rankList.coverImgUrl>
       </div>
       <div class="list-other">
         <div class="list-title">{{listName}}</div>
@@ -46,64 +46,65 @@
 </template>
 
 <script>
-  import {mapActions,mapGetters} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
   import {creatSongList} from "common/class/song";
+
   export default {
     data() {
       return {
         ListDetail: [],
       }
     },
-    created(){
+    created() {
       this._initRankList(this.rankList.tracks)
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'rankList',
       ]),
-      playCount(){
+      playCount() {
         if (!this.rankList.playCount) {
           return
         }
         if (this.rankList.playCount < 1e4) {
           return Math.floor(this.rankList.playCount)
-        } else if(this.rankList.playCount < 1e8) {
+        } else if (this.rankList.playCount < 1e8) {
           return Math.floor(this.rankList.playCount / 10000) + '万'
         } else {
           return Math.floor(this.rankList.playCount / 100000000) + '亿'
         }
       },
-      listName(){
+      listName() {
         if (!this.rankList.name) {
           return
         }
         return this.rankList.name
       },
     },
-    methods:{
+    methods: {
       ...mapActions([
         'selectPlay'
       ]),
 
-      _initRankList(list){
+      _initRankList(list) {
         if (!this.rankList.id) {
           this.$router.push('/home/rank')
           return
         }
-        this.ListDetail = list.map((music)=>{
+        this.ListDetail = list.map((music) => {
           return creatSongList(music)
         })
       },
-      _back(){
+      _back() {
         this.$router.back()
       },
-      selectItem(item,index){
+      selectItem(item, index) {
         this.selectPlay({
           list: this.ListDetail,
           index: index
         })
       },
-      playAll(){
+      playAll() {
         this.selectPlay({
           list: this.ListDetail,
         })

@@ -1,278 +1,277 @@
 <template>
-    <div class="tbe-m-singer">
-      <div class="title">万千歌手 尽在眼前</div>
-      <div class="singer-category">
-        <div class="base-category languages">
-          <div class="category-label">语种：</div>
-          <ul class="label-content">
-            <li
-              class="label-content-item"
-              v-for="(item,index) in languages"
-              :key="index"
-              @click="selectLanguage(item.id)"
-              :class="languageClass(item.id)"
-            >
-              {{item.name}}
-            </li>
-          </ul>
-        </div>
-        <div class="base-category category">
-          <div class="category-label">分类：</div>
-          <ul class="label-content">
-            <li
-              class="label-content-item"
-              v-for="(item,index) in category"
-              :key="index"
-              @click="selectCategory(item.id)"
-              :class="categoryClass(item.id)"
-            >
-              {{item.name}}
-            </li>
-          </ul>
-        </div>
-        <div class="base-category screen">
-          <div class="category-label">筛选：</div>
-          <ul class="label-content">
-            <li
-              class="label-content-item"
-              @click="selectInitial('#')"
-              :class="initialClass('#')"
-            >
-              热门
-            </li>
-            <li
-              class="label-content-item"
-              v-for="(item,index) in screen"
-              :key="index"
-              @click="selectInitial(item.name)"
-              :class="initialClass(item.name)"
-            >
-              {{item.name}}
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="singer-list">
-        <ul  class="items">
-          <li v-for="singer in singerDetail" :key="singer.id" class="item" @click="selectSinger(singer)">
-            <div class="icon">
-              <img v-lazy="singer.avatar">
-            </div>
-            <div class="singer">
-              <span class="singer-name">{{singer.name}}</span>
-            </div>
+  <div class="tbe-m-singer">
+    <div class="title">万千歌手 尽在眼前</div>
+    <div class="singer-category">
+      <div class="base-category languages">
+        <div class="category-label">语种：</div>
+        <ul class="label-content">
+          <li
+            class="label-content-item"
+            v-for="(item,index) in languages"
+            :key="index"
+            @click="selectLanguage(item.id)"
+            :class="languageClass(item.id)"
+          >
+            {{item.name}}
           </li>
         </ul>
       </div>
-      <router-view></router-view>
+      <div class="base-category category">
+        <div class="category-label">分类：</div>
+        <ul class="label-content">
+          <li
+            class="label-content-item"
+            v-for="(item,index) in category"
+            :key="index"
+            @click="selectCategory(item.id)"
+            :class="categoryClass(item.id)"
+          >
+            {{item.name}}
+          </li>
+        </ul>
+      </div>
+      <div class="base-category screen">
+        <div class="category-label">筛选：</div>
+        <ul class="label-content">
+          <li
+            class="label-content-item"
+            @click="selectInitial('#')"
+            :class="initialClass('#')"
+          >
+            热门
+          </li>
+          <li
+            class="label-content-item"
+            v-for="(item,index) in screen"
+            :key="index"
+            @click="selectInitial(item.name)"
+            :class="initialClass(item.name)"
+          >
+            {{item.name}}
+          </li>
+        </ul>
+      </div>
     </div>
+    <div class="singer-list">
+      <ul class="items">
+        <li v-for="singer in singerDetail" :key="singer.id" class="item" @click="selectSinger(singer)">
+          <div class="icon">
+            <img v-lazy="singer.avatar">
+          </div>
+          <div class="singer">
+            <span class="singer-name">{{singer.name}}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-  import {mapGetters,mapMutations} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
   import {getSingerByName} from 'api/singer'
   import {ERR_OK} from "common/js/config";
   import {creatSinger} from 'common/class/singer'
+
   export default {
     data() {
       return {
-        languages:[
+        languages: [
           {
-            id:1,
-            name:'华语'
+            id: 1,
+            name: '华语'
           },
           {
-            id:2,
-            name:'欧美'
+            id: 2,
+            name: '欧美'
           },
           {
-            id:6,
-            name:'日本'
+            id: 6,
+            name: '日本'
           },
           {
-            id:7,
-            name:'韩国'
+            id: 7,
+            name: '韩国'
           },
           {
-            id:4,
-            name:'其他'
-          },
-        ],
-        category:[
-          {
-            id:1,
-            name:'男歌手'
-          },
-          {
-            id:2,
-            name:'女歌手'
-          },
-          {
-            id:3,
-            name:'乐队组合'
+            id: 4,
+            name: '其他'
           },
         ],
-        screen:[
+        category: [
           {
-            name:'A'
+            id: 1,
+            name: '男歌手'
           },
           {
-            name:'B'
+            id: 2,
+            name: '女歌手'
           },
           {
-            name:'C'
+            id: 3,
+            name: '乐队组合'
+          },
+        ],
+        screen: [
+          {
+            name: 'A'
           },
           {
-            name:'D'
+            name: 'B'
           },
           {
-            name:'E'
+            name: 'C'
           },
           {
-            name:'F'
+            name: 'D'
           },
           {
-            name:'G'
+            name: 'E'
           },
           {
-            name:'H'
+            name: 'F'
           },
           {
-            name:'I'
+            name: 'G'
           },
           {
-            name:'J'
+            name: 'H'
           },
           {
-            name:'K'
+            name: 'I'
           },
           {
-            name:'L'
+            name: 'J'
           },
           {
-            name:'M'
+            name: 'K'
           },
           {
-            name:'N'
+            name: 'L'
           },
           {
-            name:'O'
+            name: 'M'
           },
           {
-            name:'P'
+            name: 'N'
           },
           {
-            name:'Q'
+            name: 'O'
           },
           {
-            name:'R'
+            name: 'P'
           },
           {
-            name:'S'
+            name: 'Q'
           },
           {
-            name:'T'
+            name: 'R'
           },
           {
-            name:'U'
+            name: 'S'
           },
           {
-            name:'V'
+            name: 'T'
           },
           {
-            name:'W'
+            name: 'U'
           },
           {
-            name:'X'
+            name: 'V'
           },
           {
-            name:'Y'
+            name: 'W'
           },
           {
-            name:'Z'
+            name: 'X'
+          },
+          {
+            name: 'Y'
+          },
+          {
+            name: 'Z'
           }
         ],
-        languageCode:1000,
-        typeCode:1,
-        initial:'#',
-        singerDetail:[]
+        languageCode: 1000,
+        typeCode: 1,
+        initial: '#',
+        singerDetail: []
       }
     },
-    created (){
-      this.getSingerList(this.computeNumber(),this.initial)
+    created() {
+      this.getSingerList(this.computeNumber(), this.initial)
     },
-    computed:{
-
-    },
-    methods:{
+    computed: {},
+    methods: {
       ...mapMutations({
-        setSingerInfo:'SET_SINGER_INFO'
+        setSingerInfo: 'SET_SINGER_INFO'
       }),
-      selectSinger(item){
+      selectSinger(item) {
         this.setSingerInfo(item)
         this.$router.push({
           path: `/d/music/singer/${item.id}`
         })
       },
       //给语种加样式
-      languageClass(id){
-        if(this.languageCode === id*1000){
+      languageClass(id) {
+        if (this.languageCode === id * 1000) {
           return 'active'
         }
       },
       //给分类加样式
-      categoryClass(id){
-        if(this.typeCode===id){
+      categoryClass(id) {
+        if (this.typeCode === id) {
           return 'active'
         }
       },
       //给首字母加样式
-      initialClass(initial){
-        if(this.initial===initial){
+      initialClass(initial) {
+        if (this.initial === initial) {
           return 'active'
         }
       },
       //选择语种
-      selectLanguage(id){
+      selectLanguage(id) {
         this.computeLanguagesCode(id)
-        this.getSingerList(this.computeNumber(),this.initial)
+        this.getSingerList(this.computeNumber(), this.initial)
       },
       //选择分类
-      selectCategory(id){
+      selectCategory(id) {
         this.computeCategoryCode(id)
-        this.getSingerList(this.computeNumber(),this.initial)
+        this.getSingerList(this.computeNumber(), this.initial)
       },
       //选择筛选
-      selectInitial(initial){
+      selectInitial(initial) {
         this.computeInitial(initial)
-        this.getSingerList(this.computeNumber(),this.initial)
+        this.getSingerList(this.computeNumber(), this.initial)
       },
       //语种+分类
-      computeNumber(){
+      computeNumber() {
         return this.languageCode + this.typeCode
 
       },
       //计算分类
-      computeCategoryCode(id){
+      computeCategoryCode(id) {
         this.typeCode = 1 * id
       },
       //计算语种
-      computeLanguagesCode(id){
+      computeLanguagesCode(id) {
         this.languageCode = 1000 * id
       },
       //计算歌手姓名首字母
-      computeInitial(initial){
+      computeInitial(initial) {
         this.initial = initial
       },
       //后台获取数据
-      getSingerList(category,initial){
-        if (!category){
+      getSingerList(category, initial) {
+        if (!category) {
           this.$router.push('/d/music')
           return
         }
-        getSingerByName(category,initial).then((res) => {
-          if(res.code === ERR_OK){
-            this.singerDetail = res.artists.map((singer)=>{
+        getSingerByName(category, initial).then((res) => {
+          if (res.code === ERR_OK) {
+            this.singerDetail = res.artists.map((singer) => {
               return creatSinger(singer)
             })
           }

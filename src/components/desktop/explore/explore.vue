@@ -1,141 +1,148 @@
 <template>
-    <div class="tbe-explore">
-      <div class="explore-container">
-        <div class="container-left" :class="isFixed === true ? 'fixed' :''">
-          <p class="all-topic" @click="selectCategory(0)">全部话题</p>
-          <span
-            class="topic-category"
-            v-for="(item,index) in menuArr"
-            :key="index"
-            @click="selectCategory(item.id)">
+  <div class="tbe-explore">
+    <div class="explore-container">
+      <div class="container-left" :class="isFixed === true ? 'fixed' :''">
+        <p class="all-topic" @click="selectCategory(0)">全部话题</p>
+        <span
+          class="topic-category"
+          v-for="(item,index) in menuArr"
+          :key="index"
+          @click="selectCategory(item.id)">
             {{item.name}}
           </span>
+      </div>
+      <div class="container-right">
+        <div class="topic-nav">
+          <ul class="nav-tabs">
+            <li class="tab-item" @click="selectTab(1)">
+              推荐
+            </li>
+            <li class="tab-item" @click="selectTab(2)">
+              热门
+            </li>
+            <li class="tab-item" @click="selectTab(3)">
+              最近
+            </li>
+          </ul>
         </div>
-        <div class="container-right">
-          <div class="topic-nav">
-            <ul class="nav-tabs">
-              <li class="tab-item" @click="selectTab(1)">
-                推荐
-              </li>
-              <li class="tab-item" @click="selectTab(2)">
-                热门
-              </li>
-              <li class="tab-item" @click="selectTab(3)">
-                最近
-              </li>
-            </ul>
-          </div>
-          <div class="article-content">
-            <div class="content-container">
-              <ul class="articles">
-                <li
-                  class="article"
-                  v-for="(item,index) in articleList"
-                  :key="index"
-                  @click="selectArticle(item)">
-                  <div class="article-box">
-                    <div class="article-img">
-                      <div class="img-cover">
-                        <img :src="item.pictureUrl" alt="cover">
-                      </div>
+        <div class="article-content">
+          <div class="content-container">
+            <ul class="articles">
+              <li
+                class="article"
+                v-for="(item,index) in articleList"
+                :key="index"
+                @click="selectArticle(item)">
+                <div class="article-box">
+                  <div class="article-img">
+                    <div class="img-cover">
+                      <img :src="item.pictureUrl" alt="cover">
                     </div>
-                    <div class="article-text">
-                      <h2 class="article-title">
-                        {{item.title}}
-                      </h2>
-                      <div class="article-summary">
+                  </div>
+                  <div class="article-text">
+                    <h2 class="article-title">
+                      {{item.title}}
+                    </h2>
+                    <div class="article-summary">
                         <span class="article-summary-text">
                           {{item.summary}}
                         </span>
-                      </div>
                     </div>
                   </div>
-                  <div class="article-info">
-                    <div class="author">
-                      <i class="iconfont icon-article icon-contact"></i>
-                      {{item.author}}
-                    </div>
-                    <div class="time">
-                      <i class="iconfont icon-article icon-clock"></i>
-                      {{item.createBy}}
-                    </div>
-                    <div class="view">
-                      <i class="iconfont icon-article icon-visibility"></i>
-                      {{item.viewNum}}次浏览
-                    </div>
-                    <div class="comment">
-                      <i class="iconfont icon-article icon-message"></i>
-                      {{item.commentNum}}条评论
-                    </div>
-                    <div class="star">
-                      <i class="iconfont icon-article icon-thumbup"></i>
-                      {{item.starNum}}个赞
-                    </div>
+                </div>
+                <div class="article-info">
+                  <div class="author">
+                    <i class="iconfont icon-article icon-contact"></i>
+                    {{item.author}}
                   </div>
-                </li>
-              </ul>
-            </div>
+                  <div class="time">
+                    <i class="iconfont icon-article icon-clock"></i>
+                    {{item.createBy}}
+                  </div>
+                  <div class="view">
+                    <i class="iconfont icon-article icon-visibility"></i>
+                    {{item.viewNum}}次浏览
+                  </div>
+                  <div class="comment">
+                    <i class="iconfont icon-article icon-message"></i>
+                    {{item.commentNum}}条评论
+                  </div>
+                  <div class="star">
+                    <i class="iconfont icon-article icon-thumbup"></i>
+                    {{item.starNum}}个赞
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-      <back-top></back-top>
     </div>
+    <back-top></back-top>
+  </div>
 </template>
 
 <script>
   import {mapMutations} from 'vuex'
   import BackTop from 'base/back-top/back-top'
-  import {getCategory,getRecArticleByCategoryId,getHotArticleByCategoryId,getLateArticleByCategoryId} from "api/article";
+  import {
+    getCategory,
+    getRecArticleByCategoryId,
+    getHotArticleByCategoryId,
+    getLateArticleByCategoryId
+  } from "api/article";
   import {ERR_OK} from "common/js/config";
   import {createArticleInfo} from "common/class/articleInfo";
 
   export default {
     data() {
       return {
-        menuArr:[],
-        currentCategoryId:0,
-        articleList:[],
-        isFixed:false,
-        tabFlag:1,
-        isBottom:false,
-        pageNum:1,
-        pageSize:10
+        menuArr: [],
+        currentCategoryId: 0,
+        articleList: [],
+        isFixed: false,
+        tabFlag: 1,
+        isBottom: false,
+        pageNum: 1,
+        pageSize: 10
       }
     },
-    activated(){
+    created() {
       this.initMenu()
       this.getArticle()
-      window.addEventListener('scroll',this.handleScroll)
     },
-    beforeRouteLeave (to, from, next) {
-      window.removeEventListener('scroll',this.handleScroll)
+    activated() {
+      window.addEventListener('scroll', this.handleScroll)
+    },
+    beforeRouteLeave(to, from, next) {
+      window.removeEventListener('scroll', this.handleScroll)
       next()
     },
-    watch:{
-      currentCategoryId(newVal,oldVal){
+    watch: {
+      currentCategoryId(newVal, oldVal) {
         //第一次进来
-        if(!oldVal){
+        if (!oldVal) {
           this.pageNum = 1
         }
         //如果新得分类id=旧的
-        if(newVal === oldVal){
+        if (newVal === oldVal) {
           return
-        }else{
+        } else {
           this.pageNum = 1
         }
       },
-      isBottom(newVal,oldVal){
+      isBottom(newVal, oldVal) {
         //若果isBottom为true且之前为false表明到底部了
-        if(oldVal === false && newVal === true){
+        if (oldVal === false && newVal === true) {
           this.getMoreArticle()
-        }else{
+        } else {
           return
         }
       }
     },
-    methods:{
+    methods: {
       ...mapMutations({
-        setArticleInfo:'SET_ARTICLE_INFO'
+        setArticleInfo: 'SET_ARTICLE_INFO'
       }),
       handleScroll() {
         //监听左边的高度
@@ -149,31 +156,32 @@
         console.log(window.pageYOffset +'-----------'+ document.documentElement.scrollTop +'-----------'+ document.body.scrollTop); // 滚动高度
         console.log(document.body.offsetHeight); // 文档高度
         console.log(document.body.scrollTop + window.innerHeight)*/
-        //监听右边是否距离底部50px了
-        let bottomOfWindow = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight <= 10
-        if(bottomOfWindow){
+        //监听右边是否距离底部10px了
+        if (document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight <= 10) {
           this.isBottom = true
-        }else{
+        } else {
           this.isBottom = false
         }
       },
-      selectTab(tab){
+      selectTab(tab) {
         this.articleList = []
         this.tabFlag = tab
         this.getArticle()
       },
-      getMoreArticle(){
+      //得到更多文章
+      getMoreArticle() {
         this.pageNum = this.pageNum + 1
         this.getArticle()
       },
-      initMenu(){
-        getCategory().then((res)=>{
-          if(res.code=ERR_OK){
+      //初始化分类
+      initMenu() {
+        getCategory().then((res) => {
+          if (res.code = ERR_OK) {
             this.menuArr = res.data.categoryInfo
           }
         })
       },
-      selectCategory(id){
+      selectCategory(id) {
         this.gotoTop()
         this.articleList = []
         this.currentCategoryId = id
@@ -185,59 +193,60 @@
           path: `/d/p/${article.id}`
         })
       },
-      gotoTop(distance){
-        distance = distance>0 ? distance : 0;
+      //回到顶部
+      gotoTop(distance) {
+        distance = distance > 0 ? distance : 0;
         document.documentElement.scrollTop = document.body.scrollTop = window.pageYOffset = distance;
       },
       //获取文章
-      getArticle(){
+      getArticle() {
         switch (this.tabFlag) {
           case 1:
-            this.getRArticleByCategory(this.currentCategoryId,this.pageNum,this.pageSize);
+            this.getRArticleByCategory(this.currentCategoryId, this.pageNum, this.pageSize);
             break;
           case 2:
-            this.getHArticleByCategory(this.currentCategoryId,this.pageNum,this.pageSize);
+            this.getHArticleByCategory(this.currentCategoryId, this.pageNum, this.pageSize);
             break;
           case 3:
-            this.getLArticleByCategory(this.currentCategoryId,this.pageNum,this.pageSize);
+            this.getLArticleByCategory(this.currentCategoryId, this.pageNum, this.pageSize);
             break;
           default:
-            this.getRArticleByCategory(this.currentCategoryId,this.pageNum,this.pageSize);
+            this.getRArticleByCategory(this.currentCategoryId, this.pageNum, this.pageSize);
         }
       },
       //由分类获取推荐文章
-      getRArticleByCategory(id,pageNum,pageSize){
-        getRecArticleByCategoryId(id,pageNum,pageSize).then((res)=>{
-          if(res.code=ERR_OK){
+      getRArticleByCategory(id, pageNum, pageSize) {
+        getRecArticleByCategoryId(id, pageNum, pageSize).then((res) => {
+          if (res.code = ERR_OK) {
             this.addArticleArr(res)
           }
         })
       },
       //由分类获取热门文章
-      getHArticleByCategory(id,pageNum,pageSize){
-        getHotArticleByCategoryId(id,pageNum,pageSize).then((res)=>{
-          if(res.code=ERR_OK){
+      getHArticleByCategory(id, pageNum, pageSize) {
+        getHotArticleByCategoryId(id, pageNum, pageSize).then((res) => {
+          if (res.code = ERR_OK) {
             this.addArticleArr(res)
           }
         })
       },
       //由分类获取最近文章
-      getLArticleByCategory(id,pageNum,pageSize){
-        getLateArticleByCategoryId(id,pageNum,pageSize).then((res)=>{
-          if(res.code=ERR_OK){
+      getLArticleByCategory(id, pageNum, pageSize) {
+        getLateArticleByCategoryId(id, pageNum, pageSize).then((res) => {
+          if (res.code = ERR_OK) {
             this.addArticleArr(res)
           }
         })
       },
-      addArticleArr(res){
+      addArticleArr(res) {
         let ret = []
-        ret = res.data.articleInfoList.map((articleInfo)=>{
+        ret = res.data.articleInfoList.map((articleInfo) => {
           return createArticleInfo(articleInfo)
         })
         this.articleList = this.articleList.concat(ret)
       }
     },
-    components:{
+    components: {
       BackTop
     }
   };
@@ -258,7 +267,7 @@
       .container-left
         display inline-block
         width 380px
-        box-shadow 0 15px 50px 0 rgba(0,34,77,.08)
+        box-shadow 0 15px 50px 0 rgba(0, 34, 77, .08)
         &.fixed
           position fixed
           top 60px
@@ -282,7 +291,7 @@
         display inline-block
         float right
         width 800px
-        box-shadow 0 15px 50px 0 rgba(0,34,77,.08)
+        box-shadow 0 15px 50px 0 rgba(0, 34, 77, .08)
         .topic-nav
           box-shadow none
           border-bottom 1px solid $color-line-white
@@ -297,7 +306,7 @@
               line-height 22px
               &:hover
                 color $color-href-green
-                background-color rgba(0,0,0,0.05)
+                background-color rgba(0, 0, 0, 0.05)
         .article-content
           min-height 100vh
           .content-container

@@ -31,24 +31,24 @@
 
   const TOP_CAT_ID = [0, 1, 2, 3, 4, 22]
   export default {
-    data(){
-      return{
-        rankList:[]
+    data() {
+      return {
+        rankList: []
       }
     },
-    created(){
+    created() {
       this._initRank()
     },
-    methods:{
+    methods: {
       ...mapMutations({
-        setRankList:'SET_RANK_LIST'
+        setRankList: 'SET_RANK_LIST'
       }),
-      _initRank(){
+      _initRank() {
         let j = TOP_CAT_ID.length
-        for(let i = 0 ; i < j ; i++){
+        for (let i = 0; i < j; i++) {
           let id = TOP_CAT_ID[i]
-          getRankList(id).then((res)=>{
-            if(res.code === ERR_OK){
+          getRankList(id).then((res) => {
+            if (res.code === ERR_OK) {
               let list = res.playlist
               list.topfive = res.playlist.tracks.slice(0, 5)
               this.rankList.push(list)
@@ -56,7 +56,7 @@
           })
         }
       },
-      selectItem(item){
+      selectItem(item) {
         this.setRankList(item)
         this.$router.push({
           path: `/d/music/rank/${item.id}`

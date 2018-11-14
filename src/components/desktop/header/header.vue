@@ -1,7 +1,7 @@
 <template>
   <div class="tbe-header" :class="{white: '/d/index'===$route.path}">
     <div class="tbe-nav">
-      <el-row :gutter="50" >
+      <el-row :gutter="50">
         <el-col :span="5" class="nav-org">
           <div class="org-logo">
             三个蓝眼
@@ -51,9 +51,10 @@
 </template>
 
 <script>
-  import {mapGetters,mapMutations} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
+
   export default {
-    computed:{
+    computed: {
       ...mapGetters([
         'activeIndex',
         'userInfo',
@@ -61,10 +62,10 @@
     },
     methods: {
       ...mapMutations({
-        setActiveIndex:'SET_ACTIVE_INDEX'
+        setActiveIndex: 'SET_ACTIVE_INDEX'
       }),
-      personal(){
-        if(!this.userInfo.userName){
+      personal() {
+        if (!this.userInfo.userName) {
           this.$confirm('您暂时还未登陆！', '提示', {
             confirmButtonText: '去登陆',
             cancelButtonText: '取消',
@@ -73,16 +74,16 @@
             this.goTo('/d/login')
           }).catch(() => {
           });
-        }else{
+        } else {
           this.setActiveIndex('4')
           this.goTo('/d/personal')
         }
       },
-      goToWithIndex(path,index){
+      goToWithIndex(path, index) {
         this.goTo(path)
         this.setActiveIndex(index)
       },
-      goTo (path) {
+      goTo(path) {
         this.$router.push(path)
       },
     },
@@ -99,7 +100,7 @@
     right 0
     z-index 100
     background-color $color-background-global
-    box-shadow 0 15px 50px 0 rgba(0,34,77,.08)
+    box-shadow 0 15px 50px 0 rgba(0, 34, 77, .08)
     &.white
       color $color-text-white
       background-color transparent

@@ -2,7 +2,7 @@
   <div class="tbe-m-musiclist">
     <div class="list-info">
       <div class="list-img">
-        <img :src=this.musicList.picUrl >
+        <img :src=this.musicList.picUrl>
       </div>
       <div class="list-other">
         <div class="list-title">{{listName}}</div>
@@ -46,70 +46,71 @@
 </template>
 
 <script>
-  import {mapActions,mapGetters} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
   import {ERR_OK} from "common/js/config"
   import {getPlayList} from 'api/play-list'
   import {creatSongList} from "common/class/song";
+
   export default {
     data() {
       return {
         ListDetail: [],
       }
     },
-    created(){
+    created() {
       this._initMusicList()
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'musicList',
       ]),
-      playCount(){
+      playCount() {
         if (!this.musicList.playCount) {
           return
         }
         if (this.musicList.playCount < 1e4) {
           return Math.floor(this.musicList.playCount)
-        } else if(this.musicList.playCount < 1e8) {
+        } else if (this.musicList.playCount < 1e8) {
           return Math.floor(this.musicList.playCount / 10000) + '万'
         } else {
           return Math.floor(this.musicList.playCount / 100000000) + '亿'
         }
       },
-      listName(){
+      listName() {
         if (!this.musicList.name) {
           return
         }
         return this.musicList.name
       },
     },
-    methods:{
+    methods: {
       ...mapActions([
         'selectPlay',
         'sequencePlay'
       ]),
-      _initMusicList(){
+      _initMusicList() {
         if (!this.musicList.id) {
           this.$router.push('/d/music/recommend')
           return
         }
         getPlayList(this.musicList.id).then((res) => {
-          if(res.code === ERR_OK){
-            this.ListDetail = res.playlist.tracks.map((music)=>{
+          if (res.code === ERR_OK) {
+            this.ListDetail = res.playlist.tracks.map((music) => {
               return creatSongList(music)
             })
           }
         })
       },
-      _back(){
+      _back() {
         this.$router.back()
       },
-      selectItem(item,index){
+      selectItem(item, index) {
         this.selectPlay({
           list: this.ListDetail,
           index: index
         })
       },
-      playAll(){
+      playAll() {
         this.sequencePlay({
           list: this.ListDetail,
         })

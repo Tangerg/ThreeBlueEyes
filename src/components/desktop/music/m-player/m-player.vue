@@ -1,16 +1,16 @@
 <template>
   <div class="tbe-m-player" v-if="playList.length>0">
     <div class="max-player" v-show="fullScreen===true">
-      <div class="background">
-        <div class="filter"></div>
-        <img :src="currentSong.image" width="100%" height="100%">
+      <div class="background" :style="bgImg(currentSong.image)">
+        <!--<img :src="currentSong.image" width="100%" height="100%">-->
       </div>
+      <div class="filter"></div>
       <div class="player-top">
         <div class="player-top-left">
           <div class="middle-front">
             <div class="cd-wrapper">
               <div class="cd" :class="cdCls">
-                <img class="image" :src="currentSong.image" >
+                <img class="image" :src="currentSong.image">
               </div>
             </div>
           </div>
@@ -39,10 +39,12 @@
             <div class="no-lyric" v-show="!currentLyric">
               暂无歌词
             </div>
-            <scroll class="middle-behind" ref="lyricList" :data="currentLyric && currentLyric.lines" v-show="currentLyric && currentLyric.lines">
+            <scroll class="middle-behind" ref="lyricList" :data="currentLyric && currentLyric.lines"
+                    v-show="currentLyric && currentLyric.lines">
               <div class="lyric-wrapper">
                 <div class="currentLyric" v-if="currentLyric">
-                  <p ref="lyricLine" class="text" :class="{'highLight':currentLineNum === index}"  v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
+                  <p ref="lyricLine" class="text" :class="{'highLight':currentLineNum === index}"
+                     v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
                   <p class="no-lyric"></p>
                 </div>
               </div>
@@ -74,7 +76,7 @@
           </div>
           <div class="bottom-mode">
             <div class="mode-list change-mode">
-              <i class="iconfont" :class="iconMode" @click="changeMode" ></i>
+              <i class="iconfont" :class="iconMode" @click="changeMode"></i>
             </div>
             <div class="mode-list music-list">
               <i class="iconfont icon-weibiao45127" @click="showList()"></i>
@@ -119,41 +121,43 @@
             <i class="iconfont icon-xiayiqu-copy" @click="nextSong"></i>
           </div>
         </div>
-        <div class="song-info"  @click="open()">
+        <div class="song-info" @click="open()">
           <div class="song-name">{{currentSong.name}}</div>
           <div class="song-singer">{{currentSong.singer}}</div>
         </div>
       </div>
     </div>
-    <audio id="music-audio" ref="audio" @canplay="ready" @error="error" @timeupdate="updataTime" @ended="end" autoplay></audio>
+    <audio id="music-audio" ref="audio" @canplay="ready" @error="error" @timeupdate="updataTime" @ended="end"
+           autoplay></audio>
   </div>
 </template>
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex'
   import {ERR_OK} from 'common/js/config'
-  import {getPlaySong,getSongLyric} from 'api/song'
+  import {getPlaySong, getSongLyric} from 'api/song'
   import {Mode} from 'common/js/config'
   import {shuffle} from 'common/js/util'
   import Lyric from 'lyric-parser'
   import Scroll from 'base/scroll/scroll'
+
   export default {
-    data(){
-      return{
-        Song:{},
-        musicUrl:'',
-        currentLyric:null,
-        currentLineNum:0,
+    data() {
+      return {
+        Song: {},
+        musicUrl: '',
+        currentLyric: null,
+        currentLineNum: 0,
         songReady: false,
-        currentTime:0,
-        currentProgress:0,
+        currentTime: 0,
+        currentProgress: 0,
         duration: 0,
-        showListFlag:false
+        showListFlag: false
       }
     },
     created() {
       this.touch = {}
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'playList',
         'fullScreen',
@@ -164,13 +168,13 @@
         'playMode',
         'favourateList'
       ]),
-      percent(){
-        return this.currentTime/this.duration
+      percent() {
+        return this.currentTime / this.duration
       },
       cdCls() {
         return this.isPlaying ? 'play' : 'play pause'
       },
-      iconMode(){
+      iconMode() {
         if (this.playMode === Mode.sequence) {
           return 'icon-liebiaoxunhuan'
         } else if (this.playMode === Mode.loop) {
@@ -179,34 +183,34 @@
           return 'icon-suiji'
         }
       },
-      playIcon(){
+      playIcon() {
         return this.isPlaying ? 'icon-pause' : 'icon-sanjiaoxing'
       },
     },
-    watch:{
-      currentTime(){
-        this.currentProgress = (this.currentTime/this.duration)*100
+    watch: {
+      currentTime() {
+        this.currentProgress = (this.currentTime / this.duration) * 100
       },
-      currentSong (newVal, oldVal) {
+      currentSong(newVal, oldVal) {
         if (!newVal.id) {
           return
         }
         if (newVal.id === oldVal.id) {
           return
         }
-        if(oldVal.id){
+        if (oldVal.id) {
           this.$refs.audio.pause()
           this.$refs.audio.currentTime = 0
         }
 
         this._getPlaySong(newVal.id)
-        if(this.currentLyric){
+        if (this.currentLyric) {
           this.currentLyric.stop()
         }
         this._getSongLyric(newVal.id)
       },
 
-      musicUrl(url){
+      musicUrl(url) {
         this.$refs.audio.src = url
         let stop = setInterval(() => {
           this.duration = this.$refs.audio.duration
@@ -217,117 +221,120 @@
 
         this.setPlayingState(true)
       },
-      isPlaying(Playing){
+      isPlaying(Playing) {
         const audio = this.$refs.audio
-        Playing ?  audio.play() : audio.pause()
+        Playing ? audio.play() : audio.pause()
       },
     },
-    methods:{
+    methods: {
       ...mapMutations({
-        setFullScreen:'SET_FULL_SCREEN',
-        setPlayingState:'SET_PLAYING_STATE',
-        setCurrentIndex:'SET_CURRENT_INDEX',
-        setPlayingMode:'SET_PLAYING_MODE',
-        setPlayList:'SET_PLAY_LIST'
+        setFullScreen: 'SET_FULL_SCREEN',
+        setPlayingState: 'SET_PLAYING_STATE',
+        setCurrentIndex: 'SET_CURRENT_INDEX',
+        setPlayingMode: 'SET_PLAYING_MODE',
+        setPlayList: 'SET_PLAY_LIST',
+        setOnlyMusic: 'SET_ONLY_MUSIC'
       }),
       ...mapActions([
         'savePlayHistory',
         'saveFavoriteSong',
         'deleteFavoriteSong'
       ]),
-      showList(){
+      showList() {
         this.showListFlag = !this.showListFlag
       },
-      getFavIcon(song){
-        if(this.isFavSong(song)){
+      getFavIcon(song) {
+        if (this.isFavSong(song)) {
           return 'icon-iconfontxihuan2'
         }
         return 'icon-iconfontxihuan'
       },
-      handleFav(song){
-        if(this.isFavSong(song)){
+      handleFav(song) {
+        if (this.isFavSong(song)) {
           this.deleteFavoriteSong(song)
-        }else{
+        } else {
           this.saveFavoriteSong(song)
         }
 
       },
-      isFavSong(song){
+      isFavSong(song) {
         const index = this.favourateList.findIndex((item) => {
           return item.id === song.id
         })
         return index > -1
       },
-      showPlayList(){
+      showPlayList() {
         this.$refs.playlist.show()
       },
-      changeMode(){
-        const playMode = (this.playMode+1) % 3
+      changeMode() {
+        const playMode = (this.playMode + 1) % 3
         this.setPlayingMode(playMode)
         let list = null
-        if(playMode === Mode.random){
+        if (playMode === Mode.random) {
           list = shuffle(this.sequenceList)
-        }else{
+        } else {
           list = this.sequenceList
         }
         this.resetCurrentIndex(list)
         this.setPlayList(list)
       },
-      resetCurrentIndex(list){
-        let index = list.findIndex((item)=>{
+      resetCurrentIndex(list) {
+        let index = list.findIndex((item) => {
           return item.id === this.currentSong.id
         })
         this.setCurrentIndex(index)
       },
-      onProgressBarChange(percent){
+      onProgressBarChange(percent) {
         const currentTime = this.duration * percent / 100
         this.$refs.audio.currentTime = this.duration * percent / 100
-        if(!this.isPlaying){
+        if (!this.isPlaying) {
           this.handlePlay()
         }
-        if(this.currentLyric){
+        if (this.currentLyric) {
           this.currentLyric.seek(currentTime * 1000)
         }
       },
-      back(){
+      back() {
+        this.setOnlyMusic(false)
         this.setFullScreen(false)
       },
-      open(){
+      open() {
+        this.setOnlyMusic(true)
         this.setFullScreen(true)
-        if(this.currentLyric){
+        if (this.currentLyric) {
           this.currentLyric.seek(this.currentTime * 1000)
         }
       },
       bgImg(url) {
         return `background-image:url(${url})`
       },
-      handlePlay(){
-        if(!this.songReady){
+      handlePlay() {
+        if (!this.songReady) {
           return
         }
         this.setPlayingState(!this.isPlaying)
-        if(this.currentLyric){
+        if (this.currentLyric) {
           this.currentLyric.togglePlay()
         }
       },
-      updataTime(e){
+      updataTime(e) {
         this.currentTime = e.target.currentTime
       },
-      end(){
-        if(this.playMode === Mode.loop){
+      end() {
+        if (this.playMode === Mode.loop) {
           this.loop()
-        }else{
+        } else {
           this.nextSong()
         }
       },
-      loop(){
+      loop() {
         this.$refs.audio.currentTime =
           this.$refs.audio.play()
-        if(this.currentLyric){
+        if (this.currentLyric) {
           this.currentLyric.seek(0)
         }
       },
-      format(interval){
+      format(interval) {
         interval = interval | 0
         let minute = interval / 60 | 0
         let second = interval % 60
@@ -336,69 +343,69 @@
         }
         return minute + ':' + second
       },
-      _getPlaySong(id){
+      _getPlaySong(id) {
         getPlaySong(id).then((res) => {
-          if(res.code === ERR_OK){
+          if (res.code === ERR_OK) {
             this.musicUrl = res.data[0].url
           }
         })
       },
-      _getSongLyric(id){
+      _getSongLyric(id) {
         getSongLyric(id).then((res) => {
-          if(res.code === ERR_OK){
-            this.currentLyric = new Lyric(res.lrc.lyric,this.handleLyric)
-            if(this.isPlaying){
+          if (res.code === ERR_OK) {
+            this.currentLyric = new Lyric(res.lrc.lyric, this.handleLyric)
+            if (this.isPlaying) {
               this.currentLyric.play()
             }
           }
         })
       },
-      handleLyric({lineNum,txt}){
+      handleLyric({lineNum, txt}) {
         this.currentLineNum = lineNum
-        if(lineNum>4){
+        if (lineNum > 4) {
           let lineEl = this.$refs.lyricLine[lineNum - 4]
           this.$refs.lyricList.scrollToElement(lineEl, 1000)
-        }else {
+        } else {
           this.$refs.lyricList.scrollTo(0, 0, 1000)
         }
       },
 
-      ready (){
+      ready() {
         this.songReady = true
         this.savePlayHistory(this.currentSong)
       },
-      error(){
+      error() {
         this.songReady = true
       },
-      nextSong(){
+      nextSong() {
         if (!this.songReady) {
           return
         }
         let index = this.currentIndex + 1
-        if(index === this.playList.length){
+        if (index === this.playList.length) {
           index = 0
         }
         this.setCurrentIndex(index)
-        if(!this.isPlaying){
+        if (!this.isPlaying) {
           this.handlePlay()
         }
         this.songReady = false
       },
-      prevSong(){
+      prevSong() {
         if (!this.songReady) {
           return
         }
         let index = this.currentIndex - 1
-        if(index === -1){
+        if (index === -1) {
           index = this.playList.length - 1
         }
         this.setCurrentIndex(index)
-        if(!this.isPlaying){
+        if (!this.isPlaying) {
           this.handlePlay()
         }
         this.songReady = false
       },
-      changeMiddle () {
+      changeMiddle() {
         if (this.currentShow === 'cd') {
           this.currentShow = 'lyric'
           this.currentLyric.seek(currentTime * 1000)
@@ -408,7 +415,7 @@
       },
 
     },
-    components:{
+    components: {
       Scroll,
     }
 
@@ -430,20 +437,23 @@
       min-height 700px
       background $color-background-gray
       .background
+        filter blur(15px)
         position absolute
-        left -50%
-        top -50%
-        width 300%
-        height 300%
+        background-size cover
+        background-position center center
+        top 0
+        left 0
+        bottom 0
+        width 100%
+        right 0
+        opacity 0.9
         z-index -1
-        opacity 0.8
-        filter blur(30px)
-        .filter
-          position absolute
-          width 100%
-          height 100%
-          background $color-background-black
-          opacity 0.6
+      .filter
+        position absolute
+        width 100%
+        height 100%
+        background $color-background-black
+        opacity 0.5
       .player-top
         position absolute
         top 0
