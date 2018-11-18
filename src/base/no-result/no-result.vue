@@ -1,7 +1,7 @@
 <template>
   <div class="no-result">
     <div class="no-result-icon">
-      <i class="iconfont icon-no-data"></i>
+      <i class="iconfont icon-ico_meiyoushuju"></i>
     </div>
     <p class="no-result-text">{{title}}</p>
   </div>
@@ -26,12 +26,12 @@
     text-align center
     .no-result-icon
       text-align center
-      .icon-no-data
-        color $color-background-gray
+      .icon-ico_meiyoushuju
+        color $color-text-gray-d
         font-size 40px
     .no-result-text
       text-align center
       margin-top 10px
       font-size 20px
-      color $color-background-gray
+      color $color-text-gray-d
 </style>

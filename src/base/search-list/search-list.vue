@@ -46,10 +46,10 @@
         height: 0;
       .text
         flex 1
-        color $color-text
+        color $color-text-gray-d
       .icon
         include extend-click()
         .icon-close
-          font-size $font-size-medium-x
+          font-size $font-size-16px
           color $color-text-gray-d
 </style>

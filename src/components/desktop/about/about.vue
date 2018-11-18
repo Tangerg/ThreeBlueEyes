@@ -78,24 +78,27 @@
   export default {
     data() {
       return {
-        introduce: '三个蓝眼团队成员不光在技术上处于行业前端，我们更注重将客户的产品表达的清楚与准确，我们大多是理科出身，在机械、游戏、电子、物理等各学科我们都有研究，能轻松理解客户的构思，所以我们能更好的将客户的意图表现出来。我们拥有自己的专业三维动画、建筑动画、虚拟现实和影视拍摄制作团队。我们不断创新与提高三维动画、建筑动画、虚拟现实的制作水准，运用尖端的三维动画技术、虚拟现实技术，不断满足客户对数字体验服务的需求。',
+        introduce: '三个蓝眼团队成员不光在技术上处于行业前端，' +
+        '更注重将客户的产品表达的清楚与准确，他们大多是理科出身，在各学科都有研究，' +
+        '能轻松理解客户的构思，所以他们能更好的将客户的意图表现出来。' +
+        '强大的团队并不是空有虚名，社区的今天缺少不了每一位核心成员的努力与贡献，是他们给我们带来了一个这么完美的平台！',
         member: [
           {
             'avatar': 'http://img.zcool.cn/zcool-diy/ib96bd9e17ba0100b2d4d72aff0adf2072.jpg',
-            'name': 'Tangerg',
-            'position': '三个蓝眼 站长',
+            'name': 'Liang·Tang',
+            'position': '站长·主程',
             'creed': '当人们的空间被各种物质挤压的时候，也就失去了本质，我们要去掉一切虚假的、表面的、无用的东西，而剩下真实的、本质的、必不可少的东西，因而得到更多的空间、更多的舒适、更多的效率、更多的美……'
           },
           {
             'avatar': 'http://img.zcool.cn/zcool-diy/ibf35ac522fe227768e095ce990d7ffae6.jpg',
             'name': 'Hao·Zhang',
-            'position': '三个蓝眼 副站长',
+            'position': '副站长·测试',
             'creed': '眼高手低主要是由于见识太少，声名显赫主要是由于厚积薄发,切忌浮躁'
           },
           {
             'avatar': 'http://img.zcool.cn/zcool-diy/ib9898d396db9cd4587c0f2c53ba2ee20c.jpg',
             'name': 'Yun·Chuan',
-            'position': '三个蓝眼 副站长',
+            'position': '副站长·运维',
             'creed': '不要趟在以前的成绩上沾沾自喜，要不断学习和进步，要谦虚，因为硬盘是会坏的，网络是会断的'
           }
         ],
@@ -175,7 +178,7 @@
     position relative
     width 100%
     min-height 100%
-    background-color $color-background-gray
+    background-color $color-background-global
     .about-container
       width 1000px
       margin 0 auto
@@ -189,19 +192,19 @@
         width 800px
         padding-bottom 70px
         text-align center
-        border-bottom 0.5px solid $color-line-gray
+        border-bottom 0.5px solid $color-line-white
         .title
           margin 70px auto
           font-size $font-size-27px
           .subtitle
             margin-top 15px
-            font-size $font-size-14px
+            font-size $font-size-15px
             color $color-text-black-l
         .introduce
           width 100%
           text-align left
           line-height 25px
-          font-size $font-size-14px
+          font-size $font-size-15px
           color $color-text-black-l
         .team
           margin-top 40px
@@ -229,7 +232,6 @@
               width 500px
               margin-left 20px
               padding 20px
-              font-family $font-family-Microsoft-YaHei
               .name
                 font-size $font-size-22px
                 color $color-text-black
@@ -239,7 +241,7 @@
                 color $color-text-black-l
                 margin 5px 0
               .creed
-                font-size $font-size-14px
+                font-size $font-size-15px
                 color $color-text-black
                 line-height 25px
                 margin-top 30px

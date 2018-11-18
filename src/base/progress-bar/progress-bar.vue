@@ -99,11 +99,11 @@
       position relative
       top 14px
       height 2px
-      background $color-line-gray-d
+      background $color-text-gray-l
       .progress
         position absolute
         height 100%
-        background $color-theme
+        background $color-text-white
       .progress-btn-wrapper
         position: absolute
         left: -8px
@@ -117,7 +117,7 @@
           box-sizing border-box
           width 15px
           height 15px
-          border 5px solid $color-background-white
+          border 5px solid $color-background-global
           border-radius 50%
-          background $color-line-gray-d
+          background $color-line-gray
 </style>

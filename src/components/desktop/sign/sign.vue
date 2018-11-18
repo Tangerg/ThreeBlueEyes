@@ -16,7 +16,7 @@
                 <span class="sign-intro-title">TBE</span>
                 <span class="sign-intro-slogan">三个蓝眼,分享你的生活</span>
                 <p class="sign-intro-desc">
-                  三个蓝眼是一个致力于摄影分享、发现的专业社区，来自世界各地的摄影师是我们忠实的用户。三个蓝眼每天都会关注社区内更新与热门的图片以及有潜力的摄影师。在三个蓝眼社区创建个人主页并分享照片，让摄影师随时与全球同仁一起交流与分享，寻找灵感与创意。
+                  {{this.introduce}}
                 </p>
               </div>
               <div class="sign-box">
@@ -37,7 +37,6 @@
                     :disabled="disabled">
                     注册
                   </el-button>
-                  <!--<button class="sign-button">注册</button>-->
                 </div>
                 <p class="agreement-tip">
                   注册即代表同意
@@ -60,6 +59,7 @@
   export default {
     data(){
       return{
+        introduce: '三个蓝眼是一个优质的，开放的，友好的音乐资讯社区，并励志为中国音乐发展打造最优质的学习交流环境。在这里，你可以找到许许多多和你一样兴趣爱好的人，每个人都可以自由的发现或者是分享作品。爱音乐，爱蓝眼！',
         disabled:false,
         user:{
           userName:'',
@@ -91,7 +91,7 @@
         user.passWorld = strTrim(user.passWorld)
         if(user.userName === ''){
           this.$message({
-            message: '姓名不能为空',
+            message: '用户名不能为空',
             type: 'error'
           })
           this.user.userName =''
@@ -122,7 +122,7 @@
           }
         })
       }
-    }
+    },
   }
 </script>
 
@@ -136,6 +136,7 @@
     left 0
     bottom 0
     width 100%
+    background-color $color-background-global
     .sign-container
       position relative
       background-repeat no-repeat
@@ -164,7 +165,7 @@
             width 100px
             height 30px
             background-size contain
-            font-size $font-size-25px
+            font-size $font-size-30px
             color $color-text-blue
             text-shadow none
             border 0
@@ -205,14 +206,14 @@
               .sign-intro-slogan
                 margin-top 10px
                 line-height 25px
-                font-size $font-size-20px
+                font-size $font-size-22px
                 font-weight 600
                 color $color-text-black-l
                 text-align left
               .sign-intro-desc
                 margin-top 40px
                 line-height 27px
-                font-size $font-size-15px
+                font-size $font-size-16px
                 color $color-text-black-l
             .sign-box
               display flex
@@ -228,6 +229,7 @@
                 width 100%
                 text-align center
                 font-size $font-size-26px
+                color $color-text-black-l
                 font-weight 600
                 line-height 37px
               .group-inputs
@@ -259,7 +261,7 @@
                     box-shadow none
                     background #fff
                     &:focus
-                      border-bottom 1px solid $color-href-green
+                      border-bottom 1px solid $color-text-blue-l
               .button-wrapper
                 margin 32px 24px 28px
                 height 36px
@@ -274,7 +276,7 @@
                 border-radius 2px
                 width 100%
                 line-height 60px
-                font-size $font-size-13px
+                font-size $font-size-14px
                 color $color-text-gray
                 background $color-background-gray
                 white-space nowrap

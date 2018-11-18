@@ -41,7 +41,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: $color-background-white;
+    background: $color-background-global;
     .item-list
       display: flex;
       align-items: center;
@@ -66,6 +66,6 @@
           width: 90%;
           height 60px
           line-height 60px
-          font-size $font-size-small-x
+          font-size $font-size-14px
           color $color-text-black
 </style>

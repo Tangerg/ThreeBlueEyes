@@ -1,6 +1,5 @@
 <template>
-  <div class="tbe-m-recommend">
-    <router-view></router-view>
+  <div class="tbe-d-music-recommend">
     <div class="title">精彩推荐</div>
     <div class="rec-banner">
       <el-carousel :interval="4000" type="card" height="400px">
@@ -111,7 +110,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../../../common/stylus/variable"
   @import "../../../../common/stylus/mixin"
-  .tbe-m-recommend
+  .tbe-d-music-recommend
     position relative
     width 1200px
     margin 10px auto
@@ -119,11 +118,12 @@
     min-height 100%
     display flex
     flex-direction column
-    background-color $color-background-gray
+    background-color $color-background-global
     .title
       margin 40px auto
       font-size $font-size-35px
       font-weight bold
+      color $color-text-black-l
     .rec-banner
       width 100%
       height 100%
@@ -155,10 +155,10 @@
             position absolute
             top 5px
             right 20px
-            font-size $font-size-small-s
+            font-size $font-size-16px
             color $color-text-white
             .iconfont
-              font-size $font-size-small-s
+              font-size $font-size-16px
           .text
             margin 5px
             float left
@@ -177,7 +177,7 @@
               text-overflow ellipsis
               overflow hidden
               white-space nowrap
-              font-size $font-size-small
+              font-size $font-size-15px
               font-weight bold
               color $color-text-black
             .singer
@@ -185,7 +185,7 @@
               text-overflow ellipsis
               overflow hidden
               white-space nowrap
-              font-size $font-size-small-s
+              font-size $font-size-14px
               color $color-text-black
               padding-bottom 5px
 </style>

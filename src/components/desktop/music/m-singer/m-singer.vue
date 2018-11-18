@@ -1,5 +1,5 @@
 <template>
-  <div class="tbe-m-singer">
+  <div class="tbe-d-music-singer">
     <div class="title">万千歌手 尽在眼前</div>
     <div class="singer-category">
       <div class="base-category languages">
@@ -284,7 +284,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../../../common/stylus/variable"
   @import "../../../../common/stylus/mixin"
-  .tbe-m-singer
+  .tbe-d-music-singer
     position relative
     width 1200px
     margin 10px auto
@@ -292,11 +292,12 @@
     min-height 100%
     display flex
     flex-direction column
-    background-color $color-background-gray
+    background-color $color-background-global
     .title
       margin 40px auto
       font-size $font-size-35px
       font-weight bold
+      color $color-text-black-l
     .singer-category
       width 1200px
       font-size $font-size-20px
@@ -314,9 +315,9 @@
             padding 10px
             display inline-block
             font-size $font-size-17px
-            color $color-text-black-l
+            color $color-text-black
           .active
-            background-color #30ff5a
+            background-color $color-text-blue
             color white
     .singer-list
       width 100%
@@ -344,7 +345,7 @@
               text-overflow ellipsis
               overflow hidden
               white-space nowrap
-              font-size $font-size-small
+              font-size $font-size-16px
               font-weight bold
-              color $color-text-black
+              color $color-text-black-l
 </style>

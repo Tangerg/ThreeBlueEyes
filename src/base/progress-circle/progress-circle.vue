@@ -43,8 +43,8 @@
       transform-origin: center
       &.progress-background
         transform: scale(0.9)
-        stroke: $color-text-gray-d
+        stroke: $color-text-black-l
       &.progress-bar
         transform: scale(0.9) rotate(-90deg)
-        stroke: #ff3b00
+        stroke red
 </style>

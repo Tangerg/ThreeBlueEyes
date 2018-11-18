@@ -159,7 +159,7 @@
         width 8px
         height 8px
         border-radius 50%
-        background $color-text-l
+        background $color-text-white
         &.active
           border-radius 5px
           background $color-background-red

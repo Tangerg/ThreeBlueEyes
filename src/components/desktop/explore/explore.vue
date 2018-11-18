@@ -7,20 +7,22 @@
           class="topic-category"
           v-for="(item,index) in menuArr"
           :key="index"
-          @click="selectCategory(item.id)">
+          @click="selectCategory(item.id)"
+          :class="cateClass(item.id)"
+        >
             {{item.name}}
           </span>
       </div>
       <div class="container-right">
         <div class="topic-nav">
           <ul class="nav-tabs">
-            <li class="tab-item" @click="selectTab(1)">
+            <li class="tab-item" @click="selectTab(1)" :class="tabClass(1)">
               推荐
             </li>
-            <li class="tab-item" @click="selectTab(2)">
+            <li class="tab-item" @click="selectTab(2)" :class="tabClass(2)">
               热门
             </li>
-            <li class="tab-item" @click="selectTab(3)">
+            <li class="tab-item" @click="selectTab(3)" :class="tabClass(3)">
               最近
             </li>
           </ul>
@@ -144,6 +146,16 @@
       ...mapMutations({
         setArticleInfo: 'SET_ARTICLE_INFO'
       }),
+      cateClass(id) {
+        if (this.currentCategoryId === id) {
+          return 'active'
+        }
+      },
+      tabClass(id){
+        if (this.tabFlag === id) {
+          return 'active'
+        }
+      },
       handleScroll() {
         //监听左边的高度
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
@@ -258,7 +270,7 @@
     position relative
     width 100%
     height 100%
-    background-color $color-background-gray
+    background-color $color-background-global
     display flex
     .explore-container
       margin 20px auto
@@ -268,12 +280,13 @@
         display inline-block
         width 380px
         box-shadow 0 15px 50px 0 rgba(0, 34, 77, .08)
+        background-color $color-text-blue-3
         &.fixed
           position fixed
           top 60px
         .all-topic
           padding-left 15px
-          background-color #ffa944
+          background-color $color-text-blue
           height 50px
           line-height 50px
           font-size $font-size-17px
@@ -286,7 +299,12 @@
           font-size $font-size-17px
           color $color-text-black-l
           &:hover
-            color red
+            color $color-text-blue
+        .active
+          background-color $color-text-blue
+          color $color-text-white
+          &:hover
+            color $color-text-white
       .container-right
         display inline-block
         float right
@@ -305,8 +323,12 @@
               font-size $font-size-16px
               line-height 22px
               &:hover
-                color $color-href-green
-                background-color rgba(0, 0, 0, 0.05)
+                color $color-href-blue
+            .active
+              background-color $color-text-blue
+              color $color-text-white
+              &:hover
+                color $color-text-white
         .article-content
           min-height 100vh
           .content-container

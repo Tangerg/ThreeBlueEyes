@@ -50,8 +50,8 @@
       width 85%
       height 100%
       background $color-background-red
-      color $color-background-white
-      font-size $font-size-medium-x
+      color $color-background-global
+      font-size $font-size-16px
       border none
       outline medium
       &::placeholder
@@ -59,6 +59,6 @@
     .icon-close
       position absolute
       right 1%
-      color $color-background-white
+      color $color-background-global
       border none
 </style>

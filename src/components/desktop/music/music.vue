@@ -1,13 +1,12 @@
 <template>
-  <div class="tbe-music">
-    <div class="tbe-m-header">
+  <div class="tbe-d-music">
+
       <m-header></m-header>
-    </div>
-    <div class="tbe-m-body">
+
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
-    </div>
+
   </div>
 </template>
 
@@ -24,12 +23,12 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../../common/stylus/variable"
   @import "../../../common/stylus/mixin"
-  .tbe-music
+  .tbe-d-music
     position absolute
     top 0
     left 0
     width 100%
     min-height 100%
-    background-color $color-background-gray
+    background-color $color-background-global
     z-index 300
 </style>

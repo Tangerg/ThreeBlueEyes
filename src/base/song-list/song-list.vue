@@ -52,7 +52,7 @@
   @import "../../common/stylus/variable"
   @import "../../common/stylus/mixin"
   .song-list
-    background-color $color-background-white
+    background-color $color-background-global
     width 100%
     border-radius 10px 10px 0 0
     .sequence-play
@@ -67,11 +67,11 @@
         text-align center
         color $color-text-black
       .text
-        font-size $font-size-medium
+        font-size $font-size-14px
         color $color-text-black
         font-weight bold
       .count
-        font-size $font-size-small-x
+        font-size $font-size-13px
         color $color-text-gray-d
     .list-item
       position relative
@@ -93,12 +93,12 @@
           width: 90%;
           height 40px
           line-height 40px
-          font-size $font-size-medium
+          font-size $font-size-14px
           color $color-text-black
         .desc
           no-wrap()
           width: 90%;
           height 20px
-          font-size $font-size-small
+          font-size $font-size-12px
           color $color-text-gray-d
 </style>

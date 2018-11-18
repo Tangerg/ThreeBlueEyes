@@ -147,8 +147,8 @@
             cursor pointer
           .login
             &:hover
-              color $color-href-green
+              color $color-text-blue-2
           .sign
             &:hover
-              color $color-href-green
+              color $color-text-blue-2
 </style>

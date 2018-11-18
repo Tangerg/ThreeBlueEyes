@@ -1,5 +1,5 @@
 <template>
-  <div class="m-header">
+  <div class="tbe-d-music-header">
     <div class="header-logo">蓝眼音乐</div>
     <div class="header-route">
       <div class="header-route-item" @click="goTo('/d/music/recommend')">推荐</div>
@@ -54,10 +54,10 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../../../common/stylus/variable"
   @import "../../../../common/stylus/mixin"
-  .m-header
+  .tbe-d-music-header
     width 1200px
     height 79px
-    border-bottom 1px solid red;
+    border-bottom 1px solid $color-text-blue
     margin 0 auto
     display flex
     text-align center
@@ -65,7 +65,9 @@
       flex 1
       height 79px
       line-height 79px
-      font-size $font-size-20px
+      font-size $font-size-30px
+      color $color-text-blue
+      font-weight 700
       text-align left
     .header-route
       flex 1
@@ -76,13 +78,15 @@
         line-height 79px
         font-size $font-size-20px
         font-weight bold
+        color $color-text-blue
         &:hover
-          background-color #5daf34
+          background-color $color-text-blue
           color white
     .header-operation
       flex 1
       height 79px
       line-height 79px
+      color $color-text-blue
       font-size $font-size-20px
       display flex
       .icon

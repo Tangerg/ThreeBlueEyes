@@ -1,5 +1,5 @@
 <template>
-  <div class="tbe-m-rank">
+  <div class="tbe-d-music-rank">
     <div class="title">登峰造极境 音乐排行榜</div>
     <div class="rank-list">
       <div class="rank-music">
@@ -69,7 +69,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../../../common/stylus/variable"
   @import "../../../../common/stylus/mixin"
-  .tbe-m-rank
+  .tbe-d-music-rank
     position relative
     width 1200px
     margin 10px auto
@@ -77,11 +77,12 @@
     min-height 100%
     display flex
     flex-direction column
-    background-color $color-background-gray
+    background-color $color-background-global
     .title
       margin 40px auto
       font-size $font-size-35px
       font-weight bold
+      color $color-text-black-l
     .rank-list
       .rank-music
         width 100%
@@ -108,7 +109,7 @@
               justify-content center
               overflow hidden
               color $color-text-black
-              font-size $font-size-small-x
+              font-size $font-size-16px
               .song
                 height 50px
                 line-height 50px

@@ -77,27 +77,27 @@
       z-index: 999;
       .confirm-content
         width: 270px;
-        border-radius: 15px;
-        background: $color-background-white;
+        border-radius: 10px;
+        background: $color-background-global
         .text
           padding: 12px 15px;
           line-height: 30px;
           text-align: center;
-          font-size: $font-size-medium-x;
+          font-size: $font-size-16px;
           color: $color-text-black;
         .operate
           display: flex;
           align-items: center;
           text-align: center;
-          font-size: $font-size-medium-x;
+          font-size: $font-size-16px;
           .operate-btn
             flex: 1;
             line-height: 22px;
             padding: 12px 0;
-            border-top: 0.1px solid $color-line-gray-d;
+            border-top: 0.1px solid $color-line-gray;
             color: $color-text-red;
             &.left
-              border-right: 1px solid $color-line-gray-d
+              border-right: 1px solid $color-line-gray
 
   @keyframes confirm-fadein
     0%

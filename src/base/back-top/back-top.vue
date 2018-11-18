@@ -66,8 +66,8 @@
       width 50px
       height 50px
       border-radius 50%
-      background-color wheat
+      background-color #005792
       border 0
-      color red
+      color white
       text-align center
 </style>

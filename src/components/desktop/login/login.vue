@@ -79,7 +79,7 @@
         user.passWorld = strTrim(user.passWorld)
         if (user.userName === '') {
           this.$message({
-            message: '姓名不能为空',
+            message: '用户名不能为空',
             type: 'error'
           })
           this.user.userName = ''
@@ -127,7 +127,7 @@
     width 100%
     .login-container
       background-repeat no-repeat
-      background-color $color-background-yellow-l
+      background-color $color-background-global
       background-size cover
       width 100%
       overflow hidden
@@ -158,8 +158,7 @@
           .login-header-slogen
             margin-top 15px
             color $color-text-blue
-            font-family $font-family-PingFangSC-Ultralight
-            font-size $font-size-22px
+            font-size $font-size-23px
         .login-container-inner
           position relative
           .login-content
@@ -197,7 +196,7 @@
                     box-shadow none
                     background $color-background-global
                     &:focus
-                      border-bottom 1px solid $color-href-green
+                      border-bottom 1px solid $color-text-blue-l
               .button-wrapper
                 margin 50px 25px
                 height 36px

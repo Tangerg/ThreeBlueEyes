@@ -1,5 +1,5 @@
 <template>
-  <div class="tbe-m-player" v-if="playList.length>0">
+  <div class="tbe-d-music-player" v-if="playList.length>0">
     <div class="max-player" v-show="fullScreen===true">
       <div class="background" :style="bgImg(currentSong.image)">
         <!--<img :src="currentSong.image" width="100%" height="100%">-->
@@ -178,7 +178,7 @@
         if (this.playMode === Mode.sequence) {
           return 'icon-liebiaoxunhuan'
         } else if (this.playMode === Mode.loop) {
-          return 'icon-shuaxin'
+          return 'icon-danquxunhuan'
         } else {
           return 'icon-suiji'
         }
@@ -425,7 +425,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../../../common/stylus/variable"
   @import "../../../../common/stylus/mixin"
-  .tbe-m-player
+  .tbe-d-music-player
     .max-player
       z-index 400
       position fixed
@@ -435,7 +435,7 @@
       right 0
       min-width 1200px
       min-height 700px
-      background $color-background-gray
+      background $color-background-global
       .background
         filter blur(15px)
         position absolute
@@ -513,13 +513,16 @@
               width 100%
               display flex
               .song-name
-                font-size $font-size-30px
+                color $color-text-blue-3
+                font-weight 700
+                font-size $font-size-32px
                 width 90%
                 no-wrap()
               .mini-btn
                 position absolute
                 right 20px
             .song-source-info
+              color $color-text-blue-3
               margin 10px 25px
               display flex
               flex-direction row
@@ -552,7 +555,7 @@
                 .text
                   line-height 40px
                   color $color-text-white
-                  font-size $font-size-medium
+                  font-size $font-size-17px
                   &.highLight
                     color $color-text-blue-l
       .player-bottom

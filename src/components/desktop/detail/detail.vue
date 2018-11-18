@@ -241,10 +241,11 @@
 
       //初始化评论
       initArticleComment() {
+        this.commentList = []
         getComment(this.articleInfo.id).then((res) => {
           if (res.code === ERR_OK) {
             if (res.data.articleCommentList === '') {
-              this.commentList = []
+              return
             } else {
               this.commentList = res.data.articleCommentList
             }
@@ -253,6 +254,7 @@
       },
       //初始化文章正文
       initArticleContent() {
+        this.articleContent = ''
         getArticleById(this.articleInfo.id).then((res) => {
           if (res.code === ERR_OK) {
             this.articleContent = res.data.articleContent.articleContent
@@ -277,7 +279,7 @@
     width 100%
     min-height 100%
     z-index 200
-    background-color white
+    background-color $color-background-global
     .tbe-back
       position fixed
       top 50px
@@ -298,7 +300,7 @@
       width 100%
       min-height 100%
       .container-header
-        background-color white
+        background-color $color-background-global
         padding 100px 0
         .article-info
           width 1100px
@@ -328,7 +330,7 @@
             .star
               flex 1
       .container-body
-        background-color #f4f4f4;
+        background-color $color-background-global
         padding 100px 0
         display flex
         flex-direction column
@@ -377,20 +379,22 @@
             height 100%
             flex 1
             width 100%
-            margin-top 20px
+            padding 20px
             .total-comment
+              font-size $font-size-18px
               padding 20px 0
             .comment-box
               width 100%
               padding 5px
               display flex
               flex-direction column
-              border-top 0.5px solid $color-line-gray
+              border-top 0.5px solid $color-line-white
               .comment-info
                 flex 1
                 display flex
                 flex row
                 margin-top 15px
+                color $color-text-black-l
                 .avatar
                   margin-right 10px
                   img
@@ -414,7 +418,7 @@
                 width 200px
                 margin 10px 0
                 font-size $font-size-15px
-                color $color-text-gray
+                color $color-text-gray-d
                 .agree
                   flex 1
                 .reply
