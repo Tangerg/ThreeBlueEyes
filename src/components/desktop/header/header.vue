@@ -1,5 +1,5 @@
 <template>
-  <div class="tbe-header" :class="{white: '/d/index'===$route.path}">
+  <div class="tbe-d-header" :class="{white: '/d/index'===$route.path}">
     <div class="tbe-nav">
       <el-row :gutter="50">
         <el-col :span="5" class="nav-org">
@@ -91,9 +91,9 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
-  .tbe-header
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
+  .tbe-d-header
     position fixed
     top 0
     left 0

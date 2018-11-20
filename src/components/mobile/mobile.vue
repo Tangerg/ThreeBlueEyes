@@ -11,17 +11,18 @@
 </template>
 <script>
   import Tabbar from 'mobile/tabbar/tabbar'
+
   export default {
     name: "mobile",
-    components:{
+    components: {
       Tabbar
     }
   }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/stylus/variable"
-  @import "../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-mobile
     z-index 100
     background-color $color-background-global

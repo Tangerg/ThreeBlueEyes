@@ -1,104 +1,105 @@
 <template>
-    <div class="tbe-sign">
-      <div class="sign-container">
-        <div class="sign-wrapper">
-          <div class="sign-header">
-            <div class="org-logo" @click="goToWithIndex('/d/index','1')">Three Blue Eyes</div>
-            <div class="sign-header-right">
-              <span class="sign-hasAcc"></span>
-              已有帐号？
-              <span class="sign-toLogin" @click="goTo('/d/login')">登录</span>
-            </div>
+  <div class="tbe-d-sign">
+    <div class="sign-container">
+      <div class="sign-wrapper">
+        <div class="sign-header">
+          <div class="org-logo" @click="goToWithIndex('/d/index','1')">Three Blue Eyes</div>
+          <div class="sign-header-right">
+            <span class="sign-hasAcc"></span>
+            已有帐号？
+            <span class="sign-toLogin" @click="goTo('/d/login')">登录</span>
           </div>
-          <div class="sign-body">
-            <div class="sign-body-container">
-              <div class="sign-intro">
-                <span class="sign-intro-title">TBE</span>
-                <span class="sign-intro-slogan">三个蓝眼,分享你的生活</span>
-                <p class="sign-intro-desc">
-                  {{this.introduce}}
-                </p>
-              </div>
-              <div class="sign-box">
-                <span class="sign-title">注册</span>
-                <div class="group-inputs">
-                  <div class="input-wrapper">
-                    <input type="text" placeholder="用户名" v-model="user.userName">
-                  </div>
-                  <div class="input-wrapper">
-                    <input type="password" placeholder="密码" v-model="user.passWorld">
-                  </div>
+        </div>
+        <div class="sign-body">
+          <div class="sign-body-container">
+            <div class="sign-intro">
+              <span class="sign-intro-title">TBE</span>
+              <span class="sign-intro-slogan">三个蓝眼,分享你的生活</span>
+              <p class="sign-intro-desc">
+                {{this.introduce}}
+              </p>
+            </div>
+            <div class="sign-box">
+              <span class="sign-title">注册</span>
+              <div class="group-inputs">
+                <div class="input-wrapper">
+                  <input type="text" placeholder="用户名" v-model="user.userName">
                 </div>
-                <div class="button-wrapper">
-                  <el-button
-                    class="sign-button"
-                    plain
-                    @click="userSign(user)"
-                    :disabled="disabled">
-                    注册
-                  </el-button>
+                <div class="input-wrapper">
+                  <input type="password" placeholder="密码" v-model="user.passWorld">
                 </div>
-                <p class="agreement-tip">
-                  注册即代表同意
-                  <span>《三个蓝眼服务协议》</span>
-                  <span>《隐私政策》</span>
-                </p>
               </div>
+              <div class="button-wrapper">
+                <el-button
+                  class="sign-button"
+                  plain
+                  @click="userSign(user)"
+                  :disabled="disabled">
+                  注册
+                </el-button>
+              </div>
+              <p class="agreement-tip">
+                注册即代表同意
+                <span>《三个蓝眼服务协议》</span>
+                <span>《隐私政策》</span>
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
-  import {mapMutations,mapActions} from 'vuex'
+  import {mapMutations, mapActions} from 'vuex'
   import {sign} from "api/user";
   import {ERR_OK} from "common/js/config";
   import {strTrim} from "common/js/util";
+
   export default {
-    data(){
-      return{
+    data() {
+      return {
         introduce: '三个蓝眼是一个优质的，开放的，友好的音乐资讯社区，并励志为中国音乐发展打造最优质的学习交流环境。在这里，你可以找到许许多多和你一样兴趣爱好的人，每个人都可以自由的发现或者是分享作品。爱音乐，爱蓝眼！',
-        disabled:false,
-        user:{
-          userName:'',
-          passWorld:''
+        disabled: false,
+        user: {
+          userName: '',
+          passWorld: ''
         }
       }
     },
-    methods:{
+    methods: {
       ...mapMutations({
-        setActiveIndex:'SET_ACTIVE_INDEX'
+        setActiveIndex: 'SET_ACTIVE_INDEX'
       }),
       ...mapActions([
         'saveUser'
       ]),
-      goToWithIndex(path,index){
+      goToWithIndex(path, index) {
         this.goTo(path)
         this.setActiveIndex(index)
       },
-      goTo (path) {
+      goTo(path) {
         let i = setTimeout(() => {
           this.$router.replace(path)
           clearTimeout(i);
         }, 200);
       },
-      userSign(user){
+      userSign(user) {
         //首先让按钮不能按
         this.disabled = true
         user.userName = strTrim(user.userName)
         user.passWorld = strTrim(user.passWorld)
-        if(user.userName === ''){
+        if (user.userName === '') {
           this.$message({
             message: '用户名不能为空',
             type: 'error'
           })
-          this.user.userName =''
+          this.user.userName = ''
           this.disabled = false
           return
         }
-        if(user.passWorld === ''){
+        if (user.passWorld === '') {
           this.$message({
             message: '密码不能为空',
             type: 'error'
@@ -107,13 +108,13 @@
           this.disabled = false
           return
         }
-        sign(user).then((res)=>{
-          if(res.code === ERR_OK){
+        sign(user).then((res) => {
+          if (res.code === ERR_OK) {
             this.saveUser(res.data.userInfo)
             //返回注册之前的页面
             this.$router.back()
             this.disabled = false
-          }else{
+          } else {
             this.$message({
               message: res.data.errMsg,
               type: 'error'
@@ -127,9 +128,9 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
-  .tbe-sign
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
+  .tbe-d-sign
     z-index 200
     position absolute
     top 0
@@ -223,7 +224,7 @@
               border-radius 2px
               width 400px
               background $color-background-global
-              box-shadow 0 15px 50px 0 rgba(0,34,77,.08)
+              box-shadow 0 15px 50px 0 rgba(0, 34, 77, .08)
               .sign-title
                 margin 40px auto
                 width 100%

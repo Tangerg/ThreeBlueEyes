@@ -1,61 +1,65 @@
 <template>
-  <div class="tbe-d-article-detail">
-    <el-button
-      class="tbe-back"
-      type="primary"
-      icon="el-icon-back"
-      circle
-      @click="goBack()">
-    </el-button>
-    <div class="detail-container">
-      <div class="container-header">
-        <div class="article-info">
-          <div class="article-info-title">
+  <div class="tbe-m-article-detail">
+    <van-nav-bar
+      left-text="返回"
+      left-arrow
+      @click-left="goBack()"
+    />
+    <Scroll class="tbe-m-detail-container" ref="scroll">
+      <div>
+        <div class="container-header">
+          <div class="title">
             {{articleInfo.title}}
           </div>
-          <div class="article-info-author">
-            {{articleInfo.author}} 发表于 {{articleInfo.createBy}}
+          <div class="author">
+            <div class="avatar">
+              <img src="../../../common/image/logo.png" alt="avatar">
+            </div>
+            <div class="name">{{articleInfo.author}}</div>
           </div>
-          <div class="article-info-other">
+          <div class="other-info">
+            <div class="time">
+              <i class="iconfont icon-article icon-clock"></i>
+              {{articleInfo.createBy}}
+            </div>
             <div class="view">
-              浏览
+              <i class="iconfont icon-article icon-visibility"></i>
               {{articleInfo.viewNum}}
             </div>
             <div class="comment">
-              评论
+              <i class="iconfont icon-article icon-message"></i>
               {{articleInfo.commentNum}}
             </div>
             <div class="star">
-              赞同
+              <i class="iconfont icon-article icon-thumbup"></i>
               {{articleInfo.starNum}}
             </div>
           </div>
         </div>
-      </div>
-      <div class="container-body">
         <div class="detail-article-content">
           <article-content :article="articleContent"></article-content>
         </div>
-        <div class="detail-star">
-          <el-button round class="star-btn" :class="iconMode" @click="giveStar()">
+        <div class="detail-star" v-show="ready">
+          <van-button round type="default" class="star-btn" :class="iconMode" @click="giveStar()">
             赞同 · {{articleInfo.starNum}}
-          </el-button>
+          </van-button>
         </div>
-        <div class="detail-comment">
+        <div class="detail-comment" v-show="ready">
           <div class="comment-title">评论</div>
           <div class="comment-submit">
             <div class="text-area">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 5, maxRows: 8}"
-                v-model="comment.content"
-                placeholder="写下你的评论"
-              >
-              </el-input>
+              <van-cell-group>
+                <van-field
+                  v-model="comment.content"
+                  type="textarea"
+                  placeholder="写下你的评论"
+                  rows="5"
+                />
+              </van-cell-group>
             </div>
             <div class="submit-btn">
-              <el-button type="primary" @click="submitArticleComment(comment)">提交</el-button>
-              <el-button @click="cancelSubmit()">取消</el-button>
+              <van-button type="primary" @click="submitArticleComment(comment)">提交</van-button>
+              <van-button @click="cancelSubmit()">取消</van-button>
             </div>
           </div>
           <div class="comment-exist" v-if="commentList.length>0">
@@ -87,8 +91,7 @@
           </div>
         </div>
       </div>
-    </div>
-    <back-top></back-top>
+    </Scroll>
   </div>
 </template>
 
@@ -99,8 +102,8 @@
   import {starById, starForId} from "api/star";
   import {ERR_OK} from "common/js/config";
   import {strTrim} from "common/js/util";
+  import Scroll from 'base/scroll/scroll'
   import ArticleContent from 'base/article-content/article-content'
-  import BackTop from 'base/back-top/back-top'
 
   export default {
     data() {
@@ -112,7 +115,8 @@
         },
         commentList: [],
         //0:从未点赞，1：点赞，2：点赞过但取消了
-        starInfo: 0
+        starInfo: 0,
+        ready: false
       }
     },
     created() {
@@ -120,6 +124,9 @@
       this.initArticleComment()
       this.userIdAssignment()
       this.getStar()
+    },
+    activated() {
+      this.$refs.scroll.refresh()
     },
     watch: {
       '$route'(to, from) {
@@ -163,14 +170,15 @@
       giveStar() {
         //先判断是否登陆
         if (this.comment.userId === 0) {
-          this.$confirm('登陆后才能点赞，是否登陆', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
+          this.$dialog.confirm({
+            title: '提示',
+            message: '登陆后才能点赞，是否登陆',
+            confirmButtonText: '去登陆'
           }).then(() => {
-            this.$router.push('/d/login')
+            this.$router.push('/m/login')
           }).catch(() => {
-          })
+
+          });
           return
         }
         starForId(this.articleInfo.id, this.comment.userId, this.starInfo).then((res) => {
@@ -203,22 +211,25 @@
         //先判断是否登陆
         //如果没登陆
         if (comment.userId === 0) {
-          this.$confirm('登陆后才能发表评论，是否登陆', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
+          this.$dialog.confirm({
+            title: '提示',
+            message: '登陆后才能发表评论，是否登陆',
+            confirmButtonText: '去登陆'
           }).then(() => {
-            this.$router.push('/d/login')
+            this.$router.push('/m/login')
           }).catch(() => {
-          })
+
+          });
           return
         }
         //登陆了，但是评论内容为空
         if (comment.content === '') {
-          this.$message({
-            message: '评论内容不能为空',
-            type: 'error'
-          })
+          this.$dialog.alert({
+            title: '提示',
+            message: '评论内容不能为空'
+          }).then(() => {
+            // on close
+          });
           this.comment.content = ''
           return
         }
@@ -254,17 +265,19 @@
       },
       //初始化文章正文
       initArticleContent() {
+        this.ready = false
         this.articleContent = ''
         getArticleById(this.articleInfo.id).then((res) => {
           if (res.code === ERR_OK) {
             this.articleContent = res.data.articleContent.articleContent
+            this.ready = true
           }
         })
       }
     },
     components: {
+      Scroll,
       ArticleContent,
-      BackTop
     }
   }
 </script>
@@ -272,171 +285,158 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
-  .tbe-d-article-detail
-    position absolute
+  .tbe-m-article-detail
+    position fixed
     top 0
-    left 0
+    bottom 0
+    height 100%
     width 100%
-    min-height 100%
-    z-index 200
+    z-index 400
+    overflo hidden
     background-color $color-background-global
-    .tbe-back
+    .tbe-m-detail-container
       position fixed
       top 50px
-      left 50px
-      height 50px
-      width 50px
-      font-size 15px
-      z-index 201
-      background rgba(21, 35, 51, .2)
-      color rgba(255, 255, 255, 1)
-      border 0
-      &:hover
-        background rgba(21, 35, 51, 0.4)
-    .detail-container
-      position absolute
-      top 0
+      bottom 0
       left 0
-      width 100%
-      min-height 100%
+      right 0
       .container-header
-        background-color $color-background-global
-        padding 100px 0
-        .article-info
-          width 1100px
-          margin 0 auto
-          display flex
-          flex-direction column
-          text-align center
-          .article-info-title
-            width 100%
-            font-size $font-size-40px
-            font-weight 700
-            margin-bottom 30px
-          .article-info-author
-            width 100%
-            font-size $font-size-17px
-            margin-bottom 30px
-            color $color-text-black-l
-          .article-info-other
-            width 300px
-            margin 0 auto
-            display flex
-            flex-direction row
-            font-size $font-size-15px
-            color $color-text-gray
-            .view
-              flex 1
-            .comment
-              flex 1
-            .star
-              flex 1
-      .container-body
-        background-color $color-background-global
-        padding 100px 0
+        padding 10px
         display flex
         flex-direction column
-        .detail-article-content
-          flex 1
-          width 1100px
-          margin 0 auto
-        .detail-star
-          flex 1
-          align-items center
-          text-align center
-          width 1100px
-          margin 100px auto
-          .star-btn
-            height 50px
-            border-radius 100px
-            font-size 17px
-          .star-btn-default
-            background-color $color-background-global
-            color $color-background-orange;
-            border 1px solid $color-background-orange
-          .star-btn-like
-            background-color $color-background-orange
-            color $color-text-white
-            border 1px solid $color-background-orange
-        .detail-comment
-          flex 1
-          width 1100px
-          height 100%
-          margin 0 auto
+        border-bottom 0.5px solid $color-line-white
+        .title
+          width 100%
+          font-size $font-size-23px
+          font-weight bold
+          line-height 30px
+        .author
+          width 100%
+          margin 15px 0
           display flex
-          flex-direction column
+          .avatar
+            width 35px
+            height 35px
+            border-radius 50%
+            padding 2.5px
+            box-shadow: 0 0 20px 1px $color-text-gray-l
+            img
+              border-radius 50%
+              width 100%
+          .name
+            max-width 70%
+            margin-left 10px
+            height 40px
+            line-height 40px
+            color $color-text-black-l
+            no-wrap()
+        .other-info
+          display flex
+          font-size $font-size-13px
+          color $color-text-gray
+          div
+            margin 0 5px
+          .icon-article
+            font-size $font-size-13px
+      .detail-article-content
+        padding 10px
+      .detail-star
+        align-items center
+        text-align center
+        width 100%
+        margin 20px auto
+        .star-btn-default
+          background-color $color-background-global
+          color $color-background-orange;
+          border 1px solid $color-background-orange
+        .star-btn-like
+          background-color $color-background-orange
+          color $color-text-white
+          border 1px solid $color-background-orange
+      .detail-comment
+        display flex
+        flex-direction column
+        padding-bottom 10px
+        .comment-title
+          flex 1
+          height 100%
+          margin-bottom 20px
+          font-size $font-size-17px
+          font-weight bold
+          color $color-text-black-l
+          padding-left 10px
+        .comment-submit
+          width 100%
+          height 100%
+          flex 1
+          .submit-btn
+            float right
+            padding-top 10px
+            .van-button
+              border-radius 5px
+            .van-button--primary
+              background-color $color-button-blue
+              border $color-button-blue
+        .comment-exist
+          height 100%
+          flex 1
+          margin 10px 0
           background-color $color-background-gray
-          box-shadow 0 15px 50px 0 rgba(0, 34, 77, .08)
-          .comment-title
-            flex 1
-            height 100%
-            padding 20px
-            font-size $font-size-20px
-            font-weight 700
+          .total-comment
+            height 60px
+            line-height 60px
+            font-size $font-size-15px
+            padding-left 10px
             background-color $color-background-global
-          .comment-submit
+            color $color-text-black-l
+          .comment-box
+            padding 10px
+            display flex
+            flex-direction column
+            margin-top 10px
             background-color $color-background-global
-            padding 0 20px
-            height 100%
-            flex 1
-            .submit-btn
-              float right
-              padding-top 20px
-          .comment-exist
-            height 100%
-            flex 1
-            width 100%
-            .total-comment
-              background-color $color-background-global
-              font-size $font-size-18px
-              padding 20px
-            .comment-box
-              padding 0 10px
+            .comment-info
+              flex 1
               display flex
-              flex-direction column
-              margin-top 20px
-              background-color $color-background-global
-              /*border-top 0.5px solid $color-line-white*/
-              .comment-info
-                flex 1
-                display flex
-                flex row
-                padding 15px 0
-                color $color-text-black-l
-                border-bottom 0.5px solid $color-line-white
-                .avatar
-                  margin-right 10px
+              flex row
+              padding 15px 0
+              color $color-text-black-l
+              border-bottom 0.5px solid $color-line-white
+              .avatar
+                margin-right 10px
+                border-radius 50%
+                padding 2px
+                box-shadow: 0 0 20px 1px $color-text-gray-l
+                img
+                  width 40px
+                  height 40px
                   border-radius 50%
-                  padding 2px
-                  box-shadow: 0 0 20px 1px $color-text-gray-l
-                  img
-                    width 50px
-                    height 50px
-                    border-radius 50%
-                .other
-                  height 50px
-                  .name
-                    height 30px
-                    line-height 30px
-                    font-size $font-size-15px
-                  .time
-                    font-size $font-size-14px
-                    height 20px
-                    line-height 20px
-              .comment-content
-                flex 1
-                padding 20px 0
-              .comment-operation
-                flex 1
-                display flex
-                width 200px
-                margin 10px 0
-                font-size $font-size-15px
+              .other
+                height 40px
+                .name
+                  font-size $font-size-14px
+                  height 25px
+                  line-height 25px
+                .time
+                  font-size $font-size-12px
+                  height 15px
+                  line-height 15px
+            .comment-content
+              flex 1
+              font-size $font-size-15px
+              padding 20px 0
+            .comment-operation
+              flex 1
+              display flex
+              max-width 250px
+              margin 10px 0
+              font-size $font-size-12px
+              color $color-text-gray-d
+              .iconfont
+                font-size $font-size-14px
                 color $color-text-gray-d
-                .iconfont
-                  font-size $font-size-17px
-                .agree
-                  flex 1
-                .reply
-                  flex 1
+              .agree
+                flex 1
+              .reply
+                flex 1
 </style>

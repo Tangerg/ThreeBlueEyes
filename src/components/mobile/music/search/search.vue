@@ -1,6 +1,6 @@
 <template>
   <transition name="search">
-    <div class="tbe-m-music-search" >
+    <div class="tbe-m-music-search">
       <div class="search-box-wrapper">
         <div class="back" @click="_back">
           <i class="iconfont icon-left"></i>
@@ -64,81 +64,84 @@
   import Confirm from 'base/confirm/confirm'
   import {ERR_OK} from "common/js/config";
   import {getHotKey} from 'api/search'
-  import {mapActions,mapGetters} from 'vuex'
-    export default {
-      data(){
-        return{
-          beforeScroll:true,
-          pullup:true,
-          HotKey:[],
-          query:''
-        }
+  import {mapActions, mapGetters} from 'vuex'
+
+  export default {
+    data() {
+      return {
+        beforeScroll: true,
+        pullup: true,
+        HotKey: [],
+        query: ''
+      }
+    },
+    created() {
+      this._getHotKey()
+    },
+    computed: {
+      ...mapGetters([
+        'searchHistory'
+      ])
+    },
+    methods: {
+      ...mapActions([
+        'saveSearchHistory',
+        'deleteSearchHistory',
+        'clearSearchHistory'
+      ]),
+      showConfirm() {
+        this.$refs.confirm.show()
       },
-      created(){
-        this._getHotKey()
+      saveSearch() {
+        this.saveSearchHistory(this.query)
       },
-      computed:{
-        ...mapGetters([
-          'searchHistory'
-        ])
+      refresh() {
+        setTimeout(() => {
+          this.$refs.scroll.refresh()
+        }, 20)
       },
-      methods:{
-        ...mapActions([
-          'saveSearchHistory',
-          'deleteSearchHistory',
-          'clearSearchHistory'
-        ]),
-        showConfirm () {
-          this.$refs.confirm.show()
-        },
-        saveSearch(){
-          this.saveSearchHistory(this.query)
-        },
-        refresh () {
-          setTimeout(() => {
-            this.$refs.scroll.refresh()
-          }, 20)
-        },
-        searchMore(){
-          this.$refs.suggest.searchMore()
-        },
-        _back(){
-          this.$router.back()
-          this.$refs.searchBox.clear()
-          this.query = ''
-        },
-        _getHotKey(){
-          getHotKey().then((res)=>{
-            if(res.code === ERR_OK){
-              this.HotKey = res.result.hots
-            }
-          })
-        },
-        addQuery(query){
-          this.$refs.searchBox.setQuery(query)
-        },
-        onQueryChange (query) {
-          this.query = query
-        },
+      searchMore() {
+        this.$refs.suggest.searchMore()
       },
-     components:{
-       Confirm,
-       SearchBox,
-       SearchList,
-       Scroll,
-       Suggest
-     }
+      _back() {
+        this.$router.back()
+        this.$refs.searchBox.clear()
+        this.query = ''
+      },
+      _getHotKey() {
+        getHotKey().then((res) => {
+          if (res.code === ERR_OK) {
+            this.HotKey = res.result.hots
+          }
+        })
+      },
+      addQuery(query) {
+        this.$refs.searchBox.setQuery(query)
+      },
+      onQueryChange(query) {
+        this.query = query
+      },
+    },
+    components: {
+      Confirm,
+      SearchBox,
+      SearchList,
+      Scroll,
+      Suggest
     }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .search-enter-active, .search-leave-active
     transition: all 0.3s;
+
   .search-enter, .search-leave-to
     transform: translate3d(50%, 0, 0);
     opacity: 0;
+
   .tbe-m-music-search
     position fixed
     z-index 100

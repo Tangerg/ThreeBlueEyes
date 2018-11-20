@@ -1,5 +1,5 @@
 <template>
-  <div class="tbe-login">
+  <div class="tbe-d-login">
     <div class="login-container">
       <div class="login-container-content">
         <div class="login-header">
@@ -116,9 +116,9 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
-  .tbe-login
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
+  .tbe-d-login
     z-index 200
     position absolute
     top 0

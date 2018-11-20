@@ -4,61 +4,61 @@
       <div>
         <div class="singer-category">
           <span class="empty-line"></span>
-          <span class="singer-features"@click="clickCategory(1001)">
+          <span class="singer-features" @click="clickCategory(1001)">
             华语男歌手
           </span>
-          <span class="singer-features"@click="clickCategory(1002)">
+          <span class="singer-features" @click="clickCategory(1002)">
             华语女歌手
           </span>
-          <span class="singer-features"@click="clickCategory(1003)">
+          <span class="singer-features" @click="clickCategory(1003)">
             华语乐队/组合
           </span>
         </div>
         <div class="singer-category">
           <span class="empty-line"></span>
-          <span class="singer-features"@click="clickCategory(2001)">
+          <span class="singer-features" @click="clickCategory(2001)">
             欧美男歌手
           </span>
-          <span class="singer-features"@click="clickCategory(2002)">
+          <span class="singer-features" @click="clickCategory(2002)">
             欧美女歌手
           </span>
-          <span class="singer-features"@click="clickCategory(2003)">
+          <span class="singer-features" @click="clickCategory(2003)">
             欧美乐队/组合
           </span>
         </div>
         <div class="singer-category">
           <span class="empty-line"></span>
-          <span class="singer-features"@click="clickCategory(6001)">
+          <span class="singer-features" @click="clickCategory(6001)">
             日本男歌手
           </span>
-          <span class="singer-features"@click="clickCategory(6002)">
+          <span class="singer-features" @click="clickCategory(6002)">
             日本女歌手
           </span>
-          <span class="singer-features"@click="clickCategory(6003)">
+          <span class="singer-features" @click="clickCategory(6003)">
             日本乐队/组合
           </span>
         </div>
         <div class="singer-category">
           <span class="empty-line"></span>
-          <span class="singer-features"@click="clickCategory(7001)">
+          <span class="singer-features" @click="clickCategory(7001)">
             韩国男歌手
           </span>
-          <span class="singer-features"@click="clickCategory(7002)">
+          <span class="singer-features" @click="clickCategory(7002)">
             韩国女歌手
           </span>
-          <span class="singer-features"@click="clickCategory(7003)">
+          <span class="singer-features" @click="clickCategory(7003)">
             韩国乐队/组合
           </span>
         </div>
         <div class="singer-category">
           <span class="empty-line"></span>
-          <span class="singer-features"@click="clickCategory(4001)">
+          <span class="singer-features" @click="clickCategory(4001)">
             其他男歌手
           </span>
-          <span class="singer-features"@click="clickCategory(4002)">
+          <span class="singer-features" @click="clickCategory(4002)">
             其他女歌手
           </span>
-          <span class="singer-features"@click="clickCategory(4003)">
+          <span class="singer-features" @click="clickCategory(4003)">
             其他乐队/组合
           </span>
         </div>
@@ -72,33 +72,34 @@
   import {mapMutations} from 'vuex'
   import Scroll from 'base/scroll/scroll'
   import {playlistMixin} from 'common/js/mixin'
-    export default {
-      mixins:[playlistMixin],
-      methods:{
-        ...mapMutations({
-          setSingerCategory: 'SET_SINGER_CATEGORY',
-        }),
-        handlePlaylist (playlist) {
-          const bottom = playlist.length > 0 ? '8%' : ''
-          this.$refs.scroll.$el.style.bottom = bottom
-          this.$refs.scroll.refresh()
-        },
-        clickCategory(category){
-          this.setSingerCategory(category)
-          this.$router.push({
-            path: '/m/music/home/singer/list'
-          })
-        }
+
+  export default {
+    mixins: [playlistMixin],
+    methods: {
+      ...mapMutations({
+        setSingerCategory: 'SET_SINGER_CATEGORY',
+      }),
+      handlePlaylist(playlist) {
+        const bottom = playlist.length > 0 ? '8%' : ''
+        this.$refs.scroll.$el.style.bottom = bottom
+        this.$refs.scroll.refresh()
       },
-      components:{
-        Scroll
+      clickCategory(category) {
+        this.setSingerCategory(category)
+        this.$router.push({
+          path: '/m/music/home/singer/list'
+        })
       }
+    },
+    components: {
+      Scroll
     }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-music-singer-container
     position fixed
     top 95px

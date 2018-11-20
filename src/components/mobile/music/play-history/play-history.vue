@@ -28,55 +28,56 @@
 </template>
 
 <script>
-  import {mapGetters,mapActions} from 'vuex'
+  import {mapGetters, mapActions} from 'vuex'
   import Loading from 'base/loading/loading'
   import NoResult from 'base/no-result/no-result'
   import SongList from 'base/song-list/song-list'
   import Scroll from 'base/scroll/scroll'
   import Confirm from 'base/confirm/confirm'
   import {playlistMixin} from 'common/js/mixin'
+
   export default {
-    mixins:[playlistMixin],
-    data(){
-      return{
-        headerTitle:'最近播放',
+    mixins: [playlistMixin],
+    data() {
+      return {
+        headerTitle: '最近播放',
       }
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'playHistory',
       ]),
     },
-    methods:{
+    methods: {
       ...mapActions([
         'selectPlay',
         'sequencePlay',
         'clearPlayHistory'
       ]),
-      showConfirm () {
+      showConfirm() {
         this.$refs.confirm.show()
       },
-      handlePlaylist (playlist) {
+      handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '8%' : ''
         this.$refs.list.$el.style.bottom = bottom
         this.$refs.list.refresh()
       },
-      _back(){
+      _back() {
         this.$router.back()
       },
-      selectItem(item,index){
+      selectItem(item, index) {
         this.selectPlay({
           list: this.playHistory,
           index: index
         })
       },
-      playAll(){
+      playAll() {
         this.sequencePlay({
           list: this.playHistory,
         })
       }
     },
-    components:{
+    components: {
       NoResult,
       SongList,
       Scroll,
@@ -86,13 +87,15 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .slide-enter-active, .slide-leave-active
     transition: all 0.3s
+
   .slide-enter, .slide-leave-to
     transform: translate3d(30%, 0, 0);
     opacity: 0;
+
   .tbe-m-music-play-history
     position fixed
     z-index: 100

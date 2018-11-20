@@ -55,8 +55,8 @@
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/stylus/variable"
-  @import "../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .confirm
     position: fixed;
     left: 0;
@@ -104,6 +104,7 @@
       opacity: 0
     100%
       opacity: 1
+
   @keyframes confirm-zoom
     0%
       transform: scale(0)

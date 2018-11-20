@@ -16,8 +16,9 @@
 <script>
   import BScroll from 'better-scroll'
   import {addClass} from '../../common/js/dom'
+
   export default {
-    data () {
+    data() {
       return {
         dots: [],
         currentPageIndex: 0
@@ -40,7 +41,7 @@
         default: 4000
       }
     },
-    mounted () {
+    mounted() {
       setTimeout(() => {
         this._setSliderWidth()
         this._initDots()
@@ -68,7 +69,7 @@
       clearTimeout(this.timer)
     },
     methods: {
-      _setSliderWidth (isResize) {
+      _setSliderWidth(isResize) {
         this.children = this.$refs.sliderGroup.children
         let width = 0
         let sliderWidth = this.$refs.slider.clientWidth
@@ -84,7 +85,7 @@
         }
         this.$refs.sliderGroup.style.width = width + 'px'
       },
-      _initSlider () {
+      _initSlider() {
         this.slider = new BScroll(this.$refs.slider, {
           scrollX: true,
           // scrollY: false,
@@ -101,31 +102,31 @@
         })
         this.slider.on('scrollEnd', this._onScrollEnd)
       },
-      _onScrollEnd () {
+      _onScrollEnd() {
         let pageIndex = this.slider.getCurrentPage().pageX
         this.currentPageIndex = pageIndex
         if (this.autoPlay) {
           this._play()
         }
       },
-      _play () {
+      _play() {
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           this.slider.next()
         }, this.interval)
       },
-      _initDots () {
+      _initDots() {
         this.dots = new Array(this.children.length)
       }
     },
-    destroyed () {
+    destroyed() {
       clearTimeout(this.timer)
     }
   }
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/stylus/variable"
+  @import "~common/stylus/variable"
 
   .slider
     min-height 1px

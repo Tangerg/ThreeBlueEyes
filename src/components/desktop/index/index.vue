@@ -1,5 +1,5 @@
 <template>
-  <div class="tbe-index">
+  <div class="tbe-d-index">
     <div class="index-bing" v-show="bingFlag === true">
       <div class="index-bg">
         <div class="bg-img" :style="bgImg(this.BING+this.bingPic.url)"></div>
@@ -69,6 +69,8 @@
     created() {
       this.initRecommend();
       this.initBingPic();
+    },
+    activated() {
       this.BrowserHeight();
     },
     computed: {
@@ -143,9 +145,9 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
-  .tbe-index
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
+  .tbe-d-index
     position fixed
     top 0
     bottom 0

@@ -1,34 +1,34 @@
 <template>
   <transition name="slide" mode="out-in">
     <div class="tbe-m-music-music-list">
-        <div class="header" ref="header">
-          <div class="back" @click="_back">
-            <i class="iconfont icon-left"></i>
-          </div>
-          <div class="text">
-            <h1 class="title">{{headerTitle}}</h1>
-          </div>
+      <div class="header" ref="header">
+        <div class="back" @click="_back">
+          <i class="iconfont icon-left"></i>
         </div>
+        <div class="text">
+          <h1 class="title">{{headerTitle}}</h1>
+        </div>
+      </div>
       <scroll class="list"
               @scroll="scroll"
               :probe-type="probeType"
               :listen-scroll="listenScroll"
               :data="ListDetail"
               ref="list">
-          <div class="music-list-wrapper">
-            <div class="bg-image" :style="bgImg" ref="bgImage">
-              <div class="filter"></div>
-              <div class="text">
-                <h2 class="list-title">{{listName}}</h2>
-                <p class="play-count">
-                  <i class="iconfont icon-customer"></i>
-                  {{playCount}}
-                </p>
-              </div>
+        <div class="music-list-wrapper">
+          <div class="bg-image" :style="bgImg" ref="bgImage">
+            <div class="filter"></div>
+            <div class="text">
+              <h2 class="list-title">{{listName}}</h2>
+              <p class="play-count">
+                <i class="iconfont icon-customer"></i>
+                {{playCount}}
+              </p>
             </div>
-            <div class="song-list-wrapper">
-              <song-list :songs="ListDetail" @select="selectItem" @selectAll="playAll"></song-list>
-            </div>
+          </div>
+          <div class="song-list-wrapper">
+            <song-list :songs="ListDetail" @select="selectItem" @selectAll="playAll"></song-list>
+          </div>
         </div>
       </scroll>
       <div v-show="!ListDetail.length" class="loading-content">
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-  import {mapActions,mapGetters} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
   import {ERR_OK} from "common/js/config"
   import {getPlayList} from 'api/play-list'
   import {creatSongList} from "common/class/song";
@@ -50,123 +50,125 @@
 
   const RESERVED_HEIGHT = 50
 
-    export default {
-      mixins:[playlistMixin],
-      data() {
-        return {
-          ListDetail: [],
-          scrollY: 0,
-          headerTitle: '歌单'
+  export default {
+    mixins: [playlistMixin],
+    data() {
+      return {
+        ListDetail: [],
+        scrollY: 0,
+        headerTitle: '歌单'
+      }
+    },
+    created() {
+      this._initMusicList()
+      this.probeType = 3
+      this.listenScroll = true
+    },
+    mounted() {
+      this.imageHeight = this.$refs.bgImage.clientHeight
+      this.minTranslateY = -this.imageHeight + RESERVED_HEIGHT
+    },
+    computed: {
+      ...mapGetters([
+        'musicList',
+      ]),
+      playCount() {
+        if (!this.musicList.playCount) {
+          return
+        }
+        if (this.musicList.playCount < 1e4) {
+          return Math.floor(this.musicList.playCount)
+        } else if (this.musicList.playCount < 1e8) {
+          return Math.floor(this.musicList.playCount / 10000) + '万'
+        } else {
+          return Math.floor(this.musicList.playCount / 100000000) + '亿'
         }
       },
-      created(){
-        this._initMusicList()
-        this.probeType = 3
-        this.listenScroll = true
-      },
-      mounted () {
-        this.imageHeight = this.$refs.bgImage.clientHeight
-        this.minTranslateY = -this.imageHeight + RESERVED_HEIGHT
-      },
-      computed:{
-        ...mapGetters([
-          'musicList',
-        ]),
-        playCount(){
-          if (!this.musicList.playCount) {
-            return
-          }
-          if (this.musicList.playCount < 1e4) {
-            return Math.floor(this.musicList.playCount)
-          } else if(this.musicList.playCount < 1e8) {
-            return Math.floor(this.musicList.playCount / 10000) + '万'
-          } else {
-            return Math.floor(this.musicList.playCount / 100000000) + '亿'
-          }
-        },
-        listName(){
-          if (!this.musicList.name) {
-            return
-          }
-          return this.musicList.name
-        },
-        bgImg() {
-          return `background-image:url(${this.musicList.picUrl})`
+      listName() {
+        if (!this.musicList.name) {
+          return
         }
+        return this.musicList.name
       },
-      components:{
-        SongList,
-        Scroll,
-        Loading
+      bgImg() {
+        return `background-image:url(${this.musicList.picUrl})`
+      }
+    },
+    components: {
+      SongList,
+      Scroll,
+      Loading
+    },
+    methods: {
+      ...mapActions([
+        'selectPlay',
+        'sequencePlay'
+      ]),
+      scroll(pos) {
+        this.scrollY = pos.y
       },
-      methods:{
-        ...mapActions([
-          'selectPlay',
-          'sequencePlay'
-        ]),
-        scroll (pos) {
-          this.scrollY = pos.y
-        },
-        handlePlaylist (playlist) {
-          const bottom = playlist.length > 0 ? '8%' : ''
-          this.$refs.list.$el.style.bottom = bottom
-          this.$refs.list.refresh()
-        },
-        _initMusicList(){
-          if (!this.musicList.id) {
-            this.$router.push('/home/recommend')
-            return
-          }
-          getPlayList(this.musicList.id).then((res) => {
-            if(res.code === ERR_OK){
-              this.ListDetail = res.playlist.tracks.map((music)=>{
-                return creatSongList(music)
-              })
-            }
-          })
-        },
-        _back(){
-          this.$router.back()
-        },
-        selectItem(item,index){
-          this.selectPlay({
-            list: this.ListDetail,
-            index: index
-          })
-        },
-        playAll(){
-          this.sequencePlay({
-            list: this.ListDetail,
-          })
+      handlePlaylist(playlist) {
+        const bottom = playlist.length > 0 ? '8%' : ''
+        this.$refs.list.$el.style.bottom = bottom
+        this.$refs.list.refresh()
+      },
+      _initMusicList() {
+        if (!this.musicList.id) {
+          this.$router.push('/home/recommend')
+          return
         }
+        getPlayList(this.musicList.id).then((res) => {
+          if (res.code === ERR_OK) {
+            this.ListDetail = res.playlist.tracks.map((music) => {
+              return creatSongList(music)
+            })
+          }
+        })
       },
-      watch: {
-        scrollY (newY) {
-          // let translateY = Math.max(this.minTranslateY, newY)
-          const percent = Math.abs(newY / this.imageHeight)
-          if (newY < (this.minTranslateY + RESERVED_HEIGHT - 20)) {
-            this.headerTitle = this.musicList.name
-          } else {
-            this.headerTitle = '歌单'
-          }
-          if (newY < 0) {
-            this.$refs.header.style.background = `rgba(212, 68, 57, ${percent})`
-          } else {
-            this.$refs.header.style.background = `rgba(212, 68, 57, 0)`
-          }
+      _back() {
+        this.$router.back()
+      },
+      selectItem(item, index) {
+        this.selectPlay({
+          list: this.ListDetail,
+          index: index
+        })
+      },
+      playAll() {
+        this.sequencePlay({
+          list: this.ListDetail,
+        })
+      }
+    },
+    watch: {
+      scrollY(newY) {
+        // let translateY = Math.max(this.minTranslateY, newY)
+        const percent = Math.abs(newY / this.imageHeight)
+        if (newY < (this.minTranslateY + RESERVED_HEIGHT - 20)) {
+          this.headerTitle = this.musicList.name
+        } else {
+          this.headerTitle = '歌单'
         }
-      },
-    }
+        if (newY < 0) {
+          this.$refs.header.style.background = `rgba(212, 68, 57, ${percent})`
+        } else {
+          this.$refs.header.style.background = `rgba(212, 68, 57, 0)`
+        }
+      }
+    },
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .slide-enter-active, .slide-leave-active
     transition: all 0.3s
+
   .slide-enter, .slide-leave-to
     transform: translate3d(30%, 0, 0);
     opacity: 0;
+
   .tbe-m-music-music-list
     position fixed
     z-index: 500

@@ -28,31 +28,31 @@
 
   const TOP_CAT_ID = [0, 1, 2, 3, 4, 22, 23]
   export default {
-    mixins:[playlistMixin],
+    mixins: [playlistMixin],
 
-    data(){
-      return{
-        rankList:[]
+    data() {
+      return {
+        rankList: []
       }
     },
-    created(){
+    created() {
       this._initRank()
     },
-    methods:{
+    methods: {
       ...mapMutations({
-        setRankList:'SET_RANK_LIST'
+        setRankList: 'SET_RANK_LIST'
       }),
-      handlePlaylist (playlist) {
+      handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '8%' : ''
         this.$refs.rank.style.bottom = bottom
         this.$refs.scroll.refresh()
       },
-      _initRank(){
+      _initRank() {
         let j = TOP_CAT_ID.length
-        for(let i = 0 ; i < j ; i++){
+        for (let i = 0; i < j; i++) {
           let id = TOP_CAT_ID[i]
-          getRankList(id).then((res)=>{
-            if(res.code === ERR_OK){
+          getRankList(id).then((res) => {
+            if (res.code === ERR_OK) {
               let list = res.playlist
               list.topthree = res.playlist.tracks.slice(0, 3)
               this.rankList.push(list)
@@ -60,22 +60,22 @@
           })
         }
       },
-      selectItem(item){
+      selectItem(item) {
         this.setRankList(item)
         this.$router.push({
           path: `/m/music/home/rank/${item.id}`
         })
       },
     },
-     components:{
-       Scroll
-     }
+    components: {
+      Scroll
+    }
   }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-music-rank-container
     position fixed
     top 95px

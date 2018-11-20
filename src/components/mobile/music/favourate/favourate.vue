@@ -19,7 +19,8 @@
           </div>
         </div>
       </scroll>
-      <confirm ref="confirm" @confirm="clearFavoriteList" text="是否取消全部收藏？" confirmBtnText="是" cancelBtnText="否"></confirm>
+      <confirm ref="confirm" @confirm="clearFavoriteList" text="是否取消全部收藏？" confirmBtnText="是"
+               cancelBtnText="否"></confirm>
       <div v-show="!favourateList.length" class="no-result">
         <no-result title="暂无收藏歌曲"></no-result>
       </div>
@@ -28,54 +29,55 @@
 </template>
 
 <script>
-  import {mapGetters,mapActions} from 'vuex'
+  import {mapGetters, mapActions} from 'vuex'
   import NoResult from 'base/no-result/no-result'
   import SongList from 'base/song-list/song-list'
   import Scroll from 'base/scroll/scroll'
   import Confirm from 'base/confirm/confirm'
   import {playlistMixin} from 'common/js/mixin'
+
   export default {
-    mixins:[playlistMixin],
-    data(){
-      return{
-        headerTitle:'我的收藏',
+    mixins: [playlistMixin],
+    data() {
+      return {
+        headerTitle: '我的收藏',
       }
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'favourateList',
       ]),
     },
-    methods:{
+    methods: {
       ...mapActions([
         'selectPlay',
         'sequencePlay',
         'clearFavoriteList'
       ]),
-      showConfirm () {
+      showConfirm() {
         this.$refs.confirm.show()
       },
-      handlePlaylist (playlist) {
+      handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '8%' : ''
         this.$refs.list.$el.style.bottom = bottom
         this.$refs.list.refresh()
       },
-      _back(){
+      _back() {
         this.$router.back()
       },
-      selectItem(item,index){
+      selectItem(item, index) {
         this.selectPlay({
           list: this.favourateList,
           index: index
         })
       },
-      playAll(){
+      playAll() {
         this.sequencePlay({
           list: this.favourateList,
         })
       }
     },
-    components:{
+    components: {
       NoResult,
       SongList,
       Scroll,
@@ -85,13 +87,15 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .slide-enter-active, .slide-leave-active
     transition: all 0.3s
+
   .slide-enter, .slide-leave-to
     transform: translate3d(30%, 0, 0);
     opacity: 0;
+
   .tbe-m-music-play-history
     position fixed
     z-index: 100

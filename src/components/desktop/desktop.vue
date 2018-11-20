@@ -15,7 +15,6 @@
   import {mapGetters} from 'vuex'
   import MPlayer from 'desktop/music/m-player/m-player'
   import Header from 'desktop/header/header'
-  import Footer from 'desktop/footer/footer'
 
   export default {
     name: "desktop",
@@ -26,7 +25,6 @@
     },
     components: {
       Header,
-      Footer,
       MPlayer
     }
   }

@@ -1,11 +1,11 @@
 <template>
   <div class="tbe-d-music">
 
-      <m-header></m-header>
+    <m-header></m-header>
 
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
 
   </div>
 </template>
@@ -21,8 +21,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-d-music
     position absolute
     top 0

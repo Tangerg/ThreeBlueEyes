@@ -1,56 +1,70 @@
 <template>
   <div class="tbe-m-index">
     <div class="tbe-m-index-header">
-      <van-tabs class="index-tabs" sticky>
+      <van-tabs class="index-tabs" @click="selectCategory">
         <van-tab title="全部话题">
         </van-tab>
-        <van-tab v-for="(item,index) in menuArr"  :key="index" :title="item.name">
+        <van-tab v-for="(item,index) in menuArr" :key="index" :title="item.name">
         </van-tab>
       </van-tabs>
-      <van-tabs class="index-tabs" @click="selectTab" sticky>
+      <van-tabs class="index-tabs" @click="selectTab">
         <van-tab title="推荐"></van-tab>
         <van-tab title="热门"></van-tab>
         <van-tab title="最近"></van-tab>
       </van-tabs>
     </div>
     <div class="van-hairline--bottom"></div>
-    <scroll class="tbe-m-index-container" :data="articleList">
+    <scroll
+      class="tbe-m-index-container"
+      :data="articleList"
+      :beforeScroll="beforeScroll"
+      ref="scroll"
+      :pullup="pullup"
+      @scrollToEnd="getMoreArticle"
+    >
       <ul class="articles">
-        <li class="article" v-for="(item,index) in articleList"
-            :key="index">
+        <li
+          class="article"
+          v-for="(item,index) in articleList"
+          :key="index"
+          @click="selectArticle(item)"
+        >
           <div class="article-title">{{item.title}}</div>
           <div class="article-content">
             <div class="article-summary">
               {{item.summary}}
-              </div>
+            </div>
             <div class="article-img">
               <img :src="item.pictureUrl" alt="cover">
             </div>
           </div>
           <div class="article-info">
-           <!-- <div class="author">
+            <!--<div class="author">
               <i class="iconfont icon-article icon-contact"></i>
               {{item.author}}
-            </div>
+            </div>-->
             <div class="time">
               <i class="iconfont icon-article icon-clock"></i>
               {{item.createBy}}
-            </div>-->
+            </div>
             <div class="view">
               <i class="iconfont icon-article icon-visibility"></i>
-              {{item.viewNum}}次浏览
+              {{item.viewNum}}
             </div>
             <div class="comment">
               <i class="iconfont icon-article icon-message"></i>
-              {{item.commentNum}}条评论
+              {{item.commentNum}}
             </div>
             <div class="star">
               <i class="iconfont icon-article icon-thumbup"></i>
-              {{item.starNum}}个赞
+              {{item.starNum}}
             </div>
           </div>
         </li>
+        <loading v-show="haveMore"></loading>
       </ul>
+
+
     </scroll>
   </div>
 </template>
@@ -66,18 +80,25 @@
   import {ERR_OK} from "common/js/config";
   import {createArticleInfo} from "common/class/articleInfo";
   import Scroll from 'base/scroll/scroll'
+  import Loading from 'base/loading/loading'
+
   export default {
     name: "index",
     data() {
       return {
+        beforeScroll: true,
+        pullup: true,
         menuArr: [],
         currentCategoryId: 0,
         articleList: [],
         isFixed: false,
         tabFlag: 1,
-        isBottom: false,
         pageNum: 1,
-        pageSize: 10
+        oldPageNum: 1,
+        pageSize: 10,
+        haveMore: false,
+        oldCategory: 0,
+        oldTab: 1,
       }
     },
     created() {
@@ -86,32 +107,6 @@
     },
     activated() {
       window.addEventListener('scroll', this.handleScroll)
-    },
-    beforeRouteLeave(to, from, next) {
-      window.removeEventListener('scroll', this.handleScroll)
-      next()
-    },
-    watch: {
-      currentCategoryId(newVal, oldVal) {
-        //第一次进来
-        if (!oldVal) {
-          this.pageNum = 1
-        }
-        //如果新得分类id=旧的
-        if (newVal === oldVal) {
-          return
-        } else {
-          this.pageNum = 1
-        }
-      },
-      isBottom(newVal, oldVal) {
-        //若果isBottom为true且之前为false表明到底部了
-        if (oldVal === false && newVal === true) {
-          this.getMoreArticle()
-        } else {
-          return
-        }
-      }
     },
     methods: {
       ...mapMutations({
@@ -122,33 +117,23 @@
           return 'active'
         }
       },
-      tabClass(id){
+      tabClass(id) {
         if (this.tabFlag === id) {
           return 'active'
         }
       },
-      handleScroll() {
 
-        console.log("可视区域高度"+document.documentElement.clientHeight+'-----------'+window.innerHeight); // 可视区域高度
-        console.log("滚动高度"+window.pageYOffset +'-----------'+ document.documentElement.scrollTop +'-----------'+ document.body.scrollTop); // 滚动高度
-        console.log("文档高度"+document.body.offsetHeight); // 文档高度
-        console.log(document.body.scrollTop + window.innerHeight)
-        //监听右边是否距离底部10px了
-        if (document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight <= 10) {
-          this.isBottom = true
-        } else {
-          this.isBottom = false
-        }
-      },
-      selectTab(index) {
-        this.articleList = []
-        this.tabFlag = index+1
-        this.getArticle()
-      },
       //得到更多文章
       getMoreArticle() {
-        this.pageNum = this.pageNum + 1
-        this.getArticle()
+        this.haveMore = true
+        let i = setTimeout(() => {
+          this.pageNum = this.pageNum + 1
+          this.getArticle()
+          this.haveMore = false
+          clearTimeout(i);
+        }, 500)
+
+
       },
       //初始化分类
       initMenu() {
@@ -158,17 +143,44 @@
           }
         })
       },
-      selectCategory(id) {
-        console.log(id)
-        this.gotoTop()
-        this.articleList = []
-        this.currentCategoryId = id
-        this.getArticle()
+
+      //选择推荐/热门/最近
+      selectTab(index) {
+        this.tabFlag = index + 1
+        if (this.oldTab === this.tabFlag) {
+          return
+        }
+        if (this.oldTab !== this.tabFlag) {
+          this.pageNum = 1
+          this.oldTab = this.tabFlag
+          this.gotoTop()
+          this.articleList = []
+          this.getArticle()
+        }
+      },
+      //选择分类
+      selectCategory(index) {
+        //如果新点击的分类=旧的
+        if (this.oldCategory === index) {
+          return
+        }
+        //如果新点击的分类!=旧的
+        if (this.oldCategory !== index) {
+          //先将页数值设为1
+          this.pageNum = 1
+          //再将旧的分类设置为新点击的
+          this.oldCategory = index
+          //回到顶部
+          this.gotoTop()
+          this.articleList = []
+          this.currentCategoryId = index
+          this.getArticle()
+        }
       },
       selectArticle(article) {
         this.setArticleInfo(article)
         this.$router.push({
-          path: `/d/p/${article.id}`
+          path: `/m/p/${article.id}`
         })
       },
       //回到顶部
@@ -224,15 +236,16 @@
         this.articleList = this.articleList.concat(ret)
       }
     },
-    components:{
-      Scroll
+    components: {
+      Scroll,
+      Loading
     }
   }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-index
     width 100%
     height 100%
@@ -265,7 +278,7 @@
           .article-title
             color $color-text-black
             text-align left
-            font-size $font-size-16px
+            font-size $font-size-17px
             font-weight bold
           .article-content
             display flex
@@ -274,7 +287,7 @@
             .article-summary
               width 60%
               margin-right 5px
-              font-size $font-size-14px
+              font-size $font-size-13px
               color $color-text-black-l
               max-height 100px
               line-height 20px
@@ -289,22 +302,11 @@
                 border-radius 5px
           .article-info
             margin-top 20px
-            font-size $font-size-14px
-            color $color-text-gray-d
             display flex
-            width 100%
-            text-align center
+            font-size $font-size-13px
+            color $color-text-gray
+            div
+              margin 0 5px
             .icon-article
-              font-size $font-size-16px
-              color $color-text-gray
-            .author
-              flex 1
-            .time
-              flex 1
-            .view
-              flex 1
-            .comment
-              flex 1
-            .star
-              flex 1
+              font-size $font-size-13px
 </style>

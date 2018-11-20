@@ -19,10 +19,10 @@
       }
     },
     methods: {
-      selectItem (item) {
+      selectItem(item) {
         this.$emit('select', item)
       },
-      deleteOne (item) {
+      deleteOne(item) {
         this.$emit('delete', item)
       }
     }
@@ -30,8 +30,8 @@
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/stylus/variable"
-  @import "../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .search-list
     .search-item
       display flex

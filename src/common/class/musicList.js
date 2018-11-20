@@ -1,5 +1,5 @@
 export default class MusicList {
-  constructor ({id,name,picUrl,playCount,trackCount,creator}) {
+  constructor({id, name, picUrl, playCount, trackCount, creator}) {
     this.id = id
     this.name = name
     this.picUrl = picUrl
@@ -8,7 +8,8 @@ export default class MusicList {
     this.creator = creator
   }
 }
-export function createSearchMusicList (musicList) {
+
+export function createSearchMusicList(musicList) {
   return new MusicList({
     id: musicList.id,
     name: musicList.name,
@@ -18,7 +19,8 @@ export function createSearchMusicList (musicList) {
     creator: musicList.creator.nickname,
   })
 }
-export function createMusicList (musicList) {
+
+export function createMusicList(musicList) {
   return new MusicList({
     id: musicList.id,
     name: musicList.name,

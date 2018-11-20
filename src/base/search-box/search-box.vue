@@ -15,21 +15,21 @@
         default: '搜索歌曲、歌手'
       }
     },
-    data () {
+    data() {
       return {
         query: '',
       }
     },
-    created () {
+    created() {
       this.$watch('query', debounce((newQuery) => {
         this.$emit('query', newQuery)
       }, 300))
     },
     methods: {
-      clear () {
+      clear() {
         this.query = ''
       },
-      setQuery (query) {
+      setQuery(query) {
         this.query = query
       }
     }
@@ -37,8 +37,8 @@
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/stylus/variable"
-  @import "../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .search-box
     position relative
     display flex

@@ -33,14 +33,15 @@
 </template>
 
 <script>
-  import {getSearchSongs, getSongDetail,getSearchSinger,getSearchList} from 'api/search'
+  import {getSearchSongs, getSongDetail, getSearchSinger, getSearchList} from 'api/search'
   import {ERR_OK} from "common/js/config";
   import {creatSong} from "common/class/song";
   import {creatSinger} from "common/class/singer";
   import {createSearchMusicList} from "common/class/musicList";
-  import {mapMutations,mapActions} from 'vuex'
+  import {mapMutations, mapActions} from 'vuex'
   import Loading from 'base/loading/loading'
   import NoResult from 'base/no-result/no-result'
+
   export default {
     props: {
       keyWorlds: {
@@ -56,54 +57,54 @@
         default: true
       }
     },
-    data () {
+    data() {
       return {
         singer: {},
         songs: [],
-        isFirst:false,
-        songList:{},
+        isFirst: false,
+        songList: {},
         searchShow: true,
         page: 0,
         haveMore: true,
       }
     },
-    methods:{
+    methods: {
       ...mapMutations({
-        setSingerInfo:'SET_SINGER_INFO',
-        setMusicList:'SET_MUSIC_LIST'
+        setSingerInfo: 'SET_SINGER_INFO',
+        setMusicList: 'SET_MUSIC_LIST'
       }),
       ...mapActions([
         'insertSong'
       ]),
-      selectSinger(singer){
+      selectSinger(singer) {
         this.setSingerInfo(singer)
         this.$router.push({
           path: `/m/music/search/singer/${singer.id}`
         })
       },
-      selectList(list){
+      selectList(list) {
         this.setMusicList(list)
         this.$router.push({
           path: `/m/music/search/list/${list.id}`
         })
       },
-      selectSong(song){
+      selectSong(song) {
         getSongDetail(song.id).then((res) => {
           song.image = res.songs[0].al.picUrl
           this.insertSong(song)
         })
         this.$emit('select')
       },
-      search(keyWorlds){
+      search(keyWorlds) {
         this.searchShow = false
         this.haveMore = true
         this.page = 0
         this.isFirst = true
-        this.searchSong(keyWorlds,this.page)
+        this.searchSong(keyWorlds, this.page)
         this.searchSinger(keyWorlds)
         this.searchList(keyWorlds)
       },
-      searchMore () {
+      searchMore() {
         this.isFirst = false
         if (!this.haveMore) {
           return
@@ -111,25 +112,25 @@
         if (!this.songs.length) {
           return
         }
-        this.searchSong(this.keyWorlds,this.page)
+        this.searchSong(this.keyWorlds, this.page)
         this.page += 30
       },
-      searchSong(keyWorlds,page){
-        getSearchSongs(keyWorlds,page).then((res)=>{
+      searchSong(keyWorlds, page) {
+        getSearchSongs(keyWorlds, page).then((res) => {
           if (!res.result.songs) {
             this.haveMore = false
             return
           }
-          if(res.code === ERR_OK){
-            if(this.isFirst){
+          if (res.code === ERR_OK) {
+            if (this.isFirst) {
               this.page += 30
-              this.songs = res.result.songs.map((music)=>{
+              this.songs = res.result.songs.map((music) => {
                 return creatSong(music)
               })
-              if(this.songs.length<30){
+              if (this.songs.length < 30) {
                 this.haveMore = false
               }
-            }else if(!this.isFirst){
+            } else if (!this.isFirst) {
               let list = res.result.songs
               if (!res.result.songs) {
                 this.haveMore = false
@@ -145,41 +146,41 @@
           this.$emit('refresh')
         })
       },
-      searchSinger(keyWorlds){
-        getSearchSinger(keyWorlds).then((res)=>{
-          if(res.code === ERR_OK &&res.result.artistCount>0){
+      searchSinger(keyWorlds) {
+        getSearchSinger(keyWorlds).then((res) => {
+          if (res.code === ERR_OK && res.result.artistCount > 0) {
             let artists = res.result.artists[0]
             this.singer = creatSinger(artists)
           }
         })
       },
-      searchList(keyWorlds){
-        getSearchList(keyWorlds).then((res)=>{
-          if(res.code === ERR_OK && res.result.playlistCount>0){
-              let musicList = res.result.playlists[0]
-              this.songList = createSearchMusicList(musicList)
+      searchList(keyWorlds) {
+        getSearchList(keyWorlds).then((res) => {
+          if (res.code === ERR_OK && res.result.playlistCount > 0) {
+            let musicList = res.result.playlists[0]
+            this.songList = createSearchMusicList(musicList)
           }
         })
       }
     },
     watch: {
-      keyWorlds (val) {
+      keyWorlds(val) {
         if (val === '') {
           this.songs = []
           this.haveMore = false
           return
         }
-        this.singer={},
-        this.isFirst=true,
-        this.songList={},
-        this.songs = []
+        this.singer = {},
+          this.isFirst = true,
+          this.songList = {},
+          this.songs = []
         this.searchShow = true
         this.page = 0
         this.haveMore = true
         this.search(val)
       }
     },
-    components:{
+    components: {
       Loading,
       NoResult
     }
@@ -187,8 +188,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-music-suggest
     z-index 100
     height 100%

@@ -19,78 +19,76 @@ export default [
     redirect: '/d/index'
   },
   {
-    path:'/d/index',
-    name:'dIndex',
-    component:DIndex
+    path: '/d/index',
+    name: 'dIndex',
+    component: DIndex
   },
   {
-    path:'/d/explore',
-    name:'dExplore',
-    component:Explore,
+    path: '/d/explore',
+    name: 'dExplore',
+    component: Explore,
   },
   {
-    path:'/d/p/:id',
-    name:'dDetail',
-    component:Detail,
+    path: '/d/p/:id',
+    name: 'dDetail',
+    component: Detail,
   },
   {
-    path:'/d/music',
-    name:'dMusic',
-    component:Music,
-    redirect:'/d/music/recommend',
-    children:[
+    path: '/d/music',
+    name: 'dMusic',
+    component: Music,
+    redirect: '/d/music/recommend',
+    children: [
       {
-        path:'/d/music/recommend',
-        name:'dMusicRecommend',
-        component:MusicRecommend,
+        path: '/d/music/recommend',
+        name: 'dMusicRecommend',
+        component: MusicRecommend,
       },
       {
-        path:'/d/music/recommend/:id',
-        name:'dMusicList',
-        component:MusicList,
+        path: '/d/music/recommend/:id',
+        name: 'dMusicList',
+        component: MusicList,
       },
       {
-        path:'/d/music/singer',
-        name:'dMusicSinger',
-        component:MusicSinger,
+        path: '/d/music/singer',
+        name: 'dMusicSinger',
+        component: MusicSinger,
       },
       {
-        path:'/d/music/singer/:id',
-        name:'dMusicSingerDetail',
-        component:MusicSingerDetail,
+        path: '/d/music/singer/:id',
+        name: 'dMusicSingerDetail',
+        component: MusicSingerDetail,
       },
       {
-        path:'/d/music/rank',
-        name:'dMusicRank',
-        component:MusicRank,
+        path: '/d/music/rank',
+        name: 'dMusicRank',
+        component: MusicRank,
       },
       {
-        path:'/d/music/rank/:id',
-        name:'dMusicRankDetail',
-        component:MusicRankDetail,
+        path: '/d/music/rank/:id',
+        name: 'dMusicRankDetail',
+        component: MusicRankDetail,
       },
     ]
   },
   {
-    path:'/d/about',
-    name:'dAbout',
-    component:About,
+    path: '/d/about',
+    name: 'dAbout',
+    component: About,
   },
   {
-    path:'/d/personal',
-    name:'dPersonal',
-    component:Personal,
+    path: '/d/personal',
+    name: 'dPersonal',
+    component: Personal,
   },
   {
-    path:'/d/login',
-    name:'dLogin',
-    component:Login
+    path: '/d/login',
+    name: 'dLogin',
+    component: Login
   },
   {
-    path:'/d/sign',
-    name:'dSign',
-    component:Sign
+    path: '/d/sign',
+    name: 'dSign',
+    component: Sign
   },
-  /*desktop end*/
-
 ]

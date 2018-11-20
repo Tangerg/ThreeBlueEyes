@@ -146,8 +146,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-personal
     width 100%
     height 100%
@@ -187,11 +187,11 @@
         height 100%
         width 100%
         display flex
-        border-bottom 1px solid $color-line-white
+        border-bottom 0.5px solid $color-line-white
         .info-data
           flex 1
           text-align center
-          border-right 1px solid $color-line-white
+          border-right 0.5px solid $color-line-white
           .info-data-top
             display block
             width 100%
@@ -209,7 +209,7 @@
             font-weight 400
             padding-bottom 10px
     .personal-other
-      border-top 1px solid $color-line-white
+      border-top 0.5px solid $color-line-white
       margin-top 10px
       background #fff
       .other-info
@@ -226,7 +226,7 @@
             font-size $font-size-20px
         .other-info-div
           width 100%
-          border-bottom 1px solid $color-line-white
+          border-bottom 0.5px solid $color-line-white
           padding 18px 10px 18px 0
           font-size $font-size-16px
           color $color-text-black

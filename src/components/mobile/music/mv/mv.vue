@@ -3,9 +3,9 @@
 </template>
 
 <script>
-    export default {
-        name: "mv"
-    }
+  export default {
+    name: "mv"
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

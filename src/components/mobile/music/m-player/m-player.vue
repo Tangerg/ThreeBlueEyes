@@ -177,7 +177,7 @@
       musicUrl(url) {
         this.$refs.audio.src = url
         let stop = setInterval(() => {
-          if(this.$refs.audio.duration){
+          if (this.$refs.audio.duration) {
             this.duration = this.$refs.audio.duration
           }
           if (this.duration !== 0) {
@@ -395,8 +395,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-music-m-player
     .normal-player
       &.normal-enter-active, &.normal-leave-active

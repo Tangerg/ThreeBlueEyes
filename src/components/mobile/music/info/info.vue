@@ -1,7 +1,7 @@
 <template>
   <div class="tbe-m-music-music-details">
     <div class="music-details-up">
-      <div class="up-items"  @click="goToPush('/m/music/info/history')">
+      <div class="up-items" @click="goToPush('/m/music/info/history')">
         <span class="item-icon">
             <i class="iconfont icon-play"></i>
         </span>
@@ -29,29 +29,30 @@
           <span class="down-item-text">创建的歌单&nbsp;&nbsp;<span class="down-item-text-num">(假的)</span></span>
           <span class="iconfont icon-setting down-item-icon2"></span>
         </span>
-        <span class="down-item">
+      <span class="down-item">
           <span class="down-item-icon">
             <i class="iconfont icon-iconfontqianjin-copy"></i>
           </span>
           <span class="down-item-text">收藏的歌单&nbsp;&nbsp;<span class="down-item-text-num">(假的)</span></span>
           <span class="iconfont icon-setting down-item-icon2"></span>
         </span>
-      </div>
+    </div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
   import {mapGetters} from 'vuex'
+
   export default {
-    computed:{
+    computed: {
       ...mapGetters([
         'playHistory',
         'favourateList'
       ]),
     },
-    methods:{
-      goToPush (path) {
+    methods: {
+      goToPush(path) {
         this.$router.push(path)
       }
     }
@@ -59,8 +60,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-music-music-details
     position relative
     display flex

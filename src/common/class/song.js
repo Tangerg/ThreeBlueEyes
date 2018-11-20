@@ -1,5 +1,5 @@
 export default class Song {
-  constructor ({id, mid, singer, name, album, image}) {
+  constructor({id, mid, singer, name, album, image}) {
     this.id = id
     this.singer = singer
     this.name = name
@@ -7,7 +7,8 @@ export default class Song {
     this.image = image
   }
 }
-function singerName (singers) {
+
+function singerName(singers) {
   let name = []
   name = singers.map((singer) => {
     return singer.name
@@ -18,20 +19,20 @@ function singerName (singers) {
 
 export function creatSongList(music) {
   return new Song({
-    id:music.id,
-    singer:singerName(music.ar),
-    name:music.name,
-    album:music.al.name,
-    image:music.al.picUrl
+    id: music.id,
+    singer: singerName(music.ar),
+    name: music.name,
+    album: music.al.name,
+    image: music.al.picUrl
   })
 }
 
 export function creatSong(music) {
   return new Song({
-    id:music.id,
-    singer:singerName(music.artists),
-    name:music.name,
-    album:music.album.name,
-    image:music.album.picUrl
+    id: music.id,
+    singer: singerName(music.artists),
+    name: music.name,
+    album: music.album.name,
+    image: music.album.picUrl
   })
 }

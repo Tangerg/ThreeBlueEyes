@@ -1,5 +1,5 @@
 <template>
-  <div class="tbe-about">
+  <div class="tbe-d-about">
     <div class="about-container">
       <div class="base-container">
         <h1 class="title">关于团队</h1>
@@ -22,7 +22,7 @@
       <div class="base-container">
         <div class="title">联系我们</div>
         <div class="map">
-          <img src="./map.png" alt="地图">
+          <img src="../../../common/image/map.png" alt="地图">
         </div>
         <div class="address">
           <p>三个蓝眼(四川理工学院)&nbsp;</p>
@@ -119,7 +119,8 @@
         if (feedback.name === '') {
           this.$message({
             message: '姓名不能为空',
-            type: 'error'
+            type: 'error',
+            duration: 1500
           })
           this.feedBack.name = ''
           return
@@ -127,7 +128,8 @@
         if (feedback.email === '') {
           this.$message({
             message: '邮箱不能为空',
-            type: 'error'
+            type: 'error',
+            duration: 1500
           })
           this.feedBack.email = ''
           return
@@ -135,7 +137,8 @@
         if (feedback.content === '') {
           this.$message({
             message: '留言不能为空',
-            type: 'error'
+            type: 'error',
+            duration: 1500
           })
           return
         }
@@ -144,7 +147,8 @@
         if (!emailReg.test(feedback.email)) {
           this.$message({
             message: '邮箱格式不正确,请重新输入',
-            type: 'error'
+            type: 'error',
+            duration: 1500
           })
           this.feedBack.email = ''
           return
@@ -154,7 +158,8 @@
           if (res.code === ERR_OK) {
             this.$message({
               message: '提交成功',
-              type: 'success'
+              type: 'success',
+              duration: 1500
             })
             this.feedBack.name = ''
             this.feedBack.email = ''
@@ -162,19 +167,20 @@
           } else {
             this.$message({
               message: '发生未知错误，请稍后重试',
-              type: 'error'
+              type: 'error',
+              duration: 1500
             })
           }
         })
       },
-    }
+    },
   }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
-  .tbe-about
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
+  .tbe-d-about
     position relative
     width 100%
     min-height 100%

@@ -8,19 +8,19 @@ export const playlistMixin = {
       'playList'
     ])
   },
-  mounted () {
+  mounted() {
     this.handlePlaylist(this.playList)
   },
-  activated () {
+  activated() {
     this.handlePlaylist(this.playList)
   },
   watch: {
-    playList (newVal) {
+    playList(newVal) {
       this.handlePlaylist(newVal)
     }
   },
   methods: {
-    handlePlaylist () {
+    handlePlaylist() {
       throw new Error('component must implement handlePlaylist method')
     }
   }

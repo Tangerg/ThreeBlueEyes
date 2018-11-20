@@ -1,41 +1,45 @@
 <template>
-    <scroll class="singer-item" :data="singers">
-      <ul>
-        <li class="item-list" v-for="(singer,index) in singers" @click.stop="selectItem(singer, index)">
-          <div class="avatar">
-            <img width="95%" height="95%" v-lazy="singer.avatar" />
-          </div>
-          <div class="content">
-            <h2 class="name">{{singer.name}}</h2>
-          </div>
-        </li>
-      </ul>
-    </scroll>
+  <scroll class="singer-item" :data="singers" ref="scroll">
+    <ul>
+      <li class="item-list" v-for="(singer,index) in singers" @click.stop="selectItem(singer, index)">
+        <div class="avatar">
+          <img width="95%" height="95%" v-lazy="singer.avatar"/>
+        </div>
+        <div class="content">
+          <h2 class="name">{{singer.name}}</h2>
+        </div>
+      </li>
+    </ul>
+  </scroll>
 </template>
 
 <script>
   import Scroll from '../../base/scroll/scroll'
+
   export default {
-    props:{
-      singers:{
-        type:Array,
-        default:null
+    props: {
+      singers: {
+        type: Array,
+        default: null
       }
     },
-    methods:{
-      selectItem (item, index) {
+    activated() {
+      this.$refs.scroll.refresh()
+    },
+    methods: {
+      selectItem(item, index) {
         this.$emit('selectItem', item, index)
       },
     },
-    components:{
+    components: {
       Scroll
     }
   }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/stylus/variable"
-  @import "../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .singer-item
     position: relative;
     width: 100%;

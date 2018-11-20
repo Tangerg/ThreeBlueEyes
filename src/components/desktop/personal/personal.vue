@@ -1,12 +1,12 @@
 <template>
-  <div class="tbe-personal">
+  <div class="tbe-d-personal">
     <div class="personal-container">
       <div class="container-left">
         <div class="user-basic-info">
           <div class="user-basic-l">
             <div class="user-info">
               <div class="avatar">
-                <img src="./logo.png" alt="">
+                <img src="../../../common/image/logo.png" alt="avatar">
               </div>
               <div class="other">
                 <div class="name">{{userInfo.userName}}</div>
@@ -110,9 +110,9 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
-  .tbe-personal
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
+  .tbe-d-personal
     position relative
     width 100%
     height 100%
@@ -138,6 +138,9 @@
               display flex
               padding 20px
               .avatar
+                border-radius 50%
+                padding 2px
+                box-shadow: 0 0 20px 1px $color-text-gray-l
                 margin-right 10px
                 img
                   width 50px

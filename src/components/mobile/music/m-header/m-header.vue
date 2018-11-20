@@ -7,7 +7,8 @@
       <span class="header-center-item" @click="goTo('/m/music/info')" :class="{on: '/m/music/info'===$route.path}">
         <i class="iconfont icon-yinle"></i>
       </span>
-      <span class="header-center-item" @click="goTo('/m/music/home')" :class="{on: '/m/music/home/recommend' ===$route.path || '/m/music/home/singer' ===$route.path || '/m/music/home/rank'===$route.path}">
+      <span class="header-center-item" @click="goTo('/m/music/home')"
+            :class="{on: '/m/music/home/recommend' ===$route.path || '/m/music/home/singer' ===$route.path || '/m/music/home/rank'===$route.path}">
         <i class="iconfont icon-wangyiyunyinle"></i>
       </span>
       <span class="header-center-item" @click="goTo('/m/music/mv')" :class="{on: '/m/music/mv'===$route.path}">
@@ -22,18 +23,19 @@
 
 <script>
   import {mapMutations} from 'vuex'
+
   export default {
     methods: {
       ...mapMutations({
-        setPlayingState:'SET_PLAYING_STATE',
+        setPlayingState: 'SET_PLAYING_STATE',
       }),
-      goTo (path) {
+      goTo(path) {
         this.$router.replace(path)
       },
-      goToPush (path) {
+      goToPush(path) {
         this.$router.push(path)
       },
-      backIndex(){
+      backIndex() {
         this.setPlayingState(false)
         this.goToPush('/m/index')
       },
@@ -42,8 +44,8 @@
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-music-header
     background-color $color-background-red
     position: relative
@@ -66,13 +68,13 @@
       align-items center
       padding-left 15%
       padding-right 15%
-      color rgba(255,255,255,0.7)
+      color rgba(255, 255, 255, 0.7)
       .header-center-item
         flex 1
         align-items center
         text-align center
         &.on
-          color rgba(255,255,255,1)
+          color rgba(255, 255, 255, 1)
         .icon-wangyiyunyinle
           font-size 25px
     .header-right

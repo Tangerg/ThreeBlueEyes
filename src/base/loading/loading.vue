@@ -5,19 +5,19 @@
 </template>
 
 <script>
-export default {
-  props: {
-    title: {
-      type: String,
-      default: '拼命加载中'
+  export default {
+    props: {
+      title: {
+        type: String,
+        default: '拼命加载中'
+      }
     }
   }
-}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/stylus/variable"
-  @import "../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .loading
     width 100%
     height 40px

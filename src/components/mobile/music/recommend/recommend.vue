@@ -11,7 +11,7 @@
           </slider>
         </div>
         <div class="recommend-list" v-show="recommendlist.length>0">
-          <h1 class="list-title" >
+          <h1 class="list-title">
             推荐歌单
           </h1>
           <ul class="items">
@@ -35,8 +35,8 @@
             推荐歌曲
             <i class="iconfont icon-iconfontqianjin-copy"></i>
           </h1>
-          <ul  class="items">
-            <li v-for="song in recommendsong" :key="song.id" class="item" >
+          <ul class="items">
+            <li v-for="song in recommendsong" :key="song.id" class="item">
               <div class="icon">
                 <img @load="loadImage" v-lazy="song.song.album.picUrl" alt="">
               </div>
@@ -58,36 +58,37 @@
   import {createMusicList} from 'common/class/musicList'
   import Scroll from 'base/scroll/scroll'
   import Slider from 'base/slider/slider'
-  import {getBanner,getRecommendList,getRecommendSong} from 'api/recommend'
+  import {getBanner, getRecommendList, getRecommendSong} from 'api/recommend'
   import {ERR_OK} from "common/js/config"
   import {playlistMixin} from 'common/js/mixin'
+
   export default {
-    mixins:[playlistMixin],
-    data(){
-      return{
-        banners:[],
+    mixins: [playlistMixin],
+    data() {
+      return {
+        banners: [],
         recommendlist: [],
         recommendlistNine: [],
         recommendsong: []
       }
     },
-    created (){
+    created() {
       this._initBanner()
       this._initRecommendList()
       this._initRecommendSong()
     },
-    methods:{
+    methods: {
       ...mapMutations({
         setMusicList: 'SET_MUSIC_LIST',
-        setRecommendList:'SET_RECOMMEND_LIST'
+        setRecommendList: 'SET_RECOMMEND_LIST'
       }),
-      recListMore(){
+      recListMore() {
         this.$router.push({
           path: '/home/recommend/more'
         })
         this.setRecommendList(this.recommendlist)
       },
-      handlePlaylist (playlist) {
+      handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '8%' : ''
         this.$refs.recommend.style.bottom = bottom
         this.$refs.scroll.refresh()
@@ -98,31 +99,31 @@
           this.$refs.scroll.refresh()
         }
       },
-      _initBanner(){
+      _initBanner() {
         getBanner().then((res) => {
-          if(res.code === ERR_OK){
+          if (res.code === ERR_OK) {
             this.banners = res.banners
           }
         })
       },
-      _initRecommendList(){
+      _initRecommendList() {
         getRecommendList().then((res) => {
-          if(res.code === ERR_OK){
-            this.recommendlist = res.result.map((musiclist)=>{
+          if (res.code === ERR_OK) {
+            this.recommendlist = res.result.map((musiclist) => {
               return createMusicList(musiclist)
             })
-            this.recommendlistNine = this.recommendlist.slice(0,9)
+            this.recommendlistNine = this.recommendlist.slice(0, 9)
           }
         })
       },
-      _initRecommendSong(){
+      _initRecommendSong() {
         getRecommendSong().then((res) => {
-          if(res.code === ERR_OK){
-            this.recommendsong = res.result.slice(0,9)
+          if (res.code === ERR_OK) {
+            this.recommendsong = res.result.slice(0, 9)
           }
         })
       },
-      _chickList(songList){
+      _chickList(songList) {
         this.setMusicList(songList)
         this.$router.push({
           path: `/m/music/home/recommend/${songList.id}`
@@ -130,7 +131,7 @@
 
       }
     },
-    components:{
+    components: {
       Slider,
       Scroll
     }
@@ -138,8 +139,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-music-recommend
     position fixed
     top 95px
@@ -209,7 +210,7 @@
                 width 100%
                 height 35px
                 border-radius 3px
-                background linear-gradient(rgba(109, 109, 109, 0.4),rgba(255, 255, 255, 0))
+                background linear-gradient(rgba(109, 109, 109, 0.4), rgba(255, 255, 255, 0))
               img
                 width 100%
                 height 100%

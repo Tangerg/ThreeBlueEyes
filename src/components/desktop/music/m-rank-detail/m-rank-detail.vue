@@ -117,8 +117,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-d-music-rank-detail
     position absolute
     top 0
@@ -152,6 +152,7 @@
           .alia-name
             flex 1
             font-size $font-size-17px
+            color $color-text-black-l
           .play-btn
             flex 1
       .song-list

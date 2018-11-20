@@ -6,6 +6,7 @@
 
 <script>
   import BScroll from 'better-scroll'
+
   export default {
     props: {
       probeType: {
@@ -37,13 +38,13 @@
         default: 20
       }
     },
-    mounted () {
+    mounted() {
       setTimeout(() => {
         this._initScroll()
       })
     },
     methods: {
-      _initScroll () {
+      _initScroll() {
         if (!this.$refs.wrapper) {
           return
         }
@@ -71,24 +72,24 @@
           })
         }
       },
-      enable () {
+      enable() {
         this.scroll && this.scroll.enable()
       },
-      disable () {
+      disable() {
         this.scroll && this.scroll.disable()
       },
-      refresh () {
+      refresh() {
         this.scroll && this.scroll.refresh()
       },
-      scrollTo () {
+      scrollTo() {
         this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
       },
-      scrollToElement () {
+      scrollToElement() {
         this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
       }
     },
     watch: {
-      data () {
+      data() {
         setTimeout(() => {
           this.refresh()
         }, this.refreshDelay)

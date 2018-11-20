@@ -11,7 +11,7 @@
         <div class="filter">筛选</div>
       </div>
       <div class="container" ref="container">
-          <singer-item :singers="singerDetail" @selectItem="selectSinger" ref="singer-item"></singer-item>
+        <singer-item :singers="singerDetail" @selectItem="selectSinger" ref="singer-item"></singer-item>
       </div>
       <div v-show="!singerDetail.length" class="loading-content">
         <loading></loading>
@@ -22,26 +22,27 @@
 
 <script>
   import SingerItem from 'base/singer-item/singer-item'
-  import {mapGetters,mapMutations} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
   import {getSinger} from 'api/singer'
   import {ERR_OK} from "common/js/config";
   import {creatSinger} from 'common/class/singer'
   import Scroll from 'base/scroll/scroll'
   import Loading from 'base/loading/loading'
+
   export default {
-    data(){
+    data() {
       return {
-        singerDetail:[]
+        singerDetail: []
       }
     },
-    created (){
+    created() {
       this._initSingerList(this.singerCategory)
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'singerCategory',
       ]),
-      title(){
+      title() {
         switch (this.singerCategory) {
           case 1001:
             return '华语男歌手'
@@ -74,34 +75,34 @@
         }
       }
     },
-    methods:{
+    methods: {
       ...mapMutations({
-        setSingerInfo:'SET_SINGER_INFO'
+        setSingerInfo: 'SET_SINGER_INFO'
       }),
-      _back(){
+      _back() {
         this.$router.back()
       },
-      _initSingerList(category){
-        if (!category){
+      _initSingerList(category) {
+        if (!category) {
           this.$router.push('/m/music/home/singer')
           return
         }
         getSinger(category).then((res) => {
-          if(res.code === ERR_OK){
-            this.singerDetail = res.artists.map((singer)=>{
+          if (res.code === ERR_OK) {
+            this.singerDetail = res.artists.map((singer) => {
               return creatSinger(singer)
             })
           }
         })
       },
-      selectSinger(item,index){
+      selectSinger(item, index) {
         this.setSingerInfo(item)
         this.$router.push({
           path: `/m/music/home/singer/${item.id}`
         })
       }
     },
-    components:{
+    components: {
       SingerItem,
       Scroll,
       Loading
@@ -110,12 +111,14 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   &.list-fade-enter-active, &.list-fade-leave-active
     transition: all 0.3s
+
   &.list-fade-enter, &.list-fade-leave-to
     opacity: 0
+
   .tbe-m-music-singer-list
     position fixed
     z-index: 100

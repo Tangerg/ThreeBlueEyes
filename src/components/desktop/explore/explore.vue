@@ -1,5 +1,5 @@
 <template>
-  <div class="tbe-explore">
+  <div class="tbe-d-explore">
     <div class="explore-container">
       <div class="container-left" :class="isFixed === true ? 'fixed' :''">
         <p class="all-topic" @click="selectCategory(0)">全部话题</p>
@@ -75,6 +75,7 @@
                   </div>
                 </div>
               </li>
+              <div class="loading" v-loading="this.haveMore" v-show="this.haveMore"></div>
             </ul>
           </div>
         </div>
@@ -106,7 +107,10 @@
         tabFlag: 1,
         isBottom: false,
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        haveMore: false,
+        oldCategory: 0,
+        oldTab: 1,
       }
     },
     created() {
@@ -121,18 +125,6 @@
       next()
     },
     watch: {
-      currentCategoryId(newVal, oldVal) {
-        //第一次进来
-        if (!oldVal) {
-          this.pageNum = 1
-        }
-        //如果新得分类id=旧的
-        if (newVal === oldVal) {
-          return
-        } else {
-          this.pageNum = 1
-        }
-      },
       isBottom(newVal, oldVal) {
         //若果isBottom为true且之前为false表明到底部了
         if (oldVal === false && newVal === true) {
@@ -151,7 +143,7 @@
           return 'active'
         }
       },
-      tabClass(id){
+      tabClass(id) {
         if (this.tabFlag === id) {
           return 'active'
         }
@@ -175,15 +167,15 @@
           this.isBottom = false
         }
       },
-      selectTab(tab) {
-        this.articleList = []
-        this.tabFlag = tab
-        this.getArticle()
-      },
       //得到更多文章
       getMoreArticle() {
-        this.pageNum = this.pageNum + 1
-        this.getArticle()
+        this.haveMore = true
+        let i = setTimeout(() => {
+          this.pageNum = this.pageNum + 1
+          this.getArticle()
+          this.haveMore = false
+          clearTimeout(i);
+        }, 1000)
       },
       //初始化分类
       initMenu() {
@@ -193,11 +185,35 @@
           }
         })
       },
+      selectTab(tab) {
+        this.tabFlag = tab
+        if (this.oldTab === this.tabFlag) {
+          return
+        }
+        if (this.oldTab !== this.tabFlag) {
+          this.pageNum = 1
+          this.oldTab = this.tabFlag
+          this.gotoTop()
+          this.articleList = []
+          this.getArticle()
+        }
+      },
       selectCategory(id) {
-        this.gotoTop()
-        this.articleList = []
-        this.currentCategoryId = id
-        this.getArticle()
+        if (this.oldCategory === id) {
+          return
+        }
+        //如果新点击的分类!=旧的
+        if (this.oldCategory !== id) {
+          //先将页数值设为1
+          this.pageNum = 1
+          //再将旧的分类设置为新点击的
+          this.oldCategory = id
+          //回到顶部
+          this.gotoTop()
+          this.articleList = []
+          this.currentCategoryId = id
+          this.getArticle()
+        }
       },
       selectArticle(article) {
         this.setArticleInfo(article)
@@ -264,9 +280,9 @@
   };
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
-  .tbe-explore
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
+  .tbe-d-explore
     position relative
     width 100%
     height 100%
@@ -292,12 +308,14 @@
           font-size $font-size-17px
           color $color-text-white
           font-weight bold
+          cursor pointer
         .topic-category
           padding 10px
           display inline-block
           margin 5px
           font-size $font-size-17px
           color $color-text-black-l
+          cursor pointer
           &:hover
             color $color-text-blue
         .active
@@ -322,6 +340,7 @@
               padding 18px 20px
               font-size $font-size-16px
               line-height 22px
+              cursor pointer
               &:hover
                 color $color-href-blue
             .active
@@ -371,14 +390,15 @@
                     .article-title
                       flex 0.5
                       max-height 67px
-                      font-size $font-size-18px
+                      font-size $font-size-19px
                       font-weight 600
                       line-height 1.6
-                      color $color-text-black-l
+                      color $color-text-black
                     .article-summary
                       flex 0.5
                       max-height 67px
                       overflow hidden
+                      color $color-text-black-l
                       .article-summary-text
                         font-size $font-size-15px
                         white-space normal
@@ -405,4 +425,7 @@
                     flex 1
                   .star
                     flex 1
+              .loading
+                height 150px
+                background-color $color-background-global
 </style>

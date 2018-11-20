@@ -39,15 +39,16 @@
 </template>
 
 <script>
-  import {mapActions,mapGetters} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
   import {creatSongList} from "common/class/song";
   import Scroll from 'base/scroll/scroll'
   import SongList from 'base/song-list/song-list'
   import Loading from 'base/loading/loading'
   import {playlistMixin} from 'common/js/mixin'
+
   const RESERVED_HEIGHT = 50
   export default {
-    mixins:[playlistMixin],
+    mixins: [playlistMixin],
     data() {
       return {
         ListDetail: [],
@@ -55,32 +56,32 @@
         headerTitle: '排行榜'
       }
     },
-    created(){
+    created() {
       this._initRankList(this.rankList.tracks)
       this.probeType = 3
       this.listenScroll = true
     },
-    mounted () {
+    mounted() {
       this.imageHeight = this.$refs.bgImage.clientHeight
       this.minTranslateY = -this.imageHeight + RESERVED_HEIGHT
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'rankList',
       ]),
-      playCount(){
+      playCount() {
         if (!this.rankList.playCount) {
           return
         }
         if (this.rankList.playCount < 1e4) {
           return Math.floor(this.rankList.playCount)
-        } else if(this.rankList.playCount < 1e8) {
+        } else if (this.rankList.playCount < 1e8) {
           return Math.floor(this.rankList.playCount / 10000) + '万'
         } else {
           return Math.floor(this.rankList.playCount / 100000000) + '亿'
         }
       },
-      listName(){
+      listName() {
         if (!this.rankList.name) {
           return
         }
@@ -90,50 +91,50 @@
         return `background-image:url(${this.rankList.coverImgUrl})`
       }
     },
-    components:{
+    components: {
       SongList,
       Scroll,
       Loading
     },
-    methods:{
+    methods: {
       ...mapActions([
         'selectPlay'
       ]),
-      scroll (pos) {
+      scroll(pos) {
         this.scrollY = pos.y
       },
-      handlePlaylist (playlist) {
+      handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '8%' : ''
         this.$refs.list.$el.style.bottom = bottom
         this.$refs.list.refresh()
       },
 
-      _initRankList(list){
+      _initRankList(list) {
         if (!this.rankList.id) {
           this.$router.push('/home/rank')
           return
         }
-        this.ListDetail = list.map((music)=>{
+        this.ListDetail = list.map((music) => {
           return creatSongList(music)
         })
       },
-      _back(){
+      _back() {
         this.$router.back()
       },
-      selectItem(item,index){
+      selectItem(item, index) {
         this.selectPlay({
           list: this.ListDetail,
           index: index
         })
       },
-      playAll(){
+      playAll() {
         this.selectPlay({
           list: this.ListDetail,
         })
       }
     },
     watch: {
-      scrollY (newY) {
+      scrollY(newY) {
         const percent = Math.abs(newY / this.imageHeight)
         if (newY < (this.minTranslateY + RESERVED_HEIGHT - 20)) {
           this.headerTitle = this.rankList.name
@@ -150,13 +151,15 @@
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../../common/stylus/variable"
-  @import "../../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .slide-enter-active, .slide-leave-active
     transition: all 0.3s
+
   .slide-enter, .slide-leave-to
     transform: translate3d(30%, 0, 0);
     opacity: 0;
+
   .tbe-m-music-rank-detail
     position fixed
     z-index: 150

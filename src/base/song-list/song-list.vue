@@ -1,56 +1,56 @@
 <template>
-    <div class="song-list">
-      <div class="sequence-play" @click.stop="playAll">
-        <i class="iconfont icon-play2"></i>
-        <span class="text">播放全部</span>
-        <span class="count">(共{{totalNumber}}首)</span>
-      </div>
-      <ul>
-        <li class="list-item" v-for="(song, index) in songs" :key="song.id" @click.stop="selectItem(song, index)">
-          <p class="rank">{{index + 1}}</p>
-          <div class="content">
-            <h2 class="name">{{song.name}}</h2>
-            <p class="desc">{{describe(song)}}</p>
-          </div>
-        </li>
-      </ul>
+  <div class="song-list">
+    <div class="sequence-play" @click.stop="playAll">
+      <i class="iconfont icon-play2"></i>
+      <span class="text">播放全部</span>
+      <span class="count">(共{{totalNumber}}首)</span>
     </div>
+    <ul>
+      <li class="list-item" v-for="(song, index) in songs" :key="song.id" @click.stop="selectItem(song, index)">
+        <p class="rank">{{index + 1}}</p>
+        <div class="content">
+          <h2 class="name">{{song.name}}</h2>
+          <p class="desc">{{describe(song)}}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
-    export default {
-      props:{
-        songs:{
-          type:Array,
-          default:[]
-        }
+  export default {
+    props: {
+      songs: {
+        type: Array,
+        default: []
+      }
+    },
+    computed: {
+      totalNumber() {
+        return this.songs.length
+      }
+    },
+    methods: {
+      playAll() {
+        this.$emit('selectAll')
       },
-      computed:{
-        totalNumber () {
-          return this.songs.length
-        }
+      selectItem(item, index) {
+        this.$emit('select', item, index)
       },
-      methods:{
-        playAll(){
-          this.$emit('selectAll')
-        },
-        selectItem (item, index) {
-          this.$emit('select', item, index)
-        },
-        describe (song) {
-          if (song.album) {
-            return `${song.singer} - ${song.album}`
-          } else {
-            return `${song.singer}`
-          }
+      describe(song) {
+        if (song.album) {
+          return `${song.singer} - ${song.album}`
+        } else {
+          return `${song.singer}`
         }
       }
     }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/stylus/variable"
-  @import "../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .song-list
     background-color $color-background-global
     width 100%

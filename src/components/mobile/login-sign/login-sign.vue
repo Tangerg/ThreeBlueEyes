@@ -1,92 +1,93 @@
 <template>
   <transition name="van-fade">
     <div class="tbe-m-login-sign">
-    <section class="login-container">
-      <div class="login-inner">
-        <div class="login-header">
-          <h2 class="login-logo">三个蓝眼</h2>
-          <div class="login-header-title">
-            <a :class="{on: isLogin}" @click="switchLoginSign(1)">登陆</a>
-            <a :class="{on: !isLogin}" @click="switchLoginSign(2)">注册</a>
-          </div>
-        </div>
-        <div class="login-content">
-          <form @submit.prevent="login">
-            <div :class="{on: isLogin}">
-              <section class="login-message">
-                <input type="tel" placeholder="账号（123）" v-model="user.userName">
-              </section>
-              <section class="login-verification">
-                <input type="password" placeholder="密码（321）" v-model="user.passWorld">
-              </section>
+      <section class="login-container">
+        <div class="login-inner">
+          <div class="login-header">
+            <h2 class="login-logo">三个蓝眼</h2>
+            <div class="login-header-title">
+              <a :class="{on: isLogin}" @click="switchLoginSign(1)">登陆</a>
+              <a :class="{on: !isLogin}" @click="switchLoginSign(2)">注册</a>
             </div>
-            <div :class="{on: !isLogin}">
-              <section>
+          </div>
+          <div class="login-content">
+            <form @submit.prevent="login">
+              <div :class="{on: isLogin}">
                 <section class="login-message">
-                  <input type="text" placeholder="手机/邮箱/用户名" v-model="user.userName">
+                  <input type="tel" placeholder="账号（123）" v-model="user.userName">
                 </section>
                 <section class="login-verification">
-                  <input type="password" placeholder="密码" v-model="user.passWorld">
+                  <input type="password" placeholder="密码（321）" v-model="user.passWorld">
                 </section>
-                <section class="login-hint">
-                  注册即代表同意
-                  <a>《三个蓝眼服务协议》</a>
-                  <a>《隐私政策》</a>
+              </div>
+              <div :class="{on: !isLogin}">
+                <section>
+                  <section class="login-message">
+                    <input type="text" placeholder="手机/邮箱/用户名" v-model="user.userName">
+                  </section>
+                  <section class="login-verification">
+                    <input type="password" placeholder="密码" v-model="user.passWorld">
+                  </section>
+                  <section class="login-hint">
+                    注册即代表同意
+                    <a>《三个蓝眼服务协议》</a>
+                    <a>《隐私政策》</a>
+                  </section>
                 </section>
-              </section>
-            </div>
-            <van-button
-              :disabled="disabled"
-              type="primary"
-              class="login-sign"
-              @click="userLoginOrSign(user)"
-            >
-              {{this.isLogin ? '登陆' : '注册'}}
-            </van-button>
-          </form>
-          <a class="about-us">关于我们</a>
+              </div>
+              <van-button
+                :disabled="disabled"
+                type="primary"
+                class="login-sign"
+                @click="userLoginOrSign(user)"
+              >
+                {{this.isLogin ? '登陆' : '注册'}}
+              </van-button>
+            </form>
+            <a class="about-us">关于我们</a>
+          </div>
+          <a class="go-back" @click="$router.back()">
+            <i class="iconfont icon-back"></i>
+          </a>
         </div>
-        <a class="go-back" @click="$router.back()">
-          <i class="iconfont icon-back"></i>
-        </a>
-      </div>
-    </section>
-  </div>
+      </section>
+    </div>
   </transition>
 </template>
 
 <script>
-  import {mapMutations,mapActions} from 'vuex'
+  import {mapMutations, mapActions} from 'vuex'
   import {sign} from "api/user";
   import {login} from "api/user";
   import {ERR_OK} from "common/js/config";
   import {strTrim} from "common/js/util";
+
   export default {
-    data () {
+    data() {
       return {
-        oldFlag:1,
-        disabled:false,
+        oldFlag: 1,
+        disabled: false,
         isLogin: true, // true代表登陆, false代表注册
-        user:{
-          userName:'',
-          passWorld:''
+        user: {
+          userName: '',
+          passWorld: ''
         }
       }
     },
-    methods:{
+    methods: {
       ...mapActions([
         'saveUser'
       ]),
       //切换登陆注册框
-      switchLoginSign(flag){
+      switchLoginSign(flag) {
         if (flag === this.oldFlag) {
           return
-        }else if(flag === 1){
+        } else if (flag === 1) {
           this.oldFlag = 1
           this.isLogin = true
           this.user.userName = ''
           this.user.passWorld = ''
-        }else{
+        } else {
           this.oldFlag = 2
           this.isLogin = false
           this.user.userName = ''
@@ -118,13 +119,13 @@
           });
           return
         }
-        if(this.isLogin){
+        if (this.isLogin) {
           this.login(user)
-        }else{
+        } else {
           this.sign(user)
         }
       },
-      login(user){
+      login(user) {
         login(user).then((res) => {
           if (res.code === ERR_OK) {
             this.saveUser(res.data.userInfo)
@@ -144,16 +145,16 @@
           }
         })
       },
-      sign(user){
-        sign(user).then((res)=>{
-          if(res.code === ERR_OK){
+      sign(user) {
+        sign(user).then((res) => {
+          if (res.code === ERR_OK) {
             this.saveUser(res.data.userInfo)
             //返回注册之前的页面
             this.$router.back()
             this.user.userName = ''
             this.user.passWorld = ''
             this.disabled = false
-          }else{
+          } else {
             this.$dialog.alert({
               title: '提示',
               message: res.data.errMsg,
@@ -169,8 +170,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-login-sign
     position fixed
     top 0
@@ -196,7 +197,7 @@
           .login-header-title
             padding-top 40px
             text-align center
-            >a
+            > a
               color $color-text-black-l
               font-size $font-size-14px
               padding-bottom 4px
@@ -207,8 +208,8 @@
                 font-weight 700
                 border-bottom 2px solid $color-text-blue
         .login-content
-          >form
-            >div
+          > form
+            > div
               display none
               &.on
                 display block
@@ -240,7 +241,7 @@
                 color $color-text-gray
                 font-size $font-size-14px
                 line-height 20px
-                >a
+                > a
                   color $color-button-blue
             .login-sign
               display block
@@ -266,7 +267,7 @@
           left 5px
           width 30px
           height 30px
-          >.iconfont
+          > .iconfont
             font-size $font-size-20px
             color $color-text-gray
 </style>

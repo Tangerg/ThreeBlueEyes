@@ -9,18 +9,18 @@
 
 <script>
   export default {
-    props:{
-      title:{
-        type:String,
-        default:''
+    props: {
+      title: {
+        type: String,
+        default: ''
       }
     },
   }
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  @import "../../common/stylus/variable"
-  @import "../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .no-result
     width 100%
     text-align center

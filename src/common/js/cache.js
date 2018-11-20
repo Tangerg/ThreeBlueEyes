@@ -24,6 +24,7 @@ function insertArray(arr, val, compare, maxLen) {
     arr.pop()
   }
 }
+
 function deleteFromArray(arr, compare) {
   const index = arr.findIndex(compare)
   if (index > -1) {
@@ -34,11 +35,13 @@ function deleteFromArray(arr, compare) {
 
 export function saveUserInfo(userInfo) {
   storage.remove(USER_KEY)
-  storage.set(USER_KEY,userInfo)
+  storage.set(USER_KEY, userInfo)
 }
+
 export function loadUser() {
-  return storage.get(USER_KEY,{})
+  return storage.get(USER_KEY, {})
 }
+
 export function deleteUserInfo() {
   storage.remove(USER_KEY)
 }
@@ -78,10 +81,12 @@ export function savePlay(song) {
   storage.set(PLAY_KEY, songs)
   return songs
 }
+
 export function clearPlay() {
   storage.remove(PLAY_KEY)
   return []
 }
+
 export function loadPlay() {
   return storage.get(PLAY_KEY, [])
 }
@@ -108,6 +113,7 @@ export function clearFavorite() {
   storage.remove(FAVORITE_KEY)
   return []
 }
+
 export function loadFavorite() {
   return storage.get(FAVORITE_KEY, [])
 }

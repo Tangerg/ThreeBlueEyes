@@ -13,18 +13,19 @@
 <script>
   import Mheader from 'mobile/music/m-header/m-header'
   import Mplayer from 'mobile/music/m-player/m-player'
+
   export default {
-    data () {
+    data() {
       return {
         stop: false
       }
     },
-    mounted () {
+    mounted() {
       let m = document.querySelector('#tbe-m-music')
       m.addEventListener('touchend', this.firstPlay)
     },
     methods: {
-      firstPlay () {
+      firstPlay() {
         let music = document.querySelector('#music-audio')
         music.play()
         if (music.src !== '') {
@@ -33,12 +34,12 @@
       }
     },
     watch: {
-      stop () {
+      stop() {
         let m = document.querySelector('#tbe-m-music')
         m.removeEventListener('touchend', this.firstPlay)
       }
     },
-    components:{
+    components: {
       Mplayer,
       Mheader
     }
@@ -46,8 +47,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../../common/stylus/variable"
-  @import "../../../common/stylus/mixin"
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
   .tbe-m-music
     position fixed
     top 0
