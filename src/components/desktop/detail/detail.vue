@@ -36,12 +36,12 @@
         <div class="detail-article-content">
           <article-content :article="articleContent"></article-content>
         </div>
-        <div class="detail-star">
+        <div class="detail-star" v-show="ready">
           <el-button round class="star-btn" :class="iconMode" @click="giveStar()">
             赞同 · {{articleInfo.starNum}}
           </el-button>
         </div>
-        <div class="detail-comment">
+        <div class="detail-comment" v-show="ready">
           <div class="comment-title">评论</div>
           <div class="comment-submit">
             <div class="text-area">
@@ -59,7 +59,7 @@
             </div>
           </div>
           <div class="comment-exist" v-if="commentList.length>0">
-            <div class="total-comment">{{commentList.length}}条评论</div>
+            <div class="total-comment">共{{commentList.length}}条评论</div>
             <div class="comment-box" v-for="(item,index) in commentList" :key="index">
               <div class="comment-info">
                 <div class="avatar">
@@ -112,7 +112,8 @@
         },
         commentList: [],
         //0:从未点赞，1：点赞，2：点赞过但取消了
-        starInfo: 0
+        starInfo: 0,
+        ready: false
       }
     },
     created() {
@@ -254,10 +255,12 @@
       },
       //初始化文章正文
       initArticleContent() {
+        this.ready = false
         this.articleContent = ''
         getArticleById(this.articleInfo.id).then((res) => {
           if (res.code === ERR_OK) {
             this.articleContent = res.data.articleContent.articleContent
+            this.ready = true
           }
         })
       }
@@ -389,7 +392,7 @@
             .total-comment
               background-color $color-background-global
               font-size $font-size-18px
-              padding 20px
+              padding 20px 10px
             .comment-box
               padding 0 10px
               display flex

@@ -67,7 +67,7 @@
             <div class="comment-box" v-for="(item,index) in commentList" :key="index">
               <div class="comment-info">
                 <div class="avatar">
-                  <img src="../../../common/image/logo.png" alt="avatar">
+                  <img @load="loadImage" src="../../../common/image/logo.png" alt="avatar">
                 </div>
                 <div class="other">
                   <div class="name">{{item.userName}}</div>
@@ -153,7 +153,12 @@
       ...mapMutations({
         setArticleInfo: 'SET_ARTICLE_INFO'
       }),
-
+      loadImage() {
+        if (!this.checkloaded) {
+          this.checkloaded = true
+          this.$refs.scroll.refresh()
+        }
+      },
       goBack() {
         this.$router.back()
       },

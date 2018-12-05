@@ -14,10 +14,10 @@
             <form @submit.prevent="login">
               <div :class="{on: isLogin}">
                 <section class="login-message">
-                  <input type="tel" placeholder="账号（123）" v-model="user.userName">
+                  <input type="tel" placeholder="账号" v-model="user.userName">
                 </section>
                 <section class="login-verification">
-                  <input type="password" placeholder="密码（321）" v-model="user.passWorld">
+                  <input type="password" placeholder="密码" v-model="user.passWorld">
                 </section>
               </div>
               <div :class="{on: !isLogin}">
@@ -69,8 +69,8 @@
         disabled: false,
         isLogin: true, // true代表登陆, false代表注册
         user: {
-          userName: '',
-          passWorld: ''
+          userName: 'Tangerg',
+          passWorld: 'Tangerg'
         }
       }
     },

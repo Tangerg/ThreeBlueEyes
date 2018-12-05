@@ -33,7 +33,6 @@
         <div class="recommend-list" v-show="recommendsong.length>0">
           <h1 class="list-title">
             推荐歌曲
-            <i class="iconfont icon-iconfontqianjin-copy"></i>
           </h1>
           <ul class="items">
             <li v-for="song in recommendsong" :key="song.id" class="item">

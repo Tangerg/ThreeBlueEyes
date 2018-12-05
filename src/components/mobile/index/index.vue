@@ -35,7 +35,7 @@
               {{item.summary}}
             </div>
             <div class="article-img">
-              <img :src="item.pictureUrl" alt="cover">
+              <img @load="loadImage" :src="item.pictureUrl" alt="cover">
             </div>
           </div>
           <div class="article-info">
@@ -112,6 +112,12 @@
       ...mapMutations({
         setArticleInfo: 'SET_ARTICLE_INFO'
       }),
+      loadImage() {
+        if (!this.checkloaded) {
+          this.checkloaded = true
+          this.$refs.scroll.refresh()
+        }
+      },
       cateClass(id) {
         if (this.currentCategoryId === id) {
           return 'active'

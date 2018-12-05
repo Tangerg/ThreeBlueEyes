@@ -42,9 +42,9 @@
                     </div>
                   </div>
                   <div class="article-text">
-                    <h2 class="article-title">
+                    <div class="article-title">
                       {{item.title}}
-                    </h2>
+                    </div>
                     <div class="article-summary">
                         <span class="article-summary-text">
                           {{item.summary}}
@@ -161,7 +161,7 @@
         console.log(document.body.offsetHeight); // 文档高度
         console.log(document.body.scrollTop + window.innerHeight)*/
         //监听右边是否距离底部10px了
-        if (document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight <= 10) {
+        if (document.documentElement.offsetHeight - scrollTop - window.innerHeight <= 10) {
           this.isBottom = true
         } else {
           this.isBottom = false

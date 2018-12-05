@@ -1,6 +1,6 @@
 <template>
-  <div class="tbe-d-music-player" v-if="playList.length>0">
-    <div class="max-player" v-show="fullScreen===true">
+  <div class="tbe-d-music-player" v-if="this.playList.length>0">
+    <div class="max-player" v-show="fullScreen">
       <div class="background" :style="bgImg(currentSong.image)">
         <!--<img :src="currentSong.image" width="100%" height="100%">-->
       </div>
@@ -107,7 +107,7 @@
         </el-table>
       </div>
     </div>
-    <div class="mini-player" v-show="fullScreen===false" :style="bgImg(currentSong.image)">
+    <div class="mini-player" v-show="!fullScreen" :style="bgImg(currentSong.image)">
       <div class="mask"></div>
       <div class="mini-player-container">
         <div class="control">
@@ -689,6 +689,7 @@
           display flex
           flex-direction column
           text-align center
+          cursor pointer
           .song-name
             width 98%
             no-wrap()
